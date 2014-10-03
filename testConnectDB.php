@@ -1,3 +1,9 @@
+<html>
+  <body>
+  	<h1>happy</h1>
+  </body>
+</html>
+
 <?php
 // Create connection
 $con = mysqli_connect("localhost:3306","root");
@@ -12,3 +18,4 @@ if (mysqli_connect_errno()) {
 // close connection
 mysqli_close($con);
 ?>
+
