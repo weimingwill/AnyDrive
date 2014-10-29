@@ -11,7 +11,7 @@
         <div class="navbar-collapse collapse" id="navbar-main">
           <ul class="nav navbar-nav">
             <li>
-              <a href="#">Home</a>
+              <a href="home.php">Home</a>
             </li>
             <li>
               <a href="#">Browse</a>
@@ -30,8 +30,8 @@
 -->
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#" target="_blank">Register</a></li>
-            <li><a href="#" target="_blank">Sign in</a></li>
+            <li><a href="register.php">Register</a></li>
+            <li><a href="login.php">Sign in</a></li>
           </ul>
         </div>
       </div>
