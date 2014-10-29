@@ -13,6 +13,6 @@
         <p style="margin-left:40%;">©AnyDrive 2014. Created by JJ and Weiming</p>
       </div>
     </footer>
-    <script src="../scripts/jquery-1.10.2.min.js"></script>
+    <script src="../scripts/jquery.js"></script>
     <script src="../scripts/bootstrap.min.js"></script>
     <script src="../scripts/bootswatch.js"></script>
