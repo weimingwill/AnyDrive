@@ -7,7 +7,7 @@
 
     <!--search form in homepage-->
     <div class="container">
-     <div class="page-header" id="banner">
+     <div class="page page-container">
         <form method="post" class="form-horizontal">
           <br>
           <div class="form-group">
