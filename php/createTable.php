@@ -43,7 +43,7 @@
       
 
     //create table copy
-    $sql = "CREATE TABLE copy (
+    $sql = "CREATE TABLE IF NOT EXISTS copy (
             copyNum INT CHECK(copyNum > 0),
             carID CHAR(10) REFERENCES car(carID) ON DELETE CASCADE,
             avaliable BIT(1) DEFAULT b'1',
@@ -60,6 +60,7 @@
 
     //create table booking
     $sql = "CREATE TABLE IF NOT EXISTS booking (
+            userID VARCHAR(15) REFERENCES user(userID) ON DELETE CASCADE,
             copyNum INT CHECK(copyNum > 0), 
             carID CHAR(10) REFERENCES car(carID) ON DELETE CASCADE,
             bookingTime DATETIME NOT NULL ,
@@ -72,10 +73,10 @@
 
     $retval = mysql_query( $sql, $link );
     if(! $retval ) {
-      die('Could not create table car: ' . mysql_error());
+      die('Could not create table booking: ' . mysql_error());
     } else {
         echo "Table booking created successfully";     
     }
     
-
+    mysql_close($link);
 ?>
