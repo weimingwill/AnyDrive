@@ -12,7 +12,7 @@
 
     <?php
     //connect to database
-    $link = mysql_connect('localhost:3306', 'root');
+    $link = mysql_connect('127.0.0.1:3306', 'root');
     if (!$link) {
       die('Database Not connected : ' . mysql_error());
     }
