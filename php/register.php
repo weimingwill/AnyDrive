@@ -1,20 +1,32 @@
+<?php 
+function redirect($url, $statusCode = 303)
+{
+   header('Location: ' . $url, true, $statusCode);
+   die();
+}
+
+?>
+
 <!DOCTYPE html>
 <html>
+
 <?php include 'head.php'; ?>
 <body>
 <?php include 'navigation.php'; ?>
 
 <!--register page-->
 
-<?php require('user_mysql.php');
+<?php 
 
 
-$isInsert = TRUE;
+require('user_mysql.php');
+$isInsert = False;
 
 $Err_Required_Field = 'Required field!';
 $email_Err = $name_Err = $password_Err = $confirmPassword_Err = $phoneNum_Err = $age_Err = $gender_Err = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $isInsert = TRUE;
     if (empty($_POST[$email_str])) {
       $email_Err = $Err_Required_Field;
       $isInsert = False;
@@ -52,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }     
 
     if (empty($_POST[$phoneNum_str]) or (is_numeric($_POST[$phoneNum_str]) and is_int(intval($_POST[$phoneNum_str]))))  {
-      $phoneNum_data = intval(test_input($_POST[$phoneNum_str]));
+      $phoneNum_data = test_input($_POST[$phoneNum_str]);
     } else {
       $phoneNum_Err = "invalid phoneNum";
       $isInsert = False;
@@ -65,11 +77,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $isInsert = False;
     }   
 
-    if($_POST[$gender_str] !== "male" and $_POST[$gender_str] !== "female") {
+    if(empty($_POST[$age_str]) or ($_POST[$gender_str] === "male" or $_POST[$gender_str] === "female")) {
+      
+      $gender_data = $_POST[$gender_str];
+    } else {
       $gender_Err = "invalid gender";
       $isInsert = False;
-    } else {
-      $gender_data = $_POST[$gender_str];
     }
 
 }
@@ -86,6 +99,9 @@ if($isInsert){
   } else {
     if ( $con->query($insertUser) === TRUE) {
       echo "New record created successfully";
+      echo "<META HTTP-EQUIV='Refresh' CONTENT='0; URL=home.php'>";
+
+
     } else {
       echo "Error: " . $insertUser . "<br>" . $con->error;
     }
@@ -150,7 +166,7 @@ function test_input($data) {
           <div class="form-group">
             <label for="phoneNum" class="col-lg-2 control-label">Phone</label>
             <div class="col-lg-6">
-              <input type="nutmber" name="phoneNum" class="form-control" id="phoneNum" value="<?php echo $phoneNum_data;?>" placeholder="Phone Number">
+              <input type="text" name="phoneNum" class="form-control" id="phoneNum" value="<?php echo $phoneNum_data;?>" placeholder="Phone Number">
             </div>
             <div class = "col-lg-4">
                 <span class="text-danger"><?php echo $phoneNum_Err;?></span>
