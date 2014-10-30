@@ -14,7 +14,7 @@
               <a href="home.php">Home</a>
             </li>
             <li>
-              <a href="browse.php">Browse</a>
+              <a href="carlist.php">Browse</a>
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">

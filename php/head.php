@@ -3,6 +3,10 @@
   <meta charset="utf-8">
   <title>AnyDrive</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">  
+  
+  
   <link rel="stylesheet" href="../css/bootstrap.min.css" media="screen">
   <link rel="stylesheet" type="text/css" href="../css/stylesheet.css">
 
