@@ -11,18 +11,17 @@
    <div class="page page-container">
 
     <?php
-
-
+    //connect to database
     $link = mysql_connect('localhost:3306', 'root');
     if (!$link) {
       die('Database Not connected : ' . mysql_error());
     }
-
+    //select database
     $db_selected = mysql_select_db('AnyDrive', $link);
     if (!$db_selected) {
       die ('Can\'t use foo : ' . mysql_error());
     }
-
+    //create table user
     $sql = "CREATE TABLE IF NOT EXISTS user (
             userID VARCHAR(64) PRIMARY KEY,
             name VARCHAR(64) NOT NULL,
@@ -34,26 +33,27 @@
             birthday DATE,
             drivingLicenseNum CHAR(9)
             )";
-
-
     $retval = mysql_query( $sql, $link );
     if(! $retval )
     {
       die('Could not create table: ' . mysql_error());
     }
-    echo "Table created successfully<br>";
 
+    //insert value into table user 
     $sql = "INSERT INTO user (userID, name, password, email, phoneNum, age, gender, birthday, drivingLicenseNum)
     VALUES ('2', 'ZhangJi', '2', 'zhangji@gmail.com', '85518503', '20', 'male', '1994-01-31', 'A0119405')";
 
     $retval = mysql_query( $sql, $link );
 
+    //get input from form
     $email = $password = $emailErr = $emailErrClass = $passwordErr = $passwordErrClass = "";
     $login = false;
+    $empty = false;
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
       if(empty($_POST["email"])){
         $emailErr = "Email is required!";
         $emailErrClass = "has-error";
+        $empty = true;
       } else {
         $email = test_input($_POST["email"]);
       }
@@ -61,6 +61,7 @@
       if(empty($_POST["email"])){
         $passwordErr = "Password cannot be empty!";
         $passwordErrClass = "has-error";
+        $empty = true;
       } else {
         $password = test_input($_POST["password"]);
       }
@@ -74,48 +75,38 @@
        return $data;
      }
 
-    $sql = "SELECT * FROM user";
-    $result = mysql_query($sql, $link);
+    if(!$empty){
+      //get data from database 
+      $sql = "SELECT * FROM user";
+      $result = mysql_query($sql, $link);
 
-    while($row = mysql_fetch_assoc($result)) 
-    {
-      echo $row["userID"];
-      echo $row["name"];
-      echo $row["password"];
-      echo $row["email"];
-      echo "<br>";
-      if($row["email"]  == $email && $row["password"] == $password){
-        echo "Login successfully";
-        $login = true;
+      while($row = mysql_fetch_assoc($result)) 
+      {
+        if($row["email"] == $email && $row["email"]!=null){
+          if($row["password"] != $password){
+            $emailErr = $emailErrClass = "";
+            $passwordErr = "Password is wrong! Please try again";
+            $passwordErrClass = "has-error";
+            break;            
+          } else {
+            echo "Login successfully";
+            $login = true;
+            $passwordErr = $passwordErrClass = "";
+            break;
+          }
+        } else {
+          $emailErr = "Account does not exist!";
+          $emailErrClass = "has-error";
+        }
+      }
+
+      //redirect to home page if login successfully
+      if($login){
+        header("Location: http://localhost/AnyDrive/php/home.php");
       }
     }
+    ?>   
 
-    header("Location: http://http://localhost/AnyDrive/php/home.php");
-
-    // if ($result->num_rows > 0) {
-    //      // output data of each row
-    //      while($row = $result->fetch_assoc()) {
-    //          echo "<br> id: ". $row["id"]. " - Name: ". $row["firstname"]. " " . $row["lastname"] . "<br>";
-    //      }
-    // } else {
-    //      echo "0 results";
-    // }
-
-/*    $data = mysql_query($sql, $link);
-    if (count($data) > 0) {
-      for($row = 0; $row < count($data); $row++){
-        $data[$row]
-      }
-    }*/
-
-
-
-    // define variables and set to empty values
-
-
-
-?>     
-<?php echo $emailErrClass ?>
      <form method="post" class="form-horizontal" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
       <br>
       <div class="form-group <?php echo $emailErrClass ?>">
@@ -131,6 +122,7 @@
         <label for="password" class="col-lg-2 control-label">Password: </label>
         <div class="col-lg-6">
           <input type="password" name="password" class="form-control" id="password" placeholder="">
+          <p><?php echo $passwordErr ?></p>
         </div>
       </div>
 
