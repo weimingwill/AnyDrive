@@ -4,10 +4,31 @@
   <?php include 'head.php'; ?>
   <body>
     <?php include 'navigation.php'; ?>
-
     <!--search form in homepage-->
     <div class="container">
      <div class="page page-container">
+      <?php
+        $email = "";
+        $login = false;
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+          if(empty($_POST["email"])){
+            echo "User has not login";
+          } else {
+            $email = test_input($_POST["email"]);
+            $login = true;
+            echo "Login successfully";
+          }
+        }
+
+        function test_input($data) {
+           $data = trim($data);
+           $data = stripslashes($data);
+           $data = htmlspecialchars($data);
+           return $data;
+         }
+         
+      ?>
+
         <form method="post" class="form-horizontal">
           <br>
           <div class="form-group">

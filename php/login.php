@@ -58,14 +58,13 @@
         $email = test_input($_POST["email"]);
       }
 
-      if(empty($_POST["email"])){
+      if(empty($_POST["password"])){
         $passwordErr = "Password cannot be empty!";
         $passwordErrClass = "has-error";
         $empty = true;
       } else {
         $password = test_input($_POST["password"]);
-      }
-       
+      }       
     }
 
     function test_input($data) {
@@ -80,8 +79,7 @@
       $sql = "SELECT * FROM user";
       $result = mysql_query($sql, $link);
 
-      while($row = mysql_fetch_assoc($result)) 
-      {
+      while($row = mysql_fetch_assoc($result)){
         if($row["email"] == $email && $row["email"]!=null){
           if($row["password"] != $password){
             $emailErr = $emailErrClass = "";
@@ -102,10 +100,16 @@
 
       //redirect to home page if login successfully
       if($login){
-        header("Location: http://localhost/AnyDrive/php/home.php");
+        ?>
+        <form method="post" action="home.php" id="emailForm"><input type="hidden" name="email" value="<?php echo $email ?>"></form>
+        <script>
+          document.getElementById('emailForm').submit(); // SUBMIT FORM
+        </script>        
+        <?php
       }
-    }
-    ?>   
+  }
+        ?>
+
 
      <form method="post" class="form-horizontal" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
       <br>
@@ -129,14 +133,18 @@
       <div class="form-group">
         <div class="col-lg-10 col-lg-offset-2">
           <button type="submit" class="btn btn-primary">Login</button>
+          <input type="hidden" value="">
         </div>
       </div>
 
     </form>
+
   </div>
 </div><!--body part-->
+
 <?php mysql_close($link); ?>
 
 <?php include 'footer.php'; ?>  
 </body>
 </html>
+
