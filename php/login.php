@@ -41,6 +41,7 @@
 
     if(!$empty){
       require('user_mysql.php');
+      require('cookie.php');
       if(checkUserEmail($email)){
         if(checkUserPassword($email, $password)){
           $emailErr = $emailErrClass = "";
