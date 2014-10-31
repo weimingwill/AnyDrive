@@ -22,7 +22,7 @@
       die ('Can\'t use foo : ' . mysql_error());
     }
     //create table user
-    $sql = "CREATE TABLE IF NOT EXISTS user (
+/*    $sql = "CREATE TABLE IF NOT EXISTS user (
             userID VARCHAR(64) PRIMARY KEY,
             name VARCHAR(64) NOT NULL,
             password VARCHAR(20) NOT NULL,
@@ -43,7 +43,7 @@
     $sql = "INSERT INTO user (userID, name, password, email, phoneNum, age, gender, birthday, drivingLicenseNum)
     VALUES ('2', 'ZhangJi', '2', 'zhangji@gmail.com', '85518503', '20', 'male', '1994-01-31', 'A0119405')";
 
-    $retval = mysql_query( $sql, $link );
+    $retval = mysql_query( $sql, $link );*/
 
     //get input from form
     $email = $password = $emailErr = $emailErrClass = $passwordErr = $passwordErrClass = "";

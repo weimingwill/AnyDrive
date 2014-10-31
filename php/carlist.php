@@ -37,26 +37,6 @@
         if (!$db_selected) {
           die ('Can\'t use foo : ' . mysql_error());
         }
-        //create table user
-        $sql = "CREATE TABLE IF NOT EXISTS car (
-                carID CHAR(10) PRIMARY KEY,
-                price INT NOT NULL CHECK(price>0),
-                passengerCap INT NOT NULL,
-                brand VARCHAR(64) NOT NULL
-                )";
-
-        $retval = mysql_query( $sql, $link );
-        if(! $retval )
-        {
-          die('Could not create table: ' . mysql_error());
-        }
-
-        //insert value into table user 
-        $sql = "INSERT INTO user (carID, price, passengerCap, brand)
-        VALUES ('2', 'ZhangJi', '2', 'zhangji@gmail.com', '85518503')";
-
-        $retval = mysql_query( $sql, $link );
-
          
       ?>
 
