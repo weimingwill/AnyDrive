@@ -11,41 +11,14 @@
    <div class="page page-container">
 
     <?php
-    //connect to database
-    $link = mysql_connect('127.0.0.1:3306', 'root');
-    if (!$link) {
-      die('Database Not connected : ' . mysql_error());
-    }
-    //select database
-    $db_selected = mysql_select_db('AnyDrive', $link);
-    if (!$db_selected) {
-      die ('Can\'t use foo : ' . mysql_error());
-    }
-    //create table user
-/*    $sql = "CREATE TABLE IF NOT EXISTS user (
-            userID VARCHAR(64) PRIMARY KEY,
-            name VARCHAR(64) NOT NULL,
-            password VARCHAR(20) NOT NULL,
-            email VARCHAR(50) NOT NULL UNIQUE,
-            phoneNum CHAR(8),
-            age INT CHECK(age>0),
-            gender VARCHAR(6) CHECK(gender='male' OR gender='female'),
-            birthday DATE,
-            drivingLicenseNum CHAR(9)
-            )";
-    $retval = mysql_query( $sql, $link );
-    if(! $retval )
-    {
-      die('Could not create table: ' . mysql_error());
-    }
 
-    //insert value into table user 
-    $sql = "INSERT INTO user (userID, name, password, email, phoneNum, age, gender, birthday, drivingLicenseNum)
-    VALUES ('2', 'ZhangJi', '2', 'zhangji@gmail.com', '85518503', '20', 'male', '1994-01-31', 'A0119405')";
+      function test_input($data) {
+         $data = trim($data);
+         $data = stripslashes($data);
+         $data = htmlspecialchars($data);
+         return $data;
+      }  
 
-    $retval = mysql_query( $sql, $link );*/
-
-    //get input from form
     $email = $password = $emailErr = $emailErrClass = $passwordErr = $passwordErrClass = "";
     $login = false;
     $empty = false;
@@ -64,17 +37,20 @@
         $empty = true;
       } else {
         $password = test_input($_POST["password"]);
-      }       
-    }
-
-    function test_input($data) {
-       $data = trim($data);
-       $data = stripslashes($data);
-       $data = htmlspecialchars($data);
-       return $data;
-     }
+      }
 
     if(!$empty){
+      //connect to database
+      $link = mysql_connect('127.0.0.1:3306', 'root');
+      if (!$link) {
+        die('Database Not connected : ' . mysql_error());
+      }
+      //select database
+      $db_selected = mysql_select_db('AnyDrive', $link);
+      if (!$db_selected) {
+        die ('Can\'t use foo : ' . mysql_error());
+      }
+
       //get data from database 
       $sql = "SELECT * FROM user";
       $result = mysql_query($sql, $link);
@@ -96,8 +72,9 @@
           $emailErr = "Account does not exist!";
           $emailErrClass = "has-error";
         }
-      }
-
+      }  
+      
+      mysql_close($link); 
       //redirect to home page if login successfully
       if($login){
         ?>
@@ -106,7 +83,8 @@
           document.getElementById('emailForm').submit(); // SUBMIT FORM
         </script>        
         <?php
-      }
+      }    
+    }
   }
         ?>
 
@@ -141,9 +119,6 @@
 
   </div>
 </div><!--body part-->
-
-<?php mysql_close($link); ?>
-
 <?php include 'footer.php'; ?>  
 </body>
 </html>
