@@ -52,4 +52,16 @@ $user_array = array(
   $gender_str => $gender_data,
 );
 
+function checkUserEmail($email){
+  $sql = "SELECT email  FROM user where email='$email'";
+  $result = mysqli_query($con, $sql);
+  return mysqli_num_rows($result) > 0;
+}
+
+function checkUserPassword($email, $password){
+  $sql = "SELECT email  FROM user where email='$email' AND password='$password'";
+  $result = mysqli_query($con, $sql);
+  return mysqli_num_rows($result) > 0;  
+}
+
 ?>

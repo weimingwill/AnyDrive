@@ -40,48 +40,35 @@
       }
 
     if(!$empty){
-      //connect to database
-      $link = mysql_connect('127.0.0.1:3306', 'root');
-      if (!$link) {
-        die('Database Not connected : ' . mysql_error());
-      }
-      //select database
-      $db_selected = mysql_select_db('AnyDrive', $link);
-      if (!$db_selected) {
-        die ('Can\'t use foo : ' . mysql_error());
-      }
-
-      //get data from database 
-      $sql = "SELECT * FROM user";
-      $result = mysql_query($sql, $link);
-
-      while($row = mysql_fetch_assoc($result)){
-        if($row["email"] == $email){
-          if($row["password"] != $password){
-            $emailErr = $emailErrClass = "";
-            $passwordErr = "Password is wrong! Please try again";
-            $passwordErrClass = "has-error";
-            break;            
-          } else {
-            echo "Login successfully";
-            $login = true;
-            $passwordErr = $passwordErrClass = "";
-            break;
-          }
+      require('user_mysql.php');
+      require('cookie.php');
+      if(checkUserEmail($email)){
+        if(checkUserPassword($email, $password)){
+          $emailErr = $emailErrClass = "";
+          $passwordErr = "Password is wrong! Please try again";
+          $passwordErrClass = "has-error";          
         } else {
-          $emailErr = "Account does not exist!";
-          $emailErrClass = "has-error";
+          echo "Login successfully";
+          $login = true;
+          $passwordErr = $passwordErrClass = "";
+          setCookie_UserEmail($email);
         }
-      }  
+      } else {
+        $emailErr = "Account does not exist!";
+        $emailErrClass = "has-error";        
+      }
       
+
 
       //redirect to home page if login successfully
       if($login){
+        echo "<META HTTP-EQUIV='Refresh' CONTENT='0; URL=home.php'>";
         ?>
         <form method="post" action="home.php" id="emailForm"><input type="hidden" name="email" value="<?php echo $email ?>"></form>
         <script>
           document.getElementById('emailForm').submit(); // SUBMIT FORM
-        </script>        
+        </script>
+
         <?php
       }    
     }
