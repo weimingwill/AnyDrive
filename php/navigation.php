@@ -18,7 +18,17 @@
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="register.php">Register</a></li>
+            <?php 
+              require('cookie.php');
+              if(isCookieSet_UserEmail()){
+                echo '<li><a href="#">'. getCookie_UserEmail() . '</a></li>';
+              } else {
+                echo  '<li><a href="register.php">Register</a></li>';
+              }
+
+
+            ?>
+           
             <li><a href="login.php">Sign in</a></li>
           </ul>
         </div>
