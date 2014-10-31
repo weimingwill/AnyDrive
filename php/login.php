@@ -56,7 +56,7 @@
       $result = mysql_query($sql, $link);
 
       while($row = mysql_fetch_assoc($result)){
-        if($row["email"] == $email && $row["email"]!=null){
+        if($row["email"] == $email){
           if($row["password"] != $password){
             $emailErr = $emailErrClass = "";
             $passwordErr = "Password is wrong! Please try again";
@@ -74,7 +74,7 @@
         }
       }  
       
-      mysql_close($link); 
+
       //redirect to home page if login successfully
       if($login){
         ?>

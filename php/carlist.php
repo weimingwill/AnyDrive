@@ -28,15 +28,7 @@
          }
 
         //connect to database
-        $link = mysql_connect('localhost:3306', 'root');
-        if (!$link) {
-          die('Database Not connected : ' . mysql_error());
-        }
-        //select database
-        $db_selected = mysql_select_db('AnyDrive', $link);
-        if (!$db_selected) {
-          die ('Can\'t use foo : ' . mysql_error());
-        }
+        require('user_mysql.php');
          
       ?>
 
