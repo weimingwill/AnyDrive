@@ -8,15 +8,13 @@ $con = mysqli_connect('127.0.0.1:3306','root');
 // Check connection
 if (mysqli_connect_errno()){
   die('Could not connect: ' . mysqli_connect_error());
-} else {
-  echo 'database connected' . mysqli_connect_error();
-}
+} 
 
 if(!mysqli_select_db($con, 'AnyDrive')) {
   if (mysqli_query($con, "CREATE DATABASE AnyDrive")){
-    echo "Database created";
+
   } else {
-  echo "Error creating database: " . mysqli_error();
+    echo "Error creating database: " . mysqli_error();
   }
 }
 $create_user = 
@@ -29,11 +27,8 @@ $create_user =
   gender VARCHAR(6) CHECK(gender='male' OR gender='female')
 )";
 
-if(mysqli_query($con, $create_user)){
-  echo  "Table created successfully";
-} else {
-  echo "Error creating database: " . $con->error;
-
+if(!mysqli_query($con, $create_user)){
+   echo "Error creating database: " . $con->error;
 }
 
 // set deafult varible name
