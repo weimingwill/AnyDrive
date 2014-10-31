@@ -1,5 +1,15 @@
+<?php 
+function redirect($url, $statusCode = 303)
+{
+   header('Location: ' . $url, true, $statusCode);
+   die();
+}
+
+?>
+
 <!DOCTYPE html>
 <html>
+
 <?php include 'head.php'; ?>
 <body>
 <?php include 'navigation.php'; ?>
@@ -8,88 +18,94 @@
 
 <?php 
 
-// Create connection
-$con = mysql_connect('127.0.0.1:3306','root', 'zhang123');
-echo "<br><br><br><br>"; 
 
-// Check connection
-if (!$con){
-  die('Could not connect: ' . mysql_error());
-} else {
-  echo 'database connected' . mysql_error();
-}
+require('user_mysql.php');
+$isInsert = False;
 
-if(!mysql_select_db('AnyDrive', $con)) {
-  if (mysql_query("CREATE DATABASE AnyDrive",$con)){
-    echo "Database created";
-  } else {
-  echo "Error creating database: " . mysql_error();
-  }
-}
-$create_user = 
-"CREATE TABLE IF NOT EXISTS user (
-  userID VARCHAR(64) PRIMARY KEY,
-  name VARCHAR(64) NOT NULL,
-  password VARCHAR(20) NOT NULL,
-  email VARCHAR(50) NOT NULL UNIQUE,
-  phoneNum CHAR(8),
-  age INT CHECK(age>0),
-  gender VARCHAR(6) CHECK(gender='male' OR gender='female'),
-)";
-
-mysql_query($create_user, $con);
-
-//mysql_close($con);
-// set err varible name
-$Err_Required_Field = "required field";
-$userID_Err = $name_Err = $password_Err = $confirmPassword_Err = $email_Err = $phoneNum_Err = $age_Err = $gender_Err = "" ;
-$userID = $name = $password = $confirmPassword = $email = $phoneNum  = $age = $gender = "";
+$Err_Required_Field = 'Required field!';
+$email_Err = $name_Err = $password_Err = $confirmPassword_Err = $phoneNum_Err = $age_Err = $gender_Err = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (empty($_POST["userID"])) {
-      $User_Id_Err = $Err_Required_Field;
+  $isInsert = TRUE;
+    if (empty($_POST[$email_str])) {
+      $email_Err = $Err_Required_Field;
+      $isInsert = False;
+    } else if (!filter_var($_POST[$email_str], FILTER_VALIDATE_EMAIL)) {
+      $email_Err = "Invalid email format"; 
+      $isInsert = False;
     } else {
-      $userID = test_input($_POST["userID"]);
+      $email_data = test_input($_POST[$email_str]);
     }
-    if (empty($_POST["name"])) {
+
+    if (empty($_POST[$name_str])) {
       $name_Err = $Err_Required_Field;
+      $isInsert = False;
     } else {
-      $name = test_input($_POST["name"]);
+      $name_data = test_input($_POST[$name_str]);
     }   
-    if (empty($_POST["password"])) {
+
+    if (empty($_POST[$password_str])) {
       $password_Err = $Err_Required_Field;
+      $isInsert = False;
     } else {
-      $password = test_input($_POST["password"]);
-    }        
-    if (empty($_POST["confirmPassword"])) {
+      $password_data = test_input($_POST[$password_str]);
+    }       
+
+    if (empty($_POST[$confirmPassword_str])) {
       $confirmPassword_Err = $Err_Required_Field;
+      $isInsert = False;
     } else {
-      $confirmPassword = test_input($_POST["confirmPassword"]);
-    }   
-    if( $password !== $confirmPassword) {    
-     $confirmPassword_Err = "two passwords does not match";
+      $confirmPassword_data = test_input($_POST[$confirmPassword_str]);
     }   
 
-    $email = test_input($_POST["email"]);     
+    if( $password_data !== $confirmPassword_data) {    
+      $confirmPassword_Err = "two passwords does not match";
+      $isInsert = False;
+    }     
 
-    if (empty($_POST["phoneNum"]) or (is_numeric($_POST["phoneNum"]) and is_int(intval($_POST["phoneNum"]))))  {
-      $phoneNum = intval(test_input($_POST["phoneNum"]));
+    if (empty($_POST[$phoneNum_str]) or (is_numeric($_POST[$phoneNum_str]) and is_int(intval($_POST[$phoneNum_str]))))  {
+      $phoneNum_data = test_input($_POST[$phoneNum_str]);
     } else {
       $phoneNum_Err = "invalid phoneNum";
+      $isInsert = False;
     }
 
-    if (empty($_POST["age"]) or (is_numeric($_POST["age"]) and is_int(intval($_POST["age"])) and intval($_POST["age"]) > 0)) {
-      $age = test_input($_POST["age"]);     
+    if (empty($_POST[$age_str]) or (is_numeric($_POST[$age_str]) and is_int(intval($_POST[$age_str])) and intval($_POST[$age_str]) > 0)) {
+      $age_data = test_input($_POST[$age_str]);     
     } else {
       $age_Err = "invalid age";
+      $isInsert = False;
     }   
 
-    if($_POST["gender"] !== "male" and $_POST["gender"] !== "female") {
-      $gender_Err = "invalid gender";
+    if(empty($_POST[$age_str]) or ($_POST[$gender_str] === "male" or $_POST[$gender_str] === "female")) {
+      
+      $gender_data = $_POST[$gender_str];
     } else {
-      $gender = $_POST["gender"];
+      $gender_Err = "invalid gender";
+      $isInsert = False;
     }
 
+}
+
+$insertUser = "INSERT INTO user (email, name, password, phoneNum, age, gender)
+      VALUES ('$email_data', '$name_data','$password_data', '$phoneNum_data', '$age_data', '$gender_data')";
+if($isInsert){
+
+  $sql = "SELECT email  FROM user where email='$email_data'";
+  $result = mysqli_query($con, $sql);
+
+  if (mysqli_num_rows($result) > 0) {
+    $email_Err = "your email has been registered";
+  } else {
+    if ( $con->query($insertUser) === TRUE) {
+      echo "New record created successfully";
+      echo "<META HTTP-EQUIV='Refresh' CONTENT='0; URL=home.php'>";
+
+
+    } else {
+      echo "Error: " . $insertUser . "<br>" . $con->error;
+    }
+  } 
 }
 
 function test_input($data) {
@@ -98,6 +114,7 @@ function test_input($data) {
    $data = htmlspecialchars($data);
    return $data;
 }
+
 ?>
     <div class="container">
      <div class="page-header" id="banner">
@@ -105,19 +122,19 @@ function test_input($data) {
         <form method="post" class="form-horizontal">
           <br>
           <div class="form-group">
-            <label for="userID" class="col-lg-2 control-label">User Id*</label>
-              <div class="col-lg-6">
-                <input type="text" name="userID" class="form-control" id="userID" value = "<?php echo $userID;?>" placeholder="User ID">
-              </div>
-              <div class = "col-lg-4">
-                <span class="text-danger"><?php echo $User_Id_Err;?></span>
-              </div>
+            <label for="email" class="col-lg-2 control-label">Email*</label>
+            <div class="col-lg-6">
+              <input type="email" name="email" class="form-control" id="email" value="<?php echo $email_data;?>"  placeholder="Email">
+            </div>
+            <div class = "col-lg-4">
+                <span class="text-danger"><?php echo $email_Err;?></span>
+            </div>
           </div>
 
           <div class="form-group">
             <label for="name" class="col-lg-2 control-label">Name*</label>
             <div class="col-lg-6">
-              <input type="text" name="name" class="form-control" id="password" value="<?php echo $name;?>" placeholder="name">
+              <input type="text" name="name" class="form-control" id="password" value="<?php echo $name_data;?>" placeholder="name">
             </div>
             <div class = "col-lg-4">
                 <span class="text-danger"><?php echo $name_Err;?></span>
@@ -127,7 +144,7 @@ function test_input($data) {
           <div class="form-group">
             <label for="password" class="col-lg-2 control-label">Password*</label>
             <div class="col-lg-6">
-              <input type="password" name="password" class="form-control" id="password" value="<?php echo $password;?>" placeholder="Password">
+              <input type="password" name="password" class="form-control" id="password" value="<?php echo $password_data;?>" placeholder="Password">
             </div>
             <div class = "col-lg-4">
                 <span class="text-danger"><?php echo $password_Err;?></span>
@@ -137,27 +154,19 @@ function test_input($data) {
           <div class="form-group">
             <label for="confirmPassword" class="col-lg-2 control-label">Confirm Password*</label>
             <div class="col-lg-6">
-              <input type="password" name="confirmPassword" class="form-control" id="confirmPassword" value="<?php echo $confirmPassword;?>"  placeholder="Confirm Password">
+              <input type="password" name="confirmPassword" class="form-control" id="confirmPassword" value="<?php echo $confirmPassword_data;?>"  placeholder="Confirm Password">
             </div>
             <div class = "col-lg-4">
                 <span class="text-danger"><?php echo $confirmPassword_Err;?></span>
             </div>
           </div>
 
-          <div class="form-group">
-            <label for="email" class="col-lg-2 control-label">Email</label>
-            <div class="col-lg-6">
-              <input type="email" name="email" class="form-control" id="email" value="<?php echo $email;?>"  placeholder="Email">
-            </div>
-            <div class = "col-lg-4">
-                <span class="text-danger"><?php echo $email_Err;?></span>
-            </div>
-          </div>
+          
 
           <div class="form-group">
             <label for="phoneNum" class="col-lg-2 control-label">Phone</label>
             <div class="col-lg-6">
-              <input type="nutmber" name="phoneNum" class="form-control" id="phoneNum" value="<?php echo $phoneNum;?>" placeholder="Phone Number">
+              <input type="text" name="phoneNum" class="form-control" id="phoneNum" value="<?php echo $phoneNum_data;?>" placeholder="Phone Number">
             </div>
             <div class = "col-lg-4">
                 <span class="text-danger"><?php echo $phoneNum_Err;?></span>
@@ -167,7 +176,7 @@ function test_input($data) {
           <div class="form-group">
             <label for="age" class="col-lg-2 control-label">Age</label>
             <div class="col-lg-6">
-              <input type="number" name="age" class="form-control" id="age" value="<?php echo $age;?>"  placeholder="Age">
+              <input type="number" name="age" class="form-control" id="age" value="<?php echo $age_data;?>"  placeholder="Age">
             </div>
             <div class = "col-lg-4">
                 <span class="text-danger"><?php echo $age_Err;?></span>
@@ -180,7 +189,7 @@ function test_input($data) {
               <label class="radio-inline">
                 <input class='btn btn-deafult radio-inline'type="radio" name="gender" value="male" 
                   <?php 
-                    if($gender == "male") {
+                    if($gender_data == "male") {
                       echo "checked";
                     }
                    ;?>
@@ -190,7 +199,7 @@ function test_input($data) {
               <label class="radio-inline">
                 <input class='btn btn-deafult radio-inline'type="radio" name="gender" value="female" 
                 <?php 
-                    if($gender == "female") {
+                    if($gender_data == "female") {
                       echo "checked";
                     }
                    ;?>
@@ -212,6 +221,7 @@ function test_input($data) {
         </form>
      </div>
     </div><!--body part-->
+
 <?php include 'footer.php'; ?>
 </body>
 </html>
