@@ -12,8 +12,9 @@
 
     $isLogin = false;
     $isTryLogin = false;
-    
-    if(isCookieSet_UserEmail()) {
+
+
+    if(isset($_COOKIE[$cookie_userEmail_Str])) {
       $isLogin = True;
     }
 
@@ -51,12 +52,14 @@
         $result = mysqli_query($con, $selectPassword);
       
         if(mysqli_num_rows($result) > 0){
-          
-          $isLogin = true;
-          setCookie_UserEmail($email);
+          if(setcookie($cookie_userEmail_Str, $email, time() + (86400 * 1), "/")){
+
+            $isLogin = True;  
+          } else {
+
+          }
           
         } else {
-          $emailErr = $emailErrClass = "";
           $passwordErr = "Password is wrong! Please try again";
           $passwordErrClass = "has-error"; 
           deleteCookie_UserEmail();

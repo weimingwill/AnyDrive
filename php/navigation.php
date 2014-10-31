@@ -22,22 +22,17 @@
               $cookie_name = "userEmail";
               //set cookie
 
-              function isCookieSet_UserEmail1() {
-                return isset($_COOKIE[$cookie_name]);
-              }
+              if(isset($_COOKIE[$cookie_name])) {
 
-              function getCookie_UserEmail1(){
-                return $_COOKIE[$cookie_name];
-              }
-              if(isCookieSet_UserEmail1()){
-                echo '12';
-                echo '<li><a href="#">'. getCookie_UserEmail1() . '</a></li>';
+                echo '<li><a href="#">'. $_COOKIE[$cookie_name] . '</a></li>';
+                echo '<li><a href="logout.php">Logout</a></li>';
               } else {
                 echo  '<li><a href="register.php">Register</a></li>';
+                echo '<li><a href="login.php">Sign in</a></li>';
               }
             ?>
            
-            <li><a href="login.php">Sign in</a></li>
+            
           </ul>
         </div>
       </div>
