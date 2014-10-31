@@ -25,11 +25,32 @@
            $data = stripslashes($data);
            $data = htmlspecialchars($data);
            return $data;
-         }
+        }
 
-        //connect to database
-        require('user_mysql.php');
-         
+$d=mktime(2, 3, 2014);
+echo "Created date is " . date("Y-m-d", $d);
+
+
+        require('car_mysql.php');
+        $sql = "SELECT * FROM car, copy ORDER BY startDateOfService";  
+        $result = mysqli_query($con, $sql);
+        if(mysqli_num_rows($result) > 0){
+          while ($row = mysqli_fetch_assoc($result))   {
+            echo "carID:".$row["carID"];
+            echo " ";
+            echo "price:".$row["price"];
+            echo " ";
+            echo "passengerCap:".$row["passengerCap"];
+            echo " ";
+            echo "copyNum:".$row["copyNum"];
+            echo " ";
+            echo "startDateOfService:".$row["startDateOfService"];
+            echo " ";
+            echo "brand:".$row["brand"]."<br>";
+          }
+        } else {
+          echo "0 result";
+        }
       ?>
 
           <form action="carlist.php"  method="post">

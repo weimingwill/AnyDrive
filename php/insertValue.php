@@ -42,9 +42,13 @@ $retval = mysql_query( $sql, $link );
         echo "Insert car successfully";     
     }
 
+
+
+$d=mktime(11, 11, 11, 1, 12, 2014);
+$date = date("Y-m-d", $d);
     //insert value into copy 
 $sql = "INSERT INTO copy (copyNum, carID, avaliable, startDateOfService)
-VALUES ('1', 'A1', '1', '2010-4-18')";
+VALUES ('1', 'A1', '1', $date)";
 $retval = mysql_query( $sql, $link );
 
     if(! $retval ) {
@@ -53,24 +57,32 @@ $retval = mysql_query( $sql, $link );
         echo "Insert copy successfully";     
     }
 
+
+$date = date("Y-m-d", mktime(11, 11, 11,  3, 11, 2014));
 $sql = "INSERT INTO copy (copyNum, carID, avaliable, startDateOfService)
-VALUES ('2', 'A1', '1', '2010-5-18')";
+VALUES ('2', 'A1', '1', $date)";
 $retval = mysql_query( $sql, $link );
     if(! $retval ) {
       die('Could not insert copy value: ' . mysql_error());
     } else {
         echo "Insert copy successfully";     
     }
+
+    $d=mktime(11, 11, 11, 4, 10, 2014);
+    $date = date("Y-m-d", $d);
 $sql = "INSERT INTO copy (copyNum, carID, avaliable, startDateOfService)
-VALUES ('1', 'A2', '1', '2011-4-18')";
+VALUES ('1', 'A2', '1', $date)";
 $retval = mysql_query( $sql, $link );
     if(! $retval ) {
       die('Could not insert copy value: ' . mysql_error());
     } else {
         echo "Insert copy successfully";     
     }
+
+    $d=mktime(11, 11, 11,  8, 12, 2014);
+$date = date("Y-m-d", $d);
 $sql = "INSERT INTO copy (copyNum, carID, avaliable, startDateOfService)
-VALUES ('2', 'A2', '1', '2012-4-18')";
+VALUES ('2', 'A2', '1', $date)";
 
 $retval = mysql_query( $sql, $link );
     if(! $retval ) {
