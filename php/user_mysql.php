@@ -1,10 +1,6 @@
-
 <?php 
-
 // Create connection
 $con = mysqli_connect('127.0.0.1:3306','root');
- 
- echo "<br><br><br>";
 // Check connection
 if (mysqli_connect_errno()){
   die('Could not connect: ' . mysqli_connect_error());
@@ -52,11 +48,11 @@ $user_array = array(
   $gender_str => $gender_data,
 );
 
-function checkUserEmail($email){
-  $sql = "SELECT email  FROM user where email='$email'";
-  $result = mysqli_query($con, $sql);
-  return mysqli_num_rows($result) > 0;
-}
+// function checkUserEmail($email_d){
+//   $sql = "SELECT email FROM user where email='$email_d'";
+//   $result = mysqli_query($con, $sql);
+//   return mysqli_num_rows($result) > 0;
+// }
 
 function checkUserPassword($email, $password){
   $sql = "SELECT email  FROM user where email='$email' AND password='$password'";

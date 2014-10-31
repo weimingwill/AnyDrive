@@ -1,6 +1,4 @@
-
 <?php 
-
 $cookie_name = "userEmail";
 //set cookie
 function setCookie_UserEmail($email){
@@ -11,9 +9,12 @@ function setCookie_UserEmail($email){
 function isCookieSet_UserEmail() {
   return isset($_COOKIE[$cookie_name]);
 }
-
 function getCookie_UserEmail(){
   return $_COOKIE[$cookie_name];
 }
-
+function deleteCookie_UserEmail(){
+  unset($_COOKIE[$cookie_name]);
+  // empty value and expiration one hour before
+  setcookie($cookie_name, '', time() - 3600);
+}
 ?>

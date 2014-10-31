@@ -19,14 +19,22 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <?php 
-              require('cookie.php');
-              if(isCookieSet_UserEmail()){
-                echo '<li><a href="#">'. getCookie_UserEmail() . '</a></li>';
+              $cookie_name = "userEmail";
+              //set cookie
+
+              function isCookieSet_UserEmail1() {
+                return isset($_COOKIE[$cookie_name]);
+              }
+
+              function getCookie_UserEmail1(){
+                return $_COOKIE[$cookie_name];
+              }
+              if(isCookieSet_UserEmail1()){
+                echo '12';
+                echo '<li><a href="#">'. getCookie_UserEmail1() . '</a></li>';
               } else {
                 echo  '<li><a href="register.php">Register</a></li>';
               }
-
-
             ?>
            
             <li><a href="login.php">Sign in</a></li>
