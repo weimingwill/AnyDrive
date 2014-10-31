@@ -17,8 +17,6 @@ function redirect($url, $statusCode = 303)
 <!--register page-->
 
 <?php 
-
-
 require('user_mysql.php');
 $isInsert = False;
 

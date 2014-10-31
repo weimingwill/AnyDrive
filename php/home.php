@@ -7,7 +7,7 @@
     <!--search form in homepage-->
     <div class="container">
      <div class="page page-container">
-      <?php
+      <?php require("user_mysql.php");
         $email = "";
         $login = false;
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -27,16 +27,7 @@
            return $data;
          }
 
-        //connect to database
-        $link = mysql_connect('localhost:3306', 'root');
-        if (!$link) {
-          die('Database Not connected : ' . mysql_error());
-        }
-        //select database
-        $db_selected = mysql_select_db('AnyDrive', $link);
-        if (!$db_selected) {
-          die ('Can\'t use foo : ' . mysql_error());
-        }
+        
          
       ?>
 
