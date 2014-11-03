@@ -44,8 +44,7 @@ $retval = mysql_query( $sql, $link );
 
 
 
-$d=mktime(11, 11, 11, 1, 12, 2014);
-$date = date("Y-m-d", $d);
+$date=date_create("2013-03-15");
     //insert value into copy 
 $sql = "INSERT INTO copy (copyNum, carID, avaliable, startDateOfService)
 VALUES ('1', 'A1', '1', $date)";
@@ -58,7 +57,7 @@ $retval = mysql_query( $sql, $link );
     }
 
 
-$date = date("Y-m-d", mktime(11, 11, 11,  3, 11, 2014));
+$date=date_create("2013-05-16");
 $sql = "INSERT INTO copy (copyNum, carID, avaliable, startDateOfService)
 VALUES ('2', 'A1', '1', $date)";
 $retval = mysql_query( $sql, $link );
@@ -68,8 +67,7 @@ $retval = mysql_query( $sql, $link );
         echo "Insert copy successfully";     
     }
 
-    $d=mktime(11, 11, 11, 4, 10, 2014);
-    $date = date("Y-m-d", $d);
+$date=date_create("2013-07-19");
 $sql = "INSERT INTO copy (copyNum, carID, avaliable, startDateOfService)
 VALUES ('1', 'A2', '1', $date)";
 $retval = mysql_query( $sql, $link );
@@ -79,8 +77,7 @@ $retval = mysql_query( $sql, $link );
         echo "Insert copy successfully";     
     }
 
-    $d=mktime(11, 11, 11,  8, 12, 2014);
-$date = date("Y-m-d", $d);
+$date=date_create("2013-09-19");
 $sql = "INSERT INTO copy (copyNum, carID, avaliable, startDateOfService)
 VALUES ('2', 'A2', '1', $date)";
 
