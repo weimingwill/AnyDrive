@@ -9,8 +9,8 @@ if (!$db_selected) {
   die ('Can\'t use AnyDrive : ' . mysql_error());
 }
 
-$sql = "INSERT INTO car (carID, price, passengerCap, brand)
-VALUES ('A1', 100, 4, 'BMW')";
+$sql = "INSERT INTO car (carID, price, type, passengerCap, brand, gearType)
+VALUES ('A1', 100, 4, 'SUV','BMW', 'Automatic')";
 $retval = mysql_query( $sql, $link );
 
     if(! $retval ) {
@@ -19,15 +19,11 @@ $retval = mysql_query( $sql, $link );
         echo "Insert car successfully";     
     }
 
-$sql = "INSERT INTO car (carID, price, passengerCap, brand)
-VALUES ('A2', '200', '4', 'BMW')";
+$sql = "INSERT INTO car (carID, price, passengerCap, brand, gearType)
+VALUES ('A2', '200', '4', 'BMW', 'Automatic')";
 $retval = mysql_query( $sql, $link );
 
-    if(! $retval ) {
-      die('Could not insert car value: ' . mysql_error());
-    } else {
-        echo "Insert car successfully";     
-    }
+    if(! $retval ) {die('Could not insert car value: ' . mysql_error());}
 
 
 // $date=date("Y-m-d",mktime(0,0,0,12,36,2001));

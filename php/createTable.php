@@ -12,13 +12,12 @@
     //create table user
     $sql = "CREATE TABLE IF NOT EXISTS user (
             userID VARCHAR(64) PRIMARY KEY,
-            password VARCHAR(20) NOT NULL,
             email VARCHAR(50) NOT NULL UNIQUE,
+            name VARCHAR(32) NOT NULL,
+            password VARCHAR(20) NOT NULL,
             phoneNum CHAR(8),
             age INT CHECK(age>0),
-            gender VARCHAR(6) CHECK(gender='male' OR gender='female'),
-            birthday DATE,
-            drivingLicenseNum CHAR(9)
+            gender VARCHAR(6) CHECK(gender='male' OR gender='female')
             )";
     $retval = mysql_query( $sql, $link );    
     if(! $retval ) {
@@ -30,8 +29,10 @@
     $sql = "CREATE TABLE IF NOT EXISTS car (
             carID CHAR(10) PRIMARY KEY,
             price INT NOT NULL CHECK(price>0),
+            type VARCHAR(32) NOT NULL,
             passengerCap INT NOT NULL,
-            brand VARCHAR(64) NOT NULL
+            brand VARCHAR(64) NOT NULL,
+            gearType VARCHAR(32) NOT NULL
             )";
 
     $retval = mysql_query( $sql, $link );
