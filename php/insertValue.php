@@ -9,19 +9,6 @@ if (!$db_selected) {
   die ('Can\'t use AnyDrive : ' . mysql_error());
 }
 
-/*    //insert value into user
-$sql = "INSERT INTO user (carID, price, passengerCap, brand)
-VALUES ('2', 'ZhangJi', '2', 'zhangji@gmail.com', '85518503')";
-
-$retval = mysql_query( $sql, $link );
-
-    if(! $retval ) {
-      die('Could not insert user value: ' . mysql_error());
-    } else {
-        echo "Insert user successfully";     
-    }*/
-
-    //insert value into table car 
 $sql = "INSERT INTO car (carID, price, passengerCap, brand)
 VALUES ('A1', 100, 4, 'BMW')";
 $retval = mysql_query( $sql, $link );
@@ -43,11 +30,11 @@ $retval = mysql_query( $sql, $link );
     }
 
 
-
-$date=date_create("2013-03-15");
+// $date=date("Y-m-d",mktime(0,0,0,12,36,2001));
+// $date=date_create("2013-03-15");
     //insert value into copy 
-$sql = "INSERT INTO copy (copyNum, carID, avaliable, startDateOfService)
-VALUES ('1', 'A1', '1', $date)";
+$sql = "INSERT INTO copy (copyNum, carID, available, startDateOfService)
+VALUES ('1', 'A1', '1', '2013-03-15')";
 $retval = mysql_query( $sql, $link );
 
     if(! $retval ) {
@@ -57,9 +44,8 @@ $retval = mysql_query( $sql, $link );
     }
 
 
-$date=date_create("2013-05-16");
-$sql = "INSERT INTO copy (copyNum, carID, avaliable, startDateOfService)
-VALUES ('2', 'A1', '1', $date)";
+$sql = "INSERT INTO copy (copyNum, carID, available, startDateOfService)
+VALUES ('2', 'A1', '1', '2013-05-16')";
 $retval = mysql_query( $sql, $link );
     if(! $retval ) {
       die('Could not insert copy value: ' . mysql_error());
@@ -67,9 +53,8 @@ $retval = mysql_query( $sql, $link );
         echo "Insert copy successfully";     
     }
 
-$date=date_create("2013-07-19");
-$sql = "INSERT INTO copy (copyNum, carID, avaliable, startDateOfService)
-VALUES ('1', 'A2', '1', $date)";
+$sql = "INSERT INTO copy (copyNum, carID, available, startDateOfService)
+VALUES ('1', 'A2', '1', '2013-07-19')";
 $retval = mysql_query( $sql, $link );
     if(! $retval ) {
       die('Could not insert copy value: ' . mysql_error());
@@ -77,9 +62,9 @@ $retval = mysql_query( $sql, $link );
         echo "Insert copy successfully";     
     }
 
-$date=date_create("2013-09-19");
-$sql = "INSERT INTO copy (copyNum, carID, avaliable, startDateOfService)
-VALUES ('2', 'A2', '1', $date)";
+
+$sql = "INSERT INTO copy (copyNum, carID, available, startDateOfService)
+VALUES ('2', 'A2', '1', '2013-09-19')";
 
 $retval = mysql_query( $sql, $link );
     if(! $retval ) {

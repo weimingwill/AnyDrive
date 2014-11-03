@@ -46,7 +46,7 @@
     $sql = "CREATE TABLE IF NOT EXISTS copy (
             copyNum INT CHECK(copyNum > 0),
             carID CHAR(10) REFERENCES car(carID) ON DELETE CASCADE,
-            avaliable BIT(1) DEFAULT b'1',
+            available BIT(1) DEFAULT b'1',
             startDateOfService Date, 
             PRIMARY KEY(carID, copyNum)
             )";
