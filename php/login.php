@@ -6,15 +6,13 @@
          $data = htmlspecialchars($data);
          return $data;
       } 
-
-
-    $email = $password = $emailErr = $emailErrClass = $passwordErr = $passwordErrClass = "";
+    $email = $passwordErr = $emailErr = $emailErrClass = $passwordErr = $passwordErrClass = "";
 
     $isLogin = false;
     $isTryLogin = false;
 
 
-    if(isset($_COOKIE[$cookie_userEmail_Str])) {
+    if(isset($_COOKIE[$cookie_userEmailStr])) {
       $isLogin = True;
     }
 
@@ -52,22 +50,23 @@
         $result = mysqli_query($con, $selectPassword);
       
         if(mysqli_num_rows($result) > 0){
-          if(setcookie($cookie_userEmail_Str, $email, time() + (86400 * 1), "/")){
+          if(setcookie($cookie_userEmailStr, $email, time() + (86400 * 1), "/")){
 
             $isLogin = True;  
-          } else {
-
-          }
+          } 
           
         } else {
           $passwordErr = "Password is wrong! Please try again";
           $passwordErrClass = "has-error"; 
-          deleteCookie_UserEmail();
+          unset($_COOKIE[$cookie_userEmailStr]);
+          $res = setcookie($cookie_userEmailStr, '', time() - 3600);
+
         }
       } else {
         $emailErr = "Account does not exist!";
         $emailErrClass = "has-error";  
-        deleteCookie_UserEmail();      
+        unset($_COOKIE[$cookie_userEmailStr]);
+        $res = setcookie($cookie_userEmailStr, '', time() - 3600);    
       }
       
     }
@@ -75,22 +74,20 @@
       //redirect to home page if login successfully
       echo "<META HTTP-EQUIV='Refresh' CONTENT='0; URL=home.php'>";
     }
- ?>
-        
+
+?>
 <!DOCTYPE html>
-<!-- saved from url=(0029)http://bootswatch.com/united/ -->
+
 <html lang="en">
 
 <?php include 'head.php'; ?>
-<body>
-<?php include 'navigation.php'; ?>
 
+<?php include 'navigation.php'; ?>
+<body>
 
   <!--search form in homepage-->
   <div class="container">
    <div class="page page-container">
-
-
 
      <form method="post" class="form-horizontal" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
       <br>
@@ -122,7 +119,7 @@
 
   </div>
 </div><!--body part-->
-<?php include 'footer.php'; ?>  
-</body>
-</html>
 
+</body>
+<?php include 'footer.php'; ?>  
+</html>

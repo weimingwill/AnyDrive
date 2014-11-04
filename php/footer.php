@@ -1,5 +1,12 @@
-    <footer>
-      <div class="row">
+   
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/moment/min/moment.min.js"></script>
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>    
+    <script src="../scripts/bootstrap.min.js"></script>
+    <script src="../scripts/bootswatch.js"></script>
+     <footer>
+      <div class="row" >
         <div class="col-lg-12">
 <!--
           <ul class="list-unstyled">
@@ -13,10 +20,3 @@
         <p style="margin-left:40%;">©AnyDrive 2014. Created by JJ and Weiming</p>
       </div>
     </footer>
-    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="../bower_components/moment/min/moment.min.js"></script>
-    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="../bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>    
-    <script src="../scripts/bootstrap.min.js"></script>
-    <script src="../scripts/bootswatch.js"></script>
-

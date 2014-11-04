@@ -1,5 +1,5 @@
 <?php
-    $link = mysql_connect('localhost:3306', 'root');
+    $link = mysql_connect('127.0.0.1:3306', 'root');
     if (!$link) {
       die('Database Not connected : ' . mysql_error());
     }
@@ -11,9 +11,8 @@
 
     //create table user
     $sql = "CREATE TABLE IF NOT EXISTS user (
-            userID VARCHAR(64) PRIMARY KEY,
-            email VARCHAR(50) NOT NULL UNIQUE,
-            name VARCHAR(32) NOT NULL,
+            email VARCHAR(50) NOT NULL PRIMARY KEY,
+            name VARCHAR(64) NOT NULL,
             password VARCHAR(20) NOT NULL,
             phoneNum CHAR(8),
             age INT CHECK(age>0),
