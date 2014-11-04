@@ -67,6 +67,21 @@
   <br>
   <form action="carlist.php"  method="post">
     <div class="form-group">
+      <label for="carType" class="col-sm-12 control-label">Car Type</label>
+      <div class="input-group col-sm-12" id="carType">
+        <input type="checkbox" name="carType[]" value="Sedan">Sedan 
+        <input type="checkbox" name="carType[]" value="Luxury Sedan">Luxury Sedan 
+        <input type="checkbox" name="carType[]" value="Sports">Sports 
+        <input type="checkbox" name="carType[]" value="Hatchback">Hatchback 
+        <input type="checkbox" name="carType[]" value="MPV">MPV         
+        <input type="checkbox" name="carType[]" value="SUV">SUV 
+      </div>
+    </div>
+    <button type="submit" value="submit" class="btn btn-primary">Submit</button>
+  </form> 
+
+  <form action="carlist.php"  method="post">
+    <div class="form-group">
       <label for="brand" class="col-sm-12 control-label">brand</label>
       <div class="input-group col-sm-12" id="brand">
         <input name="brand" type="text" class="form-control">
@@ -77,6 +92,7 @@
 </div>
 <div class="col-md-9" >
     <?php
+    $carType = array();
     $price = $passengerCap = $gearType = $brand = "";
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
           //connect to database
@@ -102,6 +118,15 @@
         echo "Search by brand ".$brand;
       }
 
+      if(!empty($_POST["carType"])){
+        $carType = $_POST["carType"];
+        echo "Search by carType ";
+        echo sizeof($carType);
+         for ($i=0; $i <sizeof($carType) ; $i++) { 
+          echo $carType[$i];
+        }       
+      }
+
       $sql = "";
       if($price!=""){
         if($price == "From lower to higher"){
@@ -115,10 +140,16 @@
         } else {
           $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID AND gearType LIKE '%$gearType%' ";
         }
-      } else if($brand!=""){
+      } else if($brand!=""){$
         $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID AND brand LIKE '%$brand%' ";
       } else if($passengerCap!=""){
         $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID AND passengerCap >= $passengerCap";
+      } else if($carType!=""){
+        $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID AND (";
+        for ($i=0; $i < sizeof($carType) - 1; $i++) { 
+          $sql = $sql."type LIKE '%$carType[$i]%' OR ";
+        }
+        $sql = $sql."type LIKE '%$carType[$i]%')";
       }
 
       $result = mysqli_query($con, $sql);
@@ -202,6 +233,10 @@ $(function () {
   $('select').change(function (){
     $(this).closest('form').submit();
   });
+
+  // $('#carType').change(function (){
+  //   $(this).closest('form').submit();
+  // });
 
 });
 
