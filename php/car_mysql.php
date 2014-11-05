@@ -3,8 +3,6 @@
 
 // Create connection
 $con = mysqli_connect('127.0.0.1:3306','root');
- 
- echo "<br><br><br>";
 // Check connection
 if (mysqli_connect_errno()){
   die('Could not connect: ' . mysqli_connect_error());
@@ -17,7 +15,4 @@ if(!mysqli_select_db($con, 'AnyDrive')) {
     echo "Error creating database: " . mysqli_error();
   }
 }
-
-
-
 ?>

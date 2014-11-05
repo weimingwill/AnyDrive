@@ -137,17 +137,21 @@
           $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID ORDER BY price DESC";
         }
       } else if($gearType!=""){
-        if($gearType == "All gear type"){
-          $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID";               
-        } else {
-          $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID AND gearType LIKE '%$gearType%' ";
-        }
-      } else if($brand!=""){$
-        $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID AND brand LIKE '%$brand%' ";
-      } else if($passengerCap!=""){
-        $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID AND passengerCap >= $passengerCap";
-      } else if($carType!=""){
-        $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID AND (";
+      //   if($gearType == "All gear type"){
+      //     $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID";               
+      //   } else {
+      //     $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID AND gearType LIKE '%$gearType%' ";
+      //   }
+      // } 
+        $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID "
+      if($brand!=""){$
+        $sql = $sql."AND brand LIKE '%$brand%' ";
+      }
+      if($passengerCap!=""){
+        $sql = $sql."AND passengerCap >= $passengerCap ";
+      }
+      if($carType!=""){
+        $sql = $sql."AND (";
         for ($i=0; $i < sizeof($carType) - 1; $i++) { 
           $sql = $sql."type LIKE '%$carType[$i]%' OR ";
         }

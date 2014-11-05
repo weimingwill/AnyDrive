@@ -6,12 +6,19 @@
   <?php include 'navigation.php'; ?>
   <!--search form in homepage-->
   <div class="container">
-  <div class="jumbotron">
-
-</div>
-
-<div class="col-sm-3 col-md-3 sidebar">
-   <form action="carlist.php"  method="post">
+<div class="col-sm-3 col-md-2 sidebar">
+    <form action="carlist.php"  method="post" id="searchByPrice">
+    <div class="form-group">
+      <label for="price" class="col-sm-12 control-label">Price</label>
+      <div class="input-group col-sm-12" id="price">
+        <select class="form-control" name="price">
+          <option id="priceOption">lower to higher</option>
+          <option id="priceOption">higher to lower</option>
+        </select>
+      </div>
+    </div>
+  </form>     
+<form action="carlist.php"  method="post">  
     <div class="form-group">
       <div class="input-group col-sm-12">
         <input name="event_date" type="text" placeholder="Collect Date" class="form-control required" data-date-format="YYYY-MM-DD" id='datePicker1' />
@@ -29,31 +36,14 @@
         </span>
       </div>
     </div>
-    <button type="submit" value="submit" class="btn btn-primary">Search</button>
-  </form>
 
-  <form action="carlist.php"  method="post" id="searchByPrice">
-    <div class="form-group">
-      <label for="price" class="col-sm-12 control-label">Price</label>
-      <div class="input-group col-sm-12" id="price">
-        <select class="form-control" name="price">
-          <option id="priceOption">From lower to higher</option>
-          <option id="priceOption">From higher to lower</option>
-        </select>
-      </div>
-    </div>
-  </form>
-  <br>
-  <form action="carlist.php"  method="post">
     <div class="form-group">
       <label for="passengerCap" class="col-sm-12 control-label">Passenger Capacity</label>
       <div class="input-group col-sm-12" id="passengerCap">
         <input name="passengerCap" type="text" class="form-control">
       </div>
     </div>
-    <button type="submit" value="submit" class="btn btn-primary">Submit</button>
-  </form> 
-  <br>
+
 <!--   <form action="carlist.php"  method="post">
     <div class="form-group">
       <label for="gearType" class="col-sm-12 control-label">gearType</label>
@@ -66,34 +56,36 @@
       </div>
     </div>
   </form>  -->    
-  <br>
-  <form action="carlist.php"  method="post">
-    <div class="form-group">
-      <label for="carType" class="col-sm-12 control-label">Car Type</label>
-      <div class="input-group col-sm-12" id="carType">
-        <input type="checkbox" name="carType[]" value="Sedan">Sedan 
-        <input type="checkbox" name="carType[]" value="Luxury Sedan">Luxury Sedan 
-        <input type="checkbox" name="carType[]" value="Sports">Sports 
-        <input type="checkbox" name="carType[]" value="Hatchback">Hatchback 
-        <input type="checkbox" name="carType[]" value="MPV">MPV         
-        <input type="checkbox" name="carType[]" value="SUV">SUV 
-      </div>
-    </div>
-    <button type="submit" value="submit" class="btn btn-primary">Submit</button>
-  </form> 
 
-  <form action="carlist.php"  method="post">
+
+
+
     <div class="form-group">
       <label for="brand" class="col-sm-12 control-label">brand</label>
       <div class="input-group col-sm-12" id="brand">
         <input name="brand" type="text" class="form-control">
       </div>
     </div>
-    <button type="submit" value="submit" class="btn btn-primary">Submit</button>
+
+    <div class="form-group">
+      <label for="carType" class="col-sm-12 control-label">Car Type</label>
+      <div class="input-group col-sm-12">
+        <ul class="car-type">
+        <li class="car-type-list"><input type="checkbox" name="carType[]" value="Sedan"> Sedan </li>
+        <li class="car-type-list"><input type="checkbox" name="carType[]" value="Luxury Sedan"> Luxury Sedan </li>
+        <li class="car-type-list"><input type="checkbox" name="carType[]" value="Sports"> Sports </li>
+        <li class="car-type-list"><input type="checkbox" name="carType[]" value="Hatchback"> Hatchback </li>
+        <li class="car-type-list"><input type="checkbox" name="carType[]" value="MPV"> MPV</li>
+        <li class="car-type-list"><input type="checkbox" name="carType[]" value="SUV"> SUV </li>
+        </ul>
+      </div>
+    </div>
+
+    <button type="submit" value="submit" class="col-md-12 btn btn-primary">Search</button>
   </form>               
 </div>
 
-<div class="col-md-9">
+<div class="col-md-10 content">
     <?php
       function test_input($data) {
        $data = trim($data);
@@ -138,35 +130,34 @@
       }
 
       $sql = "";
-      if($price!=""){
-        if($price == "From lower to higher"){
+      if(!empty($price)){
+        if($price == "lower to higher"){
           $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID ORDER BY price ASC";
-        } else if($price == "From higher to lower"){
+        } else if($price == "higher to lower"){
           $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID ORDER BY price DESC";
         }
-      } else if($gearType!=""){
-        if($gearType == "All gear type"){
-          $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID";               
-        } else {
-          $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID AND gearType LIKE '%$gearType%' ";
+      } else {
+        $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID ";
+        if(!empty($brand)){
+          $sql = $sql."AND brand LIKE '%$brand%' ";
         }
-      } else if($brand!=""){$
-        $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID AND brand LIKE '%$brand%' ";
-      } else if($passengerCap!=""){
-        $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID AND passengerCap >= $passengerCap";
-      } else if($carType!=""){
-        $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID AND (";
-        for ($i=0; $i < sizeof($carType) - 1; $i++) { 
-          $sql = $sql."type LIKE '%$carType[$i]%' OR ";
+        if(!empty($passengerCap)){
+          $sql = $sql."AND passengerCap >= $passengerCap ";
         }
-        $sql = $sql."type LIKE '%$carType[$i]%')";
-      }
+        if(!empty($carType)){
+          $sql = $sql."AND (";
+          for ($i=0; $i < sizeof($carType) - 1; $i++) { 
+            $sql = $sql."type LIKE '%$carType[$i]%' OR ";
+          }
+          $sql = $sql."type LIKE '%$carType[$i]%')";
+        }
+    }
 
       $result = mysqli_query($con, $sql);
       ?>
 
-  <table class="table">
-    <thead>
+  <table class="col-md-12 table-carlist">
+    <thead class="table-header">
       <tr>
         <th></th>
         <th>Model</th>
@@ -176,23 +167,18 @@
     <tbody>
       <?php
       if(mysqli_num_rows($result) > 0){
-        while ($row = mysqli_fetch_assoc($result))   {
-          // echo "carID:".$row["carID"];
-          // echo " ";
-          // echo "price:".$row["price"];
-          // echo " ";
-          // echo "passengerCap:".$row["passengerCap"];
-          // echo " ";
-          // echo "copyNum:".$row["copyNum"];
-          // echo " ";
-          // echo "startDateOfService:".$row["startDateOfService"];
-          // echo " ";
-          // echo "brand:".$row["brand"]."<br>";
+        while ($row = mysqli_fetch_assoc($result)){
        ?>
-      <tr>
-        <td>Car Picture</td>
+      <tr class="table-row">
+        <td><img class="car-img" src="../images/car1.jpg"></td>
         <td><?php echo "brand: ".$row["brand"] ?></td>
-        <td><?php echo "price: ".$row["price"] ?></td>
+        <td>
+          <?php echo "$".$row["price"] ?>
+          <form>
+            <input type="hidden" value="<?php $row["carID"]?>">
+            <button class="btn btn-primary">SELECT</button>
+          </form>
+        </td>
       </tr>
     </tbody>
     <?php  
@@ -203,52 +189,58 @@
     ?>
   </table>
       <?php
-      if(mysqli_num_rows($result) > 0){
-        while ($row = mysqli_fetch_assoc($result))   {
-          echo "carID:".$row["carID"];
-          echo " ";
-          echo "price:".$row["price"];
-          echo " ";
-          echo "passengerCap:".$row["passengerCap"];
-          echo " ";
-          echo "copyNum:".$row["copyNum"];
-          echo " ";
-          echo "startDateOfService:".$row["startDateOfService"];
-          echo " ";
-          echo "brand:".$row["brand"]."<br>";
-        }
-      } else {
-        echo "0 result";
-      }
-
     } else {
       require('car_mysql.php');
-      $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID ORDER BY STR_TO_DATE(startDateOfService, '%Y-%m-%d') ASC";  
+      // $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID ORDER BY STR_TO_DATE(startDateOfService, '%Y-%m-%d') ASC"; 
+      $sql = "SELECT * FROM car"; 
       $result = mysqli_query($con, $sql);
+?>
+  <table class="col-md-12">
+    <thead class="table-header">
+      <tr>
+        <th></th>
+        <th>Model</th>
+        <th>Price<b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="#"></a></li>
+          <li><a href="#">Another action</a></li>
+        </ul>
+      </th>
+      </tr> 
+    </thead>
+    <tbody>
+      <?php
       if(mysqli_num_rows($result) > 0){
-        while ($row = mysqli_fetch_assoc($result))   {
-          echo "carID:".$row["carID"];
-          echo " ";
-          echo "price:".$row["price"];
-          echo " ";
-          echo "passengerCap:".$row["passengerCap"];
-          echo " ";
-          echo "copyNum:".$row["copyNum"];
-          echo " ";
-          echo "startDateOfService:".$row["startDateOfService"];
-          echo " ";
-          echo "brand:".$row["brand"]."<br>";
+        while ($row = mysqli_fetch_assoc($result)){
+       ?>
+      <tr class="table-row">
+        <td><img src="../images/car1.jpg"></td>
+        <td><?php echo "brand: ".$row["brand"] ?></td>
+        <td>
+          <?php echo "price: ".$row["price"] ?>
+          <form>
+            <input type="hidden" value="<?php $row["carID"]?>">
+            <button class="btn btn-primary">SELECT</button>
+          </form>
+        </td>
+      </tr>
+    </tbody>
+    <?php  
         }
       } else {
         echo "0 result";
       }
-    }
+    ?>
+  </table>
+<?php
+}
   ?>
 </div>
 
 </div><!--body part-->
 
 <?php include 'footer.php'; ?>  
+
 <script type="text/javascript">
 $(function () {
   $('#datePicker1').datetimepicker({
@@ -269,6 +261,10 @@ $(function () {
 
   $('select').change(function (){
     $(this).closest('form').submit();
+  });
+
+  $('.caret').click(function(){
+    $('.dropdown-menu').toggle();
   });
 
   // $('#carType').change(function (){
