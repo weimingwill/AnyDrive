@@ -28,16 +28,16 @@
       <a href="admin_car.php">
         <button class='btn btn-success btn-lg btn-block '>
           <p><span class="glyphicon actionIcon  glyphicon-road "></span></p>
-          <p>Car</p>
+          <p>Car Model</p>
         </button>
       </a>
     </div>
 
     <div class='col-sm-4'>
-      <a href='/gig/createGig'>
+      <a href='admin_copy.php'>
         <button class='btn btn-lg btn-danger  btn-block'>
           <p><span class="glyphicon actionIcon glyphicon-user"></span></p>
-          <p>Driver</p>
+          <p>Car</p>
         </button>
       </a>
     </div>
