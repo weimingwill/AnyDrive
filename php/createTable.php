@@ -62,8 +62,8 @@
 
     //create table booking
     $sql = "CREATE TABLE IF NOT EXISTS booking (
-            userEmail VARCHAR(15) REFERENCES user(userEmail) ON DELETE/UPDATE CASCADE,
-            carID CHAR(10) REFERENCES car(carID) ON DELETE/UPDATE CASCADE,
+            userEmail VARCHAR(15) REFERENCES user(userEmail) ON DELETE CASCADE ON UPDATE CASCADE,
+            carID CHAR(10) REFERENCES car(carID) ON DELETE CASCADE ON UPDATE CASCADE,
             copyNum INT CHECK(copyNum > 0), 
             bookingTime DATETIME NOT NULL ,
             collectDate DATE NOT NULL,

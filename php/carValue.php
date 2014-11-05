@@ -9,6 +9,8 @@ if (!$db_selected) {
   die ('Can\'t use AnyDrive : ' . mysql_error());
 }
 
+
+
 $sql = "INSERT INTO car (carID, price, type, passengerCap, brand, gearType)
 VALUES ('car1', 100, 'SUV', 4, 'BMW', 'Automatic')";
 $retval = mysql_query( $sql, $link );
