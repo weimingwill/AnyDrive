@@ -47,12 +47,12 @@
     $sql = "CREATE TABLE IF NOT EXISTS copy (
             copyNum INT CHECK(copyNum > 0),
             carID CHAR(10) REFERENCES car(carID) ON DELETE CASCADE,
-            available BIT(1) DEFAULT b'1',
+            available  BOOLEAN,
             startDateOfService Date, 
             PRIMARY KEY(carID, copyNum)
             )";
     $retval = mysql_query( $sql, $link );
-    if(! $retval ) {
+    if(!$retval ) {
       die('Could not create table copy: ' . mysql_error());
     } else {
         echo "Table copy created successfully";      
@@ -78,6 +78,26 @@
     } else {
         echo "Table booking created successfully";     
     }
+
+    $sql = "CREATE TABLE IF NOT EXISTS driver (
+            userID VARCHAR(15) REFERENCES user(userID) ON DELETE CASCADE,
+            copyNum INT CHECK(copyNum > 0), 
+            carID CHAR(10) REFERENCES car(carID) ON DELETE CASCADE,
+            bookingTime DATETIME NOT NULL ,
+            rentDate DATE NOT NULL,
+            returnDate DATE NOT NULL, 
+            cost INT CHECK(price >= 0),
+            CHECK(returnDATE > rentDATE),
+            PRIMARY KEY(bookingTime,  userID, copyNum, carID)
+            )";
+
+    $retval = mysql_query( $sql, $link );
+    if(! $retval ) {
+      die('Could not create table booking: ' . mysql_error());
+    } else {
+        echo "Table booking created successfully";     
+    }
+    
     
     mysql_close($link);
 ?>

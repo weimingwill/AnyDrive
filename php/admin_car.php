@@ -215,7 +215,11 @@ $carListResult = mysqli_query($con, $query);
               <select type="text" name="brand" class="form-control" id="type" value="<?php echo $brand_data;?>" >
                 <?php
                   for($x=0;$x<count($brand_set);$x++) {
-                  echo "<option value=$brand_set[$x]>" . $brand_set[$x] . "</option>"; 
+                  echo "<option value='$brand_set[$x]' ";
+                  if($brand_set[$x] == $brand_data) {
+                    echo "selected='selected'";
+                  }
+                  echo ">" . $brand_set[$x] . "</option>"; 
                 }
                 ?>
               </select>
@@ -232,7 +236,12 @@ $carListResult = mysqli_query($con, $query);
               <select type="text" name="type" class="form-control" id="type" value="<?php echo $type_data;?>" >
                 <?php
                   for($x=0;$x<count($type_set);$x++) {
-                  echo "<option value=$type_set[$x]>" . $type_set[$x] . "</option>"; 
+                    echo "<option value='$type_set[$x]' ";
+                  if($type_set[$x] == $type_data) {
+                    echo "selected='selected'";
+                  }
+                  echo ">" . $type_set[$x] . "</option>"; 
+                  
                 }
                 ?>
               </select>
