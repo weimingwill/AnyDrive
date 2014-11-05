@@ -26,12 +26,13 @@
     }
     //create table car
     $sql = "CREATE TABLE IF NOT EXISTS car (
-            carID CHAR(10) PRIMARY KEY,
+            carID VARCHAR(10) PRIMARY KEY,
+            type  VARCHAR(32) NOT NULL,
+            model VARCHAR(32) NOT NULL,
             price INT NOT NULL CHECK(price>0),
-            type VARCHAR(32) NOT NULL,
-            passengerCap INT NOT NULL,
+            passengerCap INT NOT NULL CHECK(passengerCap>0),
             brand VARCHAR(64) NOT NULL,
-            gearType VARCHAR(32) NOT NULL
+            imagePath VARCHAR(64)
             )";
 
     $retval = mysql_query( $sql, $link );
