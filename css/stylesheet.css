@@ -12,7 +12,7 @@ html,body{
 } 
 
 
-//page container for all page
+/*page container for all page*/
 
 .page{
 }
@@ -22,13 +22,55 @@ html,body{
 	margin-left: 20%;
 }
 
-.jumbotron{
-	margin-top: 7%;
-	padding-top: 1%;
-	padding-bottom: 1%;
+
+/*carlist page*/
+
+.sidebar{
+	background: #eee;
+	padding-top: 2%;
+	padding-bottom: 2%;
 }
 
-// added by JJ 
+.car-type{
+	list-style-type: none;
+	margin-left: 0;
+	padding-left: 0;
+}
+
+.car-type-list{
+	font-size: 14px;
+	margin-top: 2px;
+}
+
+.sidebar, .content{
+	margin-top: 8%;
+}
+
+.control-label{
+	padding-left: 0;
+}
+
+/*carlist content table*/
+.table-carlist tr{
+	border-bottom: 1px solid #eee;
+}
+
+.table-header{
+	background: #dd4814;
+	color: white;
+	font-size: 15px;
+}
+
+.table-row{
+	margin-bottom: 3%;
+}
+
+td .car-img{
+	padding-bottom: 1%;
+	width: 180px;
+}
+
+/*added by JJ */
 
 
 
