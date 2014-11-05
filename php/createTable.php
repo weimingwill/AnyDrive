@@ -16,7 +16,8 @@
             password VARCHAR(20) NOT NULL,
             phoneNum CHAR(8),
             age INT CHECK(age>0),
-            gender VARCHAR(6) CHECK(gender='male' OR gender='female')
+            gender VARCHAR(6) CHECK(gender='male' OR gender='female'),
+            imagePath VARCHAR(64)
             )";
     $retval = mysql_query( $sql, $link );    
     if(! $retval ) {
@@ -61,15 +62,15 @@
 
     //create table booking
     $sql = "CREATE TABLE IF NOT EXISTS booking (
-            userID VARCHAR(15) REFERENCES user(userID) ON DELETE CASCADE,
+            userEmail VARCHAR(15) REFERENCES user(userEmail) ON DELETE/UPDATE CASCADE,
+            carID CHAR(10) REFERENCES car(carID) ON DELETE/UPDATE CASCADE,
             copyNum INT CHECK(copyNum > 0), 
-            carID CHAR(10) REFERENCES car(carID) ON DELETE CASCADE,
             bookingTime DATETIME NOT NULL ,
-            rentDate DATE NOT NULL,
+            collectDate DATE NOT NULL,
             returnDate DATE NOT NULL, 
             cost INT CHECK(price >= 0),
-            CHECK(returnDATE > rentDATE),
-            PRIMARY KEY(bookingTime,  userID, copyNum, carID)
+            CHECK(returnDATE >= collectDate),
+            PRIMARY KEY(bookingTime, userEmail, copyNum, carID)
             )";
 
     $retval = mysql_query( $sql, $link );
@@ -79,24 +80,7 @@
         echo "Table booking created successfully";     
     }
 
-    $sql = "CREATE TABLE IF NOT EXISTS driver (
-            userID VARCHAR(15) REFERENCES user(userID) ON DELETE CASCADE,
-            copyNum INT CHECK(copyNum > 0), 
-            carID CHAR(10) REFERENCES car(carID) ON DELETE CASCADE,
-            bookingTime DATETIME NOT NULL ,
-            rentDate DATE NOT NULL,
-            returnDate DATE NOT NULL, 
-            cost INT CHECK(price >= 0),
-            CHECK(returnDATE > rentDATE),
-            PRIMARY KEY(bookingTime,  userID, copyNum, carID)
-            )";
-
-    $retval = mysql_query( $sql, $link );
-    if(! $retval ) {
-      die('Could not create table booking: ' . mysql_error());
-    } else {
-        echo "Table booking created successfully";     
-    }
+   
     
     
     mysql_close($link);
