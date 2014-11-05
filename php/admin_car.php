@@ -22,8 +22,19 @@ if(!mysqli_select_db($con, 'AnyDrive')) {
     echo "Error creating database: " . mysqli_error();
   }
 }
-$feedback = '';
 
+function test_input($data) {
+   $data = trim($data);
+   $data = stripslashes($data);
+   $data = htmlspecialchars($data);
+   return $data;
+}
+
+$feedback = '';
+$action_str = 'action';
+$getFieldEdit_str = 'edit';
+$getFieldDelete_str = 'delete';
+$isUpdate_str = 'isUpdate';
 
 $carID_str = "carID";
 
@@ -41,17 +52,48 @@ $passengerCap_str = "passengerCap";
 $carID_data = $type_data = $model_data = $price_data = $passengerCap_data = $brand_data ='';
 $carID_Err = $type_Err = $model_Err = $price_Err = $passengerCap_Err = $brand_Err ='';
 
-function test_input($data) {
-   $data = trim($data);
-   $data = stripslashes($data);
-   $data = htmlspecialchars($data);
-   return $data;
-}
+
 
 $isInsert = False;
+$isUpdate = False;
+$isGet = False;
+$isOverwrite = false;
+
 $Err_Required_Field = 'Required field!';
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $isInsert = TRUE;
+
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+
+  if($_GET[$isUpdate_str] == "true"){
+    $isUpdate = True;
+  }
+
+  if($_GET[$action_str] == $getFieldEdit_str){
+      $carID_data = $_GET[$carID_str];
+      $carQuery = "SELECT * FROM car WHERE carID = '$carID_data'";
+      $carResult = mysqli_query($con, $carQuery);
+
+      $row = mysqli_fetch_assoc($carResult);
+      $carID_data = $row[$carID_str];
+      $type_data = $row[$type_str];
+      $model_data = $row[$model_str];
+      $price_data = $row[$price_str];
+      $passengerCap_data = $row[$passengerCap_str];
+      $brand_data = $row[$brand_str];
+  } else if($_GET[$action_str] == $getFieldDelete_str){
+      $carID_data = $_GET[$carID_str];
+      $deleteCar = "DELETE FROM car WHERE carID = '$carID_data'";
+      $carResult = mysqli_query($con, $deleteCar);
+      $feedback = "car deleted successfully";
+  }
+
+
+} else if ($_SERVER["REQUEST_METHOD"] == "POST") {
+   
+    if($_POST[$isUpdate_str] == 'true'){
+      $isOverwrite  = true;
+      $isUpdate = true;
+    }
+    $isInsert = TRUE;
     if (empty($_POST[$carID_str])) {
       $carID_Err = $Err_Required_Field;
       $isInsert = False;
@@ -102,33 +144,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 if($isInsert){
-
   $sql = "SELECT carID  FROM car where carID='$carID_data'";
   $result = mysqli_query($con, $sql);
-  $insertCar = "INSERT INTO car (carID, brand, type, model, price, passengerCap)
+
+  if(!$isOverwrite) {
+      
+    $insertCar = "INSERT INTO car (carID, brand, type, model, price, passengerCap)
       VALUES ('$carID_data', '$brand_data','$type_data', '$model_data', '$price_data', '$passengerCap_data')";
 
-  if (mysqli_num_rows($result) > 0) {
-    $carID_Err = "your carID has been registered";
-  } else {
-    if ( $con->query($insertCar) === TRUE) {
-      $feedback = "New record created successfully";
-      $carID_data = $type_data = $model_data = $price_data = $passengerCap_data = $brand_data ='';
-
+    if (mysqli_num_rows($result) > 0) {
+      $carID_Err = "your carID has been registered";
     } else {
-      $feedback = "Error: " . $insertCar . "<br>" . $con->error;
-    }
-  } 
+      if ( $con->query($insertCar) === TRUE) {
+        $feedback = "New record created successfully";
+        $carID_data = $type_data = $model_data = $price_data = $passengerCap_data = $brand_data ='';
+      } else {  
+        $feedback = "Error: " . $insertCar . "<br>" . $con->error;
+      }
+    } 
+  } else {
+    $updateCar = "UPDATE car SET brand='$brand_data', model='$model_data', price='$price_data'," .
+     "passengerCap='$passengerCap_data', type='$type_data'  WHERE carID='$carID_data'";
+     if ( $con->query($updateCar) === TRUE) {
+        $feedback = "New record updated successfully";
+      } else {  
+        $feedback = "Error: " . $updateCar . "<br>" . $con->error;
+      }
+  }
+
+
 }
 
 
 // query 
 
 $query = "SELECT * FROM car";
-$queryResult = mysqli_query($con, $query);
-
-
-
+$carListResult = mysqli_query($con, $query);
 
 
 
@@ -139,13 +190,19 @@ $queryResult = mysqli_query($con, $query);
 <?php include 'navigation.php'; ?>
  <div class="container mainBody">
      <div class="page-header" id="banner">
-      <h1>Add a new car<small>&nbsp<?php echo $feedback;?></small></h1>
+      <h1>Car Info<small>&nbsp<?php echo $feedback;?></small></h1>
         <form method="post" class="form-horizontal">
           <br>
           <div class="form-group">
             <label for="carID" class="col-lg-2 control-label">Car ID*</label>
             <div class="col-lg-6">
-              <input type="carID" name="carID" class="form-control" id="carID" value="<?php echo $carID_data;?>"  placeholder="unique CarID">
+              <input type="carID" name="carID" class="form-control"
+              <?php 
+                if($isUpdate){
+                  echo "readonly";
+                }
+              ?>
+              id="carID" value="<?php echo $carID_data;?>"  placeholder="unique CarID">
             </div>
             <div class = "col-lg-4">
                 <span class="text-danger"><?php echo $carID_Err;?></span>
@@ -217,10 +274,28 @@ $queryResult = mysqli_query($con, $query);
             </div>
           </div>
 
-        
+          <!-- hide class for submit isUpdate -->
+          <input type="hidden" name='isUpdate' value= 
+          <?php
+          if($isUpdate){
+            echo 'true';
+          } else {
+            echo 'false';
+          }
+          ?>
+          >
+          
           <div class="form-group">
             <div class="col-lg-10 col-lg-offset-2">
-              <button type="submit" class="btn btn-primary">Submit</button>
+              <button type="submit" class="btn btn-primary">
+                <?php
+                if($isUpdate){
+                  echo "update";
+                } else {
+                  echo "submit";
+                }
+                ?>
+              </button>
             </div>
           </div>
 
@@ -254,9 +329,9 @@ $queryResult = mysqli_query($con, $query);
          
           
             <?php
-            if (mysqli_num_rows($queryResult) > 0) {
+            if (mysqli_num_rows($carListResult) > 0) {
             // output data of each row
-              while($row = mysqli_fetch_assoc($queryResult)) {
+              while($row = mysqli_fetch_assoc($carListResult)) {
                 echo "<tr>";
                 echo "<td>".$row[$carID_str]."</td>";
                 echo "<td>".$row[$brand_str]."</td>";
@@ -265,8 +340,10 @@ $queryResult = mysqli_query($con, $query);
                 echo "<td>".$row[$price_str]."</td>";
                 echo "<td>".$row[$passengerCap_str]."</td>";
 
-                echo "<td><a href=''><button class='btn btn-primary btn-sm col-xs-offset-1 col-sm-4'>edit</button></a>";
-                echo "<a href=''><button class='btn btn-primary btn-sm col-xs-offset-1 col-sm-4'>delete</button></a></td>";
+                echo "<td><a href='?isUpdate=true&action=edit&carID=". $row[$carID_str] .
+                "'><button class='btn btn-primary btn-sm col-xs-offset-1 col-sm-4'>edit</button></a>";
+                echo "<a href='?action=delete&carID=". $row[$carID_str] .
+                "'><button class='btn btn-primary btn-sm col-xs-offset-1 col-sm-4'>delete</button></a></td>";
 
                 echo "</tr>";
                 
