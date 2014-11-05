@@ -54,7 +54,7 @@
     <button type="submit" value="submit" class="btn btn-primary">Submit</button>
   </form> 
   <br>
-  <form action="carlist.php"  method="post">
+<!--   <form action="carlist.php"  method="post">
     <div class="form-group">
       <label for="gearType" class="col-sm-12 control-label">gearType</label>
       <div class="input-group col-sm-12" id="gearType">
@@ -65,7 +65,7 @@
         </select>
       </div>
     </div>
-  </form>     
+  </form>  -->    
   <br>
   <form action="carlist.php"  method="post">
     <div class="form-group">
@@ -92,8 +92,16 @@
     <button type="submit" value="submit" class="btn btn-primary">Submit</button>
   </form>               
 </div>
-<div class="col-md-9" >
+
+<div class="col-md-9">
     <?php
+      function test_input($data) {
+       $data = trim($data);
+       $data = stripslashes($data);
+       $data = htmlspecialchars($data);
+       return $data;
+     }
+
     $carType = array();
     $price = $passengerCap = $gearType = $brand = "";
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -155,6 +163,46 @@
       }
 
       $result = mysqli_query($con, $sql);
+      ?>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Model</th>
+        <th>Price</th>
+      </tr> 
+    </thead>
+    <tbody>
+      <?php
+      if(mysqli_num_rows($result) > 0){
+        while ($row = mysqli_fetch_assoc($result))   {
+          // echo "carID:".$row["carID"];
+          // echo " ";
+          // echo "price:".$row["price"];
+          // echo " ";
+          // echo "passengerCap:".$row["passengerCap"];
+          // echo " ";
+          // echo "copyNum:".$row["copyNum"];
+          // echo " ";
+          // echo "startDateOfService:".$row["startDateOfService"];
+          // echo " ";
+          // echo "brand:".$row["brand"]."<br>";
+       ?>
+      <tr>
+        <td>Car Picture</td>
+        <td><?php echo "brand: ".$row["brand"] ?></td>
+        <td><?php echo "price: ".$row["price"] ?></td>
+      </tr>
+    </tbody>
+    <?php  
+        }
+      } else {
+        echo "0 result";
+      }
+    ?>
+  </table>
+      <?php
       if(mysqli_num_rows($result) > 0){
         while ($row = mysqli_fetch_assoc($result))   {
           echo "carID:".$row["carID"];
@@ -173,42 +221,29 @@
         echo "0 result";
       }
 
+    } else {
+      require('car_mysql.php');
+      $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID ORDER BY STR_TO_DATE(startDateOfService, '%Y-%m-%d') ASC";  
+      $result = mysqli_query($con, $sql);
+      if(mysqli_num_rows($result) > 0){
+        while ($row = mysqli_fetch_assoc($result))   {
+          echo "carID:".$row["carID"];
+          echo " ";
+          echo "price:".$row["price"];
+          echo " ";
+          echo "passengerCap:".$row["passengerCap"];
+          echo " ";
+          echo "copyNum:".$row["copyNum"];
+          echo " ";
+          echo "startDateOfService:".$row["startDateOfService"];
+          echo " ";
+          echo "brand:".$row["brand"]."<br>";
+        }
+      } else {
+        echo "0 result";
+      }
     }
-
-    function test_input($data) {
-     $data = trim($data);
-     $data = stripslashes($data);
-     $data = htmlspecialchars($data);
-     return $data;
-   }
-
-
-   require('car_mysql.php');
-        //search car by price
-        // $sql = "SELECT * FROM car, copy ORDER BY price";
-
-        //search car by date
-   $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID ORDER BY STR_TO_DATE(startDateOfService, '%Y-%m-%d') ASC";  
-   $result = mysqli_query($con, $sql);
-   if(mysqli_num_rows($result) > 0){
-    while ($row = mysqli_fetch_assoc($result))   {
-      echo "carID:".$row["carID"];
-      echo " ";
-      echo "price:".$row["price"];
-      echo " ";
-      echo "passengerCap:".$row["passengerCap"];
-      echo " ";
-      echo "copyNum:".$row["copyNum"];
-      echo " ";
-      echo "startDateOfService:".$row["startDateOfService"];
-      echo " ";
-      echo "brand:".$row["brand"]."<br>";
-    }
-  } else {
-    echo "0 result";
-  }
   ?>
-
 </div>
 
 </div><!--body part-->
