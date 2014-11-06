@@ -87,7 +87,7 @@
         $carId = $_POST["carId"];
       }
 
-      $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID AND car.carID = '$carId' ";
+      $sql = "SELECT * FROM car, copy WHERE car.carID = copy.carID AND car.carID = '$carId' ";
       $result = mysqli_query($con, $sql);
 ?>
 
@@ -135,7 +135,7 @@
         $copyNum = $_GET["copyNum"];
       }
 
-      $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID AND car.carID = '$carId' AND copyNum = '$copyNum' ";
+      $sql = "SELECT * FROM car, copy WHERE car.carID = copy.carID AND car.carID = '$carId' AND copyNum = '$copyNum' ";
       $result = mysqli_query($con, $sql);
 
       if(mysqli_num_rows($result) > 0){
@@ -162,9 +162,12 @@
                   <?php echo $row["type"] ?>
                   <?php echo $row["passengerCap"] ?>
                   <?php echo "$".$row["price"] ?>
-                  <form action="booking.php" action="post">
-                    <input type="hidden" name="carId" value="">
-                    <input type="hidden" name="copyNum" value="">
+                  <form action="booking.php" method="get">
+                    <input type="hidden" name="carId" value="<?php echo $row["carID"]?>">
+                    <input type="hidden" name="copyNum" value="<?php echo $row["copyNum"]?>">
+                    <input type="hidden" name="brand" value="<?php echo $row["brand"]?>">
+                    <input type="hidden" name="model" value="<?php echo $row["model"]?>">
+                    <input type="hidden" name="price" value="<?php echo $row["price"]?>">
                     <div class="form-group">
                       <div class="input-group col-sm-12">
                         <input name="collectDate" type="text" placeholder="Rent Date" class="form-control required" data-date-format="YYYY-MM-DD" id='rentdate' />

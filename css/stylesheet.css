@@ -91,8 +91,15 @@ td .carlist-img{
 	width: 200px;
 }
 
+/*booking.php*/
+.booking-label{
+	width: 20px;
+	margin-right: 50px;
+}
 
-
+.booking-feedback{
+	margin-bottom: 2%;
+}
 /*added by JJ */
 
 
