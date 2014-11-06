@@ -79,7 +79,7 @@
      }
 
      $carType = array();
-     $price = $passengerCap = $gearType = $brand = "";
+     $price = $passengerCap = $gearType = $brand = $collectDate = $returnDate = "";
      if ($_SERVER["REQUEST_METHOD"] == "POST") {
           //connect to database
       require('car_mysql.php');
@@ -100,15 +100,23 @@
         $carType = $_POST["carType"];
       }
 
+      if(!empty($_POST["collectDate"])){
+        $collectDate = $_POST["collectDate"];
+      }
+
+      if(!empty($_POST["returnDate"])){
+        $returnDate = $_POST["returnDate"];
+      }      
+
       $sql = "";
       if(!empty($price)){
         if($price == "lower to higher"){
-          $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID ORDER BY price ASC";
+          $sql = "SELECT * FROM car, copy WHERE car.carID = copy.carID ORDER BY price ASC";
         } else if($price == "higher to lower"){
-          $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID ORDER BY price DESC";
+          $sql = "SELECT * FROM car, copy WHERE car.carID = copy.carID ORDER BY price DESC";
         }
       } else {
-        $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID ";
+        $sql = "SELECT * FROM car, copy WHERE car.carID = copy.carID ";
         if(!empty($brand)){
           $sql = $sql."AND brand LIKE '%$brand%' ";
         }
@@ -161,7 +169,7 @@ $result = mysqli_query($con, $sql);
 <?php
 } else {
   require('car_mysql.php');
-      // $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID ORDER BY STR_TO_DATE(startDateOfService, '%Y-%m-%d') ASC"; 
+      // $sql = "SELECT * FROM car, copy WHERE car.carID = copy.carID ORDER BY STR_TO_DATE(startDateOfService, '%Y-%m-%d') ASC"; 
   $sql = "SELECT * FROM car"; 
   $result = mysqli_query($con, $sql);
   ?>

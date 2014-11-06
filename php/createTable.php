@@ -73,7 +73,7 @@
             bookingTime DATETIME NOT NULL,
             collectDate DATE NOT NULL,
             returnDate DATE NOT NULL, 
-            cost INT CHECK(price >= 0),
+            cost INT CHECK(cost >= 0),
             CHECK(returnDATE >= collectDate),
             PRIMARY KEY(bookingTime, userEmail, copyNum, carID),
             FOREIGN KEY(userEmail) REFERENCES user(email)
