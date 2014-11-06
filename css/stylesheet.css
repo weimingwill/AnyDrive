@@ -12,6 +12,23 @@ html,body{
 } 
 
 
+#thumbnail{
+	border: 1px rgba(63, 133, 193, 0.35);
+	border-style: solid ;
+	border-radius:15px;
+	margin-top: 10px;
+	height: 30px;
+	width: 30px;
+}
+
+#image{
+	border: 1px rgba(63, 133, 193, 0.35);
+	border-style: solid ;
+	border-radius:15px;
+	
+	height: 300px;
+	
+}
 /*page container for all page*/
 
 .page{
