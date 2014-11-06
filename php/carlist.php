@@ -185,11 +185,10 @@ $result = mysqli_query($con, $sql);
          ?>
          <tr class="table-row">
           <td><img class="car-img" src="../images/car1.jpg"></td>
-          <td><?php echo "brand: ".$row["brand"] ?></td>
+          <td><?php echo $row["brand"]." ".$row["model"] ?></td>
           <td>
-            <?php echo "price: ".$row["price"] ?>
             <form action="car.php" method="post">
-              <input type="hidden" name="carId" value="<?php $row["carID"]?>">
+              <input type="hidden" name="carId" value="<?php echo $row["carID"]?>">
               <button class="btn btn-primary">SELECT</button>
             </form>
           </td>
