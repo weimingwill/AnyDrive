@@ -7,7 +7,7 @@
     <!--search form in homepage-->
     <div class="container">
      <div class="page page-container">
-      <?php require("user_mysql.php");
+      <?php 
         $email = "";
         $login = false;
         if ($_SERVER["REQUEST_METHOD"] == "POST") {

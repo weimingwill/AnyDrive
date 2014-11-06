@@ -1,54 +1,68 @@
 <?php 
-  require('cookie.php');
-      function test_input($data) {
-         $data = trim($data);
-         $data = stripslashes($data);
-         $data = htmlspecialchars($data);
-         return $data;
-      } 
-    $email = $passwordErr = $emailErr = $emailErrClass = $passwordErr = $passwordErrClass = "";
+require('cookie.php');
 
-    $isLogin = false;
+$con = mysqli_connect('127.0.0.1:3306','root');
+// Check connection
+if (mysqli_connect_errno()){
+  die('Could not connect: ' . mysqli_connect_error());
+} 
+
+if(!mysqli_select_db($con, 'AnyDrive')) {
+  if (mysqli_query($con, "CREATE DATABASE AnyDrive")){
+
+  } else {
+    echo "Error creating database: " . mysqli_error();
+  }
+}
+function test_input($data) {
+ $data = trim($data);
+ $data = stripslashes($data);
+ $data = htmlspecialchars($data);
+ return $data;
+} 
+$email = $passwordErr = $emailErr = $emailErrClass = $passwordErr = $passwordErrClass = "";
+
+$isLogin = false;
+$isTryLogin = false;
+
+
+if(isset($_COOKIE[$cookie_userEmailStr])) {
+  $isLogin = True;
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $isTryLogin = True;
+  if(empty($_POST["email"])){
     $isTryLogin = false;
+    $emailErr = "Email is required!";
+    $emailErrClass = "has-error";
+    
+  } else {
+    $email = test_input($_POST["email"]);
+  }
 
+  if(empty($_POST["password"])){
+    $isTryLogin = false;
+    $passwordErr = "Password cannot be empty!";
+    $passwordErrClass = "has-error";
+    
+  } else {
+    $password = test_input($_POST["password"]);
 
-    if(isset($_COOKIE[$cookie_userEmailStr])) {
-      $isLogin = True;
-    }
+  }
+}  
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      $isTryLogin = True;
-      if(empty($_POST["email"])){
-        $isTryLogin = false;
-        $emailErr = "Email is required!";
-        $emailErrClass = "has-error";
-        
-      } else {
-        $email = test_input($_POST["email"]);
-      }
-
-      if(empty($_POST["password"])){
-        $isTryLogin = false;
-        $passwordErr = "Password cannot be empty!";
-        $passwordErrClass = "has-error";
-        
-      } else {
-        $password = test_input($_POST["password"]);
-
-      }
-    }  
-
-    if($isTryLogin){
-      $isLogin = false;
-      require('user_mysql.php');
-     
-      $selectEmail = "SELECT email FROM user where email='$email'";
-      $result = mysqli_query($con, $selectEmail);
+if($isTryLogin){
+  $isLogin = false;
+  
+  
+  $selectEmail = "SELECT email FROM user where email='$email'";
+  $result = mysqli_query($con, $selectEmail);
 
       if(mysqli_num_rows($result) > 0){ //user email exists
         $selectPassword = "SELECT email  FROM user where email='$email' AND password='$password'";
         $result = mysqli_query($con, $selectPassword);
-      
+        
         if(mysqli_num_rows($result) > 0){
           if(setcookie($cookie_userEmailStr, $email, time() + (86400 * 1), "/")){
 
@@ -75,51 +89,51 @@
       echo "<META HTTP-EQUIV='Refresh' CONTENT='0; URL=home.php'>";
     }
 
-?>
-<!DOCTYPE html>
+    ?>
+    <!DOCTYPE html>
 
-<html lang="en">
+    <html lang="en">
 
-<?php include 'head.php'; ?>
+    <?php include 'head.php'; ?>
 
-<?php include 'navigation.php'; ?>
-<body>
+    <?php include 'navigation.php'; ?>
+    <body>
 
-  <!--search form in homepage-->
-  <div class="container">
-   <div class="page page-container">
+      <!--search form in homepage-->
+      <div class="container">
+       <div class="page page-container">
 
-     <form method="post" class="form-horizontal" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-      <br>
-      <div class="form-group <?php echo $emailErrClass ?>">
-        <label for="email" class="col-lg-2 control-label">Email: </label>
-        <div class="col-lg-6">
-          <input type="text" name="email" class="form-control" id="email" placeholder="" value="<?php echo $email ?>">
-          <p><?php echo $emailErr ?></p>
-        </div>
+         <form method="post" class="form-horizontal" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+          <br>
+          <div class="form-group <?php echo $emailErrClass ?>">
+            <label for="email" class="col-lg-2 control-label">Email: </label>
+            <div class="col-lg-6">
+              <input type="text" name="email" class="form-control" id="email" placeholder="" value="<?php echo $email ?>">
+              <p><?php echo $emailErr ?></p>
+            </div>
+          </div>
+          
+
+          <div class="form-group <?php echo $passwordErrClass ?>">
+            <label for="password" class="col-lg-2 control-label">Password: </label>
+            <div class="col-lg-6">
+              <input type="password" name="password" class="form-control" id="password" placeholder="">
+              <p><?php echo $passwordErr ?></p>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-lg-10 col-lg-offset-2">
+              <button type="submit" class="btn btn-primary">Login</button>
+              <input type="hidden" value="">
+            </div>
+          </div>
+
+        </form>
+
       </div>
-      
+    </div><!--body part-->
 
-      <div class="form-group <?php echo $passwordErrClass ?>">
-        <label for="password" class="col-lg-2 control-label">Password: </label>
-        <div class="col-lg-6">
-          <input type="password" name="password" class="form-control" id="password" placeholder="">
-          <p><?php echo $passwordErr ?></p>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="col-lg-10 col-lg-offset-2">
-          <button type="submit" class="btn btn-primary">Login</button>
-          <input type="hidden" value="">
-        </div>
-      </div>
-
-    </form>
-
-  </div>
-</div><!--body part-->
-
-</body>
-<?php include 'footer.php'; ?>  
-</html>
+  </body>
+  <?php include 'footer.php'; ?>  
+  </html>

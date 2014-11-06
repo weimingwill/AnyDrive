@@ -24,6 +24,18 @@ if(!mysqli_select_db($con, 'AnyDrive')) {
   }
 }
 
+
+$cookie_name = "userEmail";
+if(isset($_COOKIE[$cookie_name])){
+  $isLogin = TRUE;
+  $userEmail_data = $_COOKIE[$cookie_name]; 
+} else {
+  $isLogin = False;
+}  
+
+$query = "SELECT * FROM booking where userEmail = '$userEmail_data' ";
+$bookingListResult = mysqli_query($con, $query);
+
 function test_input($data) {
  $data = trim($data);
  $data = stripslashes($data);
@@ -82,17 +94,13 @@ $carID_data = $copyNum_data = $userEmail_data = $bookingTime_data = $collectDate
 $carID_Err = $copyNum_Err = $userEmail_Err = $bookingTime_Err = $collectDate_err = $returnDate_err = $cost_err = '';
 
 $isInsert = False;
-$isUpdate = False;
 $isGet = False;
-$isOverwrite = false;
+
 
 $Err_Required_Field = 'Required field!';
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
-  if($_GET[$isUpdate_str] == "true"){
-    $isUpdate = True;
-  }
 
   if($_GET[$action_str] == $getFieldEdit_str){
     $carID_data = $_GET[$carID_str];
@@ -201,28 +209,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 }
 
 if($isInsert){
-  $sql = "SELECT carID FROM booking WHERE 
-  carID = '$carID_data' AND copyNum = '$copyNum_data' AND userEmail = '$userEmail_data' AND bookingTime='$bookingTime_data'";
-  $result = mysqli_query($con, $sql);
 
-  if(!$isOverwrite) {
-
-    $insertBooking = "INSERT INTO booking (carID, copyNum, bookingTime, userEmail, collectDate, returnDate, cost)
-    VALUES ('$carID_data','$copyNum_data', '$bookingTime_data', '$userEmail_data', '$collectDate_data', '$returnDate_data', '$cost_data')";
-
-    if (mysqli_num_rows($result) > 0) {
-      $feedback = "This booking has already existed";
-    } else {
-      if ( $con->query($insertBooking) === TRUE) {
-        $feedback = "New record created successfully";
-        $carID_data = $copyNum_data = $bookingTime_data = $userEmail_data ='';
-      } else {  
-        $feedback = "Error: " . $insertBooking . "<br>" . $con->error;
-      }
-    } 
-  } else {
-
-   
       $updateBooking = "UPDATE booking SET collectDate='$collectDate_data', returnDate='$returnDate_data', cost = '$cost_data'".
       "WHERE carID = '$carID_data' AND copyNum = '$copyNum_data' AND userEmail = '$userEmail_data' AND bookingTime='$bookingTime_data'";
       if ( $con->query($updateBooking) === TRUE) {
@@ -232,12 +219,10 @@ if($isInsert){
       }
     
     
-  }
 }
 // query 
 
-$query = "SELECT * FROM booking";
-$bookingListResult = mysqli_query($con, $query);
+
 
 
 ?>
@@ -246,8 +231,71 @@ $bookingListResult = mysqli_query($con, $query);
 <body>
 
   <?php include 'navigation.php'; ?>
+
   <br>
+  <br>
+
   <div class="container ">
+
+    <div class="page-header" id="banner">
+
+  <div class="tab-pane fade in active" id="Open">
+    <!-- Open Gig -->  
+    <div class="panel  panel-success panel-primary">
+      <!-- Default panel contents -->
+      <div class="panel-heading"><h2>My List of Booking</h2></div>
+      <div class="panel-body">
+      </div>
+      <!-- Table -->
+      <!-- open gigs -->
+      <div class="table-responsive">
+        <table class='table table-hover' border="0">
+          <tr>
+            <th>Car ID</th>
+            <th>Copy Number</th>
+            <th>Booking Time</th>
+            <th>Collect Day</th>
+            <th>Return Day</th>
+            <th>Cost</th>
+            <th>Action</th>
+          </tr>
+
+          
+          <?php
+          if (mysqli_num_rows($bookingListResult) > 0) {
+            // output data of each row
+            while($row = mysqli_fetch_assoc($bookingListResult)) {
+              echo "<tr>";
+              echo "<td>".$row[$carID_str]."</td>";
+              echo "<td>".$row[$copyNum_str]."</td>";
+              echo "<td>".$row[$bookingTime_str]."</td>";
+              echo "<td>".$row[$collectDate_str]."</td>";
+              echo "<td>".$row[$returnDate_str]."</td>";
+              echo "<td>".$row[$cost_str]."</td>";
+
+
+
+              echo "<td><a href='?action=edit&carID=". $row[$carID_str] . "&copyNum=". $row[$copyNum_str].
+              "&userEmail=" . $row[$userEmail_str] . "&bookingTime=" . $row[$bookingTime_str] .
+              "'><button class='btn btn-primary btn-sm col-xs-offset-1 col-sm-4'>edit</button></a>";
+              echo "<a href='?action=delete&carID=". $row[$carID_str] . "&copyNum=". $row[$copyNum_str].
+              "&userEmail=" . $row[$userEmail_str] . "&bookingTime=" . $row[$bookingTime_str] .
+              "'><button class='btn btn-primary btn-sm col-xs-offset-1 col-sm-4'>delete</button></a></td>";
+
+              echo "</tr>";
+
+            }
+          } else {
+            echo "<tr><td colspan='7'><h4> No Booking Available Now</h4></td></tr>";
+          }
+          ?>
+
+        </table>
+      </div>
+    </div>
+  </div>    
+</div>   
+
    <div class="page-header" id="banner">
     <h1>Booking Info<small>&nbsp<?php echo $feedback;?></small></h1>
     <form method="post" class="form-horizontal">
@@ -255,31 +303,8 @@ $bookingListResult = mysqli_query($con, $query);
       <div class="form-group">
         <label for="carID" class="col-lg-2 control-label">Car ID*</label>
         <div class="col-lg-6 ">
-          <select 
-          <?php 
-          if($isUpdate){
-            echo "disabled";
-          }
-          ?>
-          type="text" name="carID" class="form-control" id="carID" >
-          <?php
-          for($x=0;$x<count($carID_set);$x++) {
-
-            echo "<option value='$carID_set[$x]' ";
-            if($carID_set[$x] == $carID_data) {
-              echo "selected='selected'";
-            }
-            echo ">" . $carID_set[$x] . "</option>"; 
-          }
-          ?>
-        </select>
-        <?php 
-        if($isUpdate){
-          echo "<input type='hidden' name='carID' value=". $carID_data  . ">";
-        }
-        ?>
-
-      </div>
+          <input readonly type="text" name="carID" class="form-control" id="carID"  >
+        </div>
       <div class = "col-lg-4">
         <span class="text-danger"><?php echo $carID_Err;?></span>
       </div>
@@ -399,99 +424,18 @@ $bookingListResult = mysqli_query($con, $query);
   </div>
 </div>
 
-    <!-- hide class for submit isUpdate -->
-          <input type="hidden" name='isUpdate' value= 
-          <?php
-          if($isUpdate){
-            echo 'true';
-          } else {
-            echo 'false';
-          }
-          ?>
-          >
+   
 
 <div class="form-group">
   <div class="col-lg-10 col-lg-offset-2">
-    <button type="submit" class="btn btn-primary">
-      <?php
-      if($isUpdate){
-        echo "update";
-      } else {
-        echo "submit";
-      }
-      ?>
-    </button>
+    <button type="submit" class="btn btn-primary">Update</button>
   </div>
 </div>
 
 </form>
 </div>
 
-      
-<div class="page-header" id="banner">
 
-  <div class="tab-pane fade in active" id="Open">
-    <!-- Open Gig -->  
-    <div class="panel  panel-default panel-primary">
-      <!-- Default panel contents -->
-
-      <div class="panel-heading"><h2>Current Booking List</h2>
-        <a href="admin_booking.php"><button class='btn btn-success'>Add a new Booking</button></a>
-      </div>
-      <div class="panel-body">
-      </div>
-
-      <!-- Table -->
-      <!-- open gigs -->
-      <div class="table-responsive">
-        <table class='table table-hover' border="0">
-          <tr>
-            <th>Car ID</th>
-            <th>Copy Number</th>
-            <th>User Email</th>
-            <th>Booking Time</th>
-            <th>Collect Day</th>
-            <th>Return Day</th>
-            <th>Cost</th>
-            <th>action</th>
-          </tr>
-
-          
-          <?php
-          if (mysqli_num_rows($bookingListResult) > 0) {
-            // output data of each row
-            while($row = mysqli_fetch_assoc($bookingListResult)) {
-              echo "<tr>";
-              echo "<td>".$row[$carID_str]."</td>";
-              echo "<td>".$row[$copyNum_str]."</td>";
-              echo "<td>".$row[$userEmail_str]."</td>";
-              echo "<td>".$row[$bookingTime_str]."</td>";
-              echo "<td>".$row[$collectDate_str]."</td>";
-              echo "<td>".$row[$returnDate_str]."</td>";
-              echo "<td>".$row[$cost_str]."</td>";
-
-
-
-              echo "<td><a href='?isUpdate=true&action=edit&carID=". $row[$carID_str] . "&copyNum=". $row[$copyNum_str].
-              "&userEmail=" . $row[$userEmail_str] . "&bookingTime=" . $row[$bookingTime_str] .
-              "'><button class='btn btn-primary btn-sm col-xs-offset-1 col-sm-4'>edit</button></a>";
-              echo "<a href='?action=delete&carID=". $row[$carID_str] . "&copyNum=". $row[$copyNum_str].
-              "&userEmail=" . $row[$userEmail_str] . "&bookingTime=" . $row[$bookingTime_str] .
-              "'><button class='btn btn-primary btn-sm col-xs-offset-1 col-sm-4'>delete</button></a></td>";
-
-              echo "</tr>";
-
-            }
-          } else {
-            echo "<tr><td colspan='8'><h4> No Car Copy bookingTime</h4></td></tr>";
-          }
-          ?>
-
-        </table>
-      </div>
-    </div>
-  </div>    
-</div>   
 
 
 </div><!--body part-->
@@ -499,49 +443,7 @@ $bookingListResult = mysqli_query($con, $query);
 
 
 <?php include 'footer.php'; ?> 
-<script type="text/javascript">
-$(function() {
-  $('#copyNum').empty();
-  var allCopyPair = <?php echo json_encode($carCopy_set); ?>;
-  var selectedCarID = $('#carID').val();
-  var selectedCopyNum = <?php echo json_encode($copyNum_data); ?>;
 
-  for(i=0; i<allCopyPair.length; i++){
-
-    if(selectedCarID == allCopyPair[i][0]){
-      var value = allCopyPair[i][1];
-      if(selectedCopyNum && selectedCopyNum==value){
-        $('#copyNum').append("<option value=" + value + " selected=selected>" + value + "</option>");
-      } else {
-        $('#copyNum').append("<option value=" + value + ">" + value + "</option>");
-      }
-      
-    }
-  }
-
-});
-
-$('#carID').change(function() {
-  $('#copyNum').empty();
-  var allCopyPair = <?php echo json_encode($carCopy_set); ?>;
-  var selectedCarID = $(this).val();
-  var selectedCopyNum = <?php echo json_encode($copyNum_data); ?>;
-  for(i=0; i<allCopyPair.length; i++){
-
-    if(selectedCarID == allCopyPair[i][0]){
-      var value = allCopyPair[i][1];
-      if(selectedCopyNum && selectedCopyNum==value){
-        $('#copyNum').append("<option value=" + value + " selected=selected>" + value + "</option>");
-      } else {
-        $('#copyNum').append("<option value=" + value + ">" + value + "</option>");
-      }
-      
-    }
-  }
-
-});
-
-</script> 
 <script type="text/javascript">
 
 $(function(){

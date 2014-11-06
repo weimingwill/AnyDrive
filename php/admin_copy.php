@@ -311,7 +311,9 @@ $carListResult = mysqli_query($con, $query);
     <!-- Open Gig -->  
     <div class="panel  panel-default panel-primary">
       <!-- Default panel contents -->
-      <div class="panel-heading"><h2>Current Car Copy List</h2></div>
+      <div class="panel-heading"><h2>Current Car Copy List</h2>
+        <a href="admin_copy.php"><button class='btn btn-success'>Add a new Car Copy</button></a>
+      </div>
       <div class="panel-body">
       </div>
 
