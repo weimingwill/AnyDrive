@@ -141,7 +141,7 @@ $result = mysqli_query($con, $sql);
       while ($row = mysqli_fetch_assoc($result)){
        ?>
        <tr class="table-row">
-        <td><img class="car-img" src="../images/car1.jpg"></td>
+        <td><img class="carlist-img" src="../images/car1.jpg"></td>
         <td><?php echo $row["brand"]." ".$row["model"] ?></td>
         <td>
           <?php echo "$".$row["price"] ?>
@@ -184,7 +184,7 @@ $result = mysqli_query($con, $sql);
         while ($row = mysqli_fetch_assoc($result)){
          ?>
          <tr class="table-row">
-          <td><img class="car-img" src="../images/car1.jpg"></td>
+          <td><img class="carlist-img" src="../images/car1.jpg"></td>
           <td><?php echo $row["brand"]." ".$row["model"] ?></td>
           <td>
             <form action="car.php" method="post">
