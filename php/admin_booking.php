@@ -57,21 +57,21 @@ $allCarID_query = "SELECT carID FROM car";
 $allCarID_result = mysqli_query($con, $allCarID_query);
 $carID_set = array();
 while(($row =  mysqli_fetch_assoc($allCarID_result))) {
-    $carID_set[] = $row[$carID_str];
+  $carID_set[] = $row[$carID_str];
 }
 
 $allCarCopy_query = "Select carID, copyNum FROM copy";
 $allCarCopy_result = mysqli_query($con, $allCarCopy_query);
 $carCopy_set = array();
 while(($row =  mysqli_fetch_assoc($allCarCopy_result))) {
-    $carCopy_set[] = array($row[$carID_str], $row[$copyNum_str]);
+  $carCopy_set[] = array($row[$carID_str], $row[$copyNum_str]);
 }
 
 $allUserEmail_query = "Select email From User";
 $allUserEmail_result = mysqli_query($con, $allUserEmail_query);
-$email_Set = array();
+$userEmail_set = array();
 while(($row =  mysqli_fetch_assoc($allUserEmail_result))) {
-    $email_Set[] = $row["email"];
+  $userEmail_set[] = $row["email"];
 }
 
 
@@ -96,8 +96,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
   if($_GET[$action_str] == $getFieldEdit_str){
     $carID_data = $_GET[$carID_str];
     $copyNum_data = $_GET[$copyNum_str];
+    $userEmail_data = $_GET[$userEmail_str];
+    $bookingTime_data = $_GET[$bookingTime_str];
+    
+
     $bookingQuery = "SELECT * FROM booking ".
-    " WHERE bookingID = '$carID_data' AND copyNum = '$copyNum_data' AND userEmail = '$userEmail_data' AND bookingTime='$bookingTime_data'
+    " WHERE carID = '$carID_data' AND copyNum = '$copyNum_data' AND userEmail = '$userEmail_data' AND bookingTime='$bookingTime_data'
     ";
     $bookingResult = mysqli_query($con, $bookingQuery);
 
@@ -119,7 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $userEmail_data = $_GET[$userEmail_str];
 
     $deleteBooking = "DELETE FROM booking" .
-    " WHERE bookingID = '$carID_data' AND copyNum = '$copyNum_data' AND userEmail = '$userEmail_data' AND bookingTime='$bookingTime_data'";
+    " WHERE carID = '$carID_data' AND copyNum = '$copyNum_data' AND userEmail = '$userEmail_data' AND bookingTime='$bookingTime_data'";
     $carResult = mysqli_query($con, $deleteBooking);
     $feedback = "booking deleted successfully";
   }
@@ -196,17 +200,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 }
 
 if($isInsert){
-  $sql = "SELECT carID FROM booking".
-  "WHERE bookingID = '$carID_data' AND copyNum = '$copyNum_data' AND userEmail = '$userEmail_data' AND bookingTime='$bookingTime_data'";
+  $sql = "SELECT carID FROM booking WHERE 
+  carID = '$carID_data' AND copyNum = '$copyNum_data' AND userEmail = '$userEmail_data' AND bookingTime='$bookingTime_data'";
   $result = mysqli_query($con, $sql);
 
   if(!$isOverwrite) {
 
     $insertBooking = "INSERT INTO booking (carID, copyNum, bookingTime, userEmail, collectDate, returnDate, cost)
-    VALUES ('$carID_data','$copyNum_data', '$bookingTime_data', '$userEmail_data', '$collectDate_data', '$returnDate_data', 'cost_data')";
+    VALUES ('$carID_data','$copyNum_data', '$bookingTime_data', '$userEmail_data', '$collectDate_data', '$returnDate_data', '$cost_data')";
 
     if (mysqli_num_rows($result) > 0) {
-      $carID_Err = "This booking has already existed";
+      $feedback = "This booking has already existed";
     } else {
       if ( $con->query($insertBooking) === TRUE) {
         $feedback = "New record created successfully";
@@ -217,19 +221,15 @@ if($isInsert){
     } 
   } else {
 
-    if (mysqli_num_rows($result) > 0) {
-      $carID_Err = "cannot update as this booking has already existed";
-
-    } else {
-      $updateBooking = "UPDATE booking SET bookingTime='$bookingTime_data', userEmail='$userEmail_data', carID = '$carID_data',". 
-      "copyNum='$copyNum_data', collectDate='$collectDate_data', returnDate='$returnDate_data', cost = '$cost_data'".
+   
+      $updateBooking = "UPDATE booking SET collectDate='$collectDate_data', returnDate='$returnDate_data', cost = '$cost_data'".
       "WHERE carID = '$carID_data' AND copyNum = '$copyNum_data' AND userEmail = '$userEmail_data' AND bookingTime='$bookingTime_data'";
       if ( $con->query($updateBooking) === TRUE) {
         $feedback = "New record updated successfully";
       } else {  
         $feedback = "Error: " . $updateBooking . "<br>" . $con->error;
       }
-    }  
+    
     
   }
 }
@@ -240,10 +240,13 @@ $bookingListResult = mysqli_query($con, $query);
 
 
 ?>
+
+
 <body>
+
   <?php include 'navigation.php'; ?>
 
-  <div class="container mainBody">
+  <div class="container ">
    <div class="page-header" id="banner">
     <h1>Car Copy Info<small>&nbsp<?php echo $feedback;?></small></h1>
     <form method="post" class="form-horizontal">
@@ -283,93 +286,144 @@ $bookingListResult = mysqli_query($con, $query);
 
     <div class="form-group">
       <label for="copyNum" class="col-lg-2 control-label">Copy Number*</label>
-      <div class="col-lg-6 ">
-        <input type="text" name="copyNum"
+      <div class="col-lg-6 id=""">
+        <select id="copyNum"
         <?php 
         if($isUpdate){
-          echo "readonly";
+          echo "disabled";
         }
         ?>
-        class="form-control" id="copyNum" value="<?php echo $copyNum_data;?>" >
-
-      </div>
-      <div class = "col-lg-4">
-        <span class="text-danger"><?php echo $copyNum_Err;?></span>
-      </div>
-    </div>
-
-
-    <div class="form-group">
-        <label for="userEmail" class="col-lg-2 control-label">User email*</label>
-        <div class="col-lg-6 ">
-          <select 
-          <?php 
-          if($isUpdate){
-            echo "disabled";
-          }
-          ?>
-          type="text" name="userEmail" class="form-control" id="userEmail" >
-          <?php
-          for($x=0;$x<count($userEmail_set);$x++) {
-
-            echo "<option value='$userEmail_set[$x]' ";
-            if($userEmail_set[$x] == $userEmail_data) {
-              echo "selected='selected'";
-            }
-            echo ">" . $userEmail_set[$x] . "</option>"; 
-          }
-          ?>
-        </select>
+        type="text" name="copyNum" class="form-control"  >
         <?php 
-        if($isUpdate){
-          echo "<input type='hidden' name='userEmail' value=". $userEmail_data  . ">";
+        if(!empty($copyNum_data)){
+          echo "<option value='$copyNum_data' selected='selected'>". $copyNum_data ."</option>";
         }
         ?>
+      </select>
+      <?php 
+      if($isUpdate){
+        echo "<input type='hidden' name='copyNum' value=". $copyNum_data  . ">";
+      }
+      ?>
 
-      </div>
-      <div class = "col-lg-4">
-        <span class="text-danger"><?php echo $carID_Err;?></span>
-      </div>
     </div>
-
-
-    <div class="form-group">
-      <label for="userEmail" class="col-lg-2 control-label">Start Date of Service</label>
-      <div class=" col-lg-6">
-        <input name="userEmail"  value="<?php echo $userEmail_data;?>" placeholder="Select Date" class="form-control" data-date-format="YYYY-MM-DD" id='userEmail'>
-      </div>
-      <div class = "col-lg-4">
-        <span class="text-danger"><?php echo $userEmail_Err;?></span>
-      </div>
+    <div class = "col-lg-4">
+      <span class="text-danger"><?php echo $copyNum_Err;?></span>
     </div>
+  </div>
 
 
-    <!-- hide class for submit isUpdate -->
-    <input type="hidden" name='isUpdate' value= 
-    <?php
+
+
+
+
+
+  <div class="form-group">
+    <label for="userEmail" class="col-lg-2 control-label">User email*</label>
+    <div class="col-lg-6 ">
+      <select 
+      <?php 
+      if($isUpdate){
+        echo "disabled";
+      }
+      ?>
+      type="text" name="userEmail" class="form-control" id="userEmail" >
+      <?php
+      for($x=0;$x<count($userEmail_set);$x++) {
+
+        echo "<option value='$userEmail_set[$x]' ";
+        if($userEmail_set[$x] == $userEmail_data) {
+          echo "selected='selected'";
+        }
+        echo ">" . $userEmail_set[$x] . "</option>"; 
+      }
+      ?>
+    </select>
+    <?php 
     if($isUpdate){
-      echo 'true';
-    } else {
-      echo 'false';
+      echo "<input type='hidden' name='userEmail' value=". $userEmail_data  . ">";
     }
     ?>
-    >
 
-    <div class="form-group">
-      <div class="col-lg-10 col-lg-offset-2">
-        <button type="submit" class="btn btn-primary">
+  </div>
+  <div class = "col-lg-4">
+    <span class="text-danger"><?php echo $carID_Err;?></span>
+  </div>
+</div>
+
+<div class="form-group">
+  <label for="bookingTime" class="col-lg-2 control-label">Booking Time</label>
+  <div class=" col-lg-6">
+    <input name="bookingTime"
+    <?php 
+    if($isUpdate){
+      echo "readonly";
+    }
+    ?>
+    value="<?php echo $bookingTime_data;?>" placeholder="Select Time" class="form-control"  id='bookingTime'>
+  </div>
+  <div class = "col-lg-4">
+    <span class="text-danger"><?php echo $bookingTime_Err;?></span>
+  </div>
+</div>
+
+<div class="form-group">
+  <label for="collectDate" class="col-lg-2 control-label">Collect Date</label>
+  <div class=" col-lg-6">
+    <input name="collectDate"  value="<?php echo $collectDate_data;?>" placeholder="Select Date" class="form-control" data-date-format="YYYY-MM-DD" id='collectDate'>
+  </div>
+  <div class = "col-lg-4">
+    <span class="text-danger"><?php echo $collectDate_Err;?></span>
+  </div>
+</div>
+
+<div class="form-group">
+  <label for="returnDate" class="col-lg-2 control-label">Return Date</label>
+  <div class=" col-lg-6">
+    <input name="returnDate"  value="<?php echo $returnDate_data;?>" placeholder="Select Date" class="form-control" data-date-format="YYYY-MM-DD" id='returnDate'>
+  </div>
+  <div class = "col-lg-4">
+    <span class="text-danger"><?php echo $returnDate_Err;?></span>
+  </div>
+</div>
+
+<div class="form-group">
+  <label for="cost" class="col-lg-2 control-label">Cost*</label>
+  <div class="col-lg-6"> 
+    <input type="number" name="cost" class="form-control" id="cost" value="<?php echo $cost_data;?>" >
+
+  </div>
+  <div class = "col-lg-4">
+    <span class="text-danger"><?php echo $cost_Err;?></span>
+  </div>
+</div>
+
+    <!-- hide class for submit isUpdate -->
+          <input type="hidden" name='isUpdate' value= 
           <?php
           if($isUpdate){
-            echo "update";
+            echo 'true';
           } else {
-            echo "submit";
+            echo 'false';
           }
           ?>
-        </button>
-      </div>
-    </div>
+          >
 
-  </form>
+<div class="form-group">
+  <div class="col-lg-10 col-lg-offset-2">
+    <button type="submit" class="btn btn-primary">
+      <?php
+      if($isUpdate){
+        echo "update";
+      } else {
+        echo "submit";
+      }
+      ?>
+    </button>
+  </div>
+</div>
+
+</form>
 </div>
 
 
@@ -390,9 +444,11 @@ $bookingListResult = mysqli_query($con, $query);
           <tr>
             <th>Car ID</th>
             <th>Copy Number</th>
-            <th>Availability</th>
-            <th>Start Date Of Service</th>
-            <th>Action</th>
+            <th>User Email</th>
+            <th>Booking Time</th>
+            <th>Collect Day</th>
+            <th>Return Day</th>
+            <th>Cost</th>
           </tr>
 
           
@@ -403,19 +459,19 @@ $bookingListResult = mysqli_query($con, $query);
               echo "<tr>";
               echo "<td>".$row[$carID_str]."</td>";
               echo "<td>".$row[$copyNum_str]."</td>";
-              echo "<td>";
-              if($row[$bookingTime_str] == 1){
-                echo "Yes";
-              } else {
-                echo "No";
-              }
-
-              echo "</td>";
               echo "<td>".$row[$userEmail_str]."</td>";
+              echo "<td>".$row[$bookingTime_str]."</td>";
+              echo "<td>".$row[$collectDate_str]."</td>";
+              echo "<td>".$row[$returnDate_str]."</td>";
+              echo "<td>".$row[$cost_str]."</td>";
+
+
 
               echo "<td><a href='?isUpdate=true&action=edit&carID=". $row[$carID_str] . "&copyNum=". $row[$copyNum_str].
+              "&userEmail=" . $row[$userEmail_str] . "&bookingTime=" . $row[$bookingTime_str] .
               "'><button class='btn btn-primary btn-sm col-xs-offset-1 col-sm-4'>edit</button></a>";
               echo "<a href='?action=delete&carID=". $row[$carID_str] . "&copyNum=". $row[$copyNum_str].
+              "&userEmail=" . $row[$userEmail_str] . "&bookingTime=" . $row[$bookingTime_str] .
               "'><button class='btn btn-primary btn-sm col-xs-offset-1 col-sm-4'>delete</button></a></td>";
 
               echo "</tr>";
@@ -437,14 +493,82 @@ $bookingListResult = mysqli_query($con, $query);
 
 
 
-<?php include 'footer.php'; ?>  
-<script>
-$(function () {
-  $('#userEmail').datetimepicker({
+<?php include 'footer.php'; ?> 
+<script type="text/javascript">
+$(function() {
+  $('#copyNum').empty();
+  var allCopyPair = <?php echo json_encode($carCopy_set); ?>;
+  var selectedCarID = $('#carID').val();
+  var selectedCopyNum = <?php echo json_encode($copyNum_data); ?>;
+
+  for(i=0; i<allCopyPair.length; i++){
+
+    if(selectedCarID == allCopyPair[i][0]){
+      var value = allCopyPair[i][1];
+      if(selectedCopyNum && selectedCopyNum==value){
+        $('#copyNum').append("<option value=" + value + " selected=selected>" + value + "</option>");
+      } else {
+        $('#copyNum').append("<option value=" + value + ">" + value + "</option>");
+      }
+      
+    }
+  }
+
+});
+
+$('#carID').change(function() {
+  $('#copyNum').empty();
+  var allCopyPair = <?php echo json_encode($carCopy_set); ?>;
+  var selectedCarID = $(this).val();
+  var selectedCopyNum = <?php echo json_encode($copyNum_data); ?>;
+  for(i=0; i<allCopyPair.length; i++){
+
+    if(selectedCarID == allCopyPair[i][0]){
+      var value = allCopyPair[i][1];
+      if(selectedCopyNum && selectedCopyNum==value){
+        $('#copyNum').append("<option value=" + value + " selected=selected>" + value + "</option>");
+      } else {
+        $('#copyNum').append("<option value=" + value + ">" + value + "</option>");
+      }
+      
+    }
+  }
+
+});
+
+</script> 
+<script type="text/javascript">
+
+$(function(){
+
+  $('#bookingTime').datetimepicker({
+    format: 'YY-MM-DD hh:mm:ss',
+    pickDate: true,
+    pickTime: true,
+    useMinutes: true,
+    useSeconds: true,
+    useCurrent: true,
+    pick12HourFormat: false,
+  });
+  $('#bookingTime').datetimepicker();
+
+  $('#collectDate').datetimepicker({
     pickTime: false
   });
+  $('#returnDate').datetimepicker({
+    pickTime: false
+  });      
 
-  $('#userEmail').datetimepicker();
+  $('#collectDate').datetimepicker();
+  $('#returnDate').datetimepicker();
+  $("#collectDate").on("dp.change",function (e) {
+   $('#returnDate').data("DateTimePicker").setMinDate(e.date);
+ });
+  $("#returnDate").on("dp.change",function (e) {
+   $('#collectDate').data("DateTimePicker").setMaxDate(e.date);
+ });
+
+
 
 
 });

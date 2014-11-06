@@ -67,7 +67,7 @@
 
     //create table booking
     $sql = "CREATE TABLE IF NOT EXISTS booking (
-            userEmail VARCHAR(15) NOT NULL,
+            userEmail VARCHAR(50) NOT NULL,
             carID CHAR(10) NOT NULL,
             copyNum INT NOT NULL CHECK(copyNum > 0), 
             bookingTime DATETIME NOT NULL,
