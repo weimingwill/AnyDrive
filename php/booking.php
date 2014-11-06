@@ -16,7 +16,7 @@
        return $data;
      }
 
-    $carId = $copyNum = $brand = $model = $collectDate = $returnDate = $userEmail = $price = "";
+    $carId = $copyNum = $brand = $model = $collectDate = $returnDate = $userEmail = $price = $feedback = "";
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
           //connect to database
       require('car_mysql.php');
@@ -130,10 +130,13 @@
     }
   }
 ?>
+  <?php
+    if(!empty($feedback)){
+  ?>
   <div class="booking-feedback"><h1><?php echo $feedback ?></h1></div>
   <a href="carlist.php" class="btn btn-primary">Book another car</a>
   <a href="user_booking.php" class="btn btn-primary">Manage booking</a>
-
+  <?php } ?>
 </div>
 
 

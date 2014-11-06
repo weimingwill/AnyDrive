@@ -108,6 +108,9 @@
         $returnDate = $_POST["returnDate"];
       }      
 
+      echo "compare ".($collectDate > $returnDate);
+      echo "compare ".($collectDate <= $returnDate);
+
       $sql = "";
       if(!empty($price)){
         if($price == "lower to higher"){
@@ -129,6 +132,10 @@
               $sql = $sql."type LIKE '%$carType[$i]%' OR ";
             }
             $sql = $sql."type LIKE '%$carType[$i]%')";
+        }
+        if(!empty($collectDate)){
+          $sql .= " AND NOT EXISTS (SELECT * FROM car, copy, booking WHERE car.carID = copy.carID AND car.carID = booking.carID AND ($collectDate <= collectDate AND $returnDate >= returnDate))";
+          echo "<br>".$sql;
         }
 }
 
@@ -163,6 +170,8 @@ $result = mysqli_query($con, $sql);
     </tbody>
     <?php
   }
+} else {
+  echo "0 result";
 }
 ?>
 </table>
