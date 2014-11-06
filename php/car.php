@@ -137,6 +137,84 @@
 
       $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID AND car.carID = '$carId' AND copyNum = '$copyNum' ";
       $result = mysqli_query($con, $sql);
+
+      if(mysqli_num_rows($result) > 0){
+        while ($row = mysqli_fetch_assoc($result)){
+      ?>
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h2 class="panel-title">About the car</h2>
+        </div>
+        
+        <div class="panel-body">
+          <table class="table-car-feature">
+<!--             <thead>
+              <tr>
+                <th class="table-car-header"><?php echo $row["brand"]." ".$row["model"] ?></th>
+              </tr>
+            </thead> -->
+            <tbody>
+              <tr>
+                <td><img class="car-img" src="../images/car1.jpg"></td>
+                <td class="table-td-car-feature">
+                  <h3><?php echo $row["brand"]." ".$row["model"] ?></h3>
+                  <!-- <i class="fa fa-car fa-2x"></i> -->
+                  <?php echo $row["type"] ?>
+                  <?php echo $row["passengerCap"] ?>
+                  <?php echo "$".$row["price"] ?>
+                  <form action="booking.php" action="post">
+                    <input type="hidden" name="carId" value="">
+                    <input type="hidden" name="copyNum" value="">
+                    <div class="form-group">
+                      <div class="input-group col-sm-12">
+                        <input name="collectDate" type="text" placeholder="Rent Date" class="form-control required" data-date-format="YYYY-MM-DD" id='rentdate' />
+                        <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="input-group col-sm-12">
+                        <input name="returnDate" type="text" placeholder="Return Date" class="form-control required" data-date-format="YYYY-MM-DD" id='returndate'/ >
+                        <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                      </div>
+                    </div>                    
+                    <button class="btn btn-primary">Book</button>
+                  </form>
+<!--                   <div class="panel panel-warning car-feature">
+                    <div class="panel-heading">
+                      <h2 class="panel-title"><?php echo $row["brand"]." ".$row["model"] ?></h2>
+                    </div>
+                    <div class="panel-body">
+                      <table>
+                        <tbody>
+                          <tr>
+                            <td><?php echo $row["type"] ?></td>
+                            <td><?php echo $row["passengerCap"] ?></td>
+                          </tr>
+                          <tr>
+                            <td><?php echo $row["price"] ?></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div> -->
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          
+          
+          
+        </div>
+      </div>
+
+      <?php    
+        }
+      }   
     }
 ?>
 
@@ -162,6 +240,22 @@ $(function () {
  });
   $("#datePicker2").on("dp.change",function (e) {
    $('#datePicker1').data("DateTimePicker").setMaxDate(e.date);
+ });
+
+  $('#rentdate').datetimepicker({
+    pickTime: false
+  });
+  $('#returndate').datetimepicker({
+    pickTime: false
+  });      
+
+  $('#rentdate').datetimepicker();
+  $('#returndate').datetimepicker();
+  $("#rentdate").on("dp.change",function (e) {
+   $('#returndate').data("DateTimePicker").setMinDate(e.date);
+ });
+  $("#returndate").on("dp.change",function (e) {
+   $('#rentdate').data("DateTimePicker").setMaxDate(e.date);
  });
 
   $('select').change(function (){

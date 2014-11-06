@@ -65,10 +65,33 @@ html,body{
 	margin-bottom: 3%;
 }
 
-td .car-img{
+td .carlist-img{
 	padding-bottom: 1%;
 	width: 180px;
 }
+
+/*car.php*/
+.car-img{
+	width: 400px;
+}
+
+.table-car-header{
+	font-size: 30px;
+}
+
+.table-td-car-feature{
+	padding-left: 5%;
+	width: 300px;
+	vertical-align: top;
+}
+
+
+.car-feature{
+	margin-left: 30%;
+	width: 200px;
+}
+
+
 
 /*added by JJ */
 
