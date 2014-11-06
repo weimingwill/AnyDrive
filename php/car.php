@@ -78,33 +78,14 @@
        return $data;
      }
 
-     $carType = array();
-     $carId = $price = $passengerCap = $gearType = $brand = "";
-     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $carId = $copyNum = "";
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
           //connect to database
       require('car_mysql.php');
 
-      if(!empty($_POST["price"])){
-        $price = test_input($_POST["price"]);
-      }
-
-      if(!empty($_POST["passengerCap"])){
-        $passengerCap = test_input($_POST["passengerCap"]);
-      }
-
-      if(!empty($_POST["brand"])){
-        $brand = test_input($_POST["brand"]);
-      }
-
-      if(!empty($_POST["carType"])){
-        $carType = $_POST["carType"];
-      }
-      
       if(!empty($_POST["carId"])){
         $carId = $_POST["carId"];
-        echo $carId;
       }
-
 
       $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID AND car.carID = '$carId' ";
       $result = mysqli_query($con, $sql);
@@ -128,8 +109,9 @@
         <td><?php echo $row["brand"]." ".$row["model"] ?></td>
         <td>
           <?php echo "$".$row["price"] ?>
-          <form>
-            <input type="hidden" value="<?php $row["carID"]?>">
+          <form action="car.php" method="get">
+            <input type="hidden" name="carId" value="<?php echo $row["carID"]?>">
+            <input type="hidden" name="copyNum" value="<?php echo $row["copyNum"] ?>">
             <button class="btn btn-primary">SELECT</button>
           </form>
         </td>
@@ -141,8 +123,23 @@
 ?>
 </table>
 <?php
-}
+//second post
+} else if ($_SERVER["REQUEST_METHOD"] == "GET"){
+      require('car_mysql.php');
+
+      if(!empty($_GET["carId"])){
+        $carId = $_GET["carId"];
+      }
+
+      if(!empty($_GET["copyNum"])){
+        $copyNum = $_GET["copyNum"];
+      }
+
+      $sql = "SELECT * FROM car, copy WHERE available = 1 AND car.carID = copy.carID AND car.carID = '$carId' AND copyNum = '$copyNum' ";
+      $result = mysqli_query($con, $sql);
+    }
 ?>
+
 </div>
 
 </div><!--body part-->
