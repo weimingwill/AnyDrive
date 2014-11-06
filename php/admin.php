@@ -16,7 +16,7 @@
 <div class='container mainBody' >
   <div class='row col-xs-offset-0'>
     <div class='col-sm-4'>
-      <a href="bookingEdition.php">
+      <a href="admin_booking.php">
         <button class='btn btn-info btn-lg  btn-block'>
           <p><span class="glyphicon actionIcon glyphicon-list-alt"></span></p>
           <p>Booking</p>

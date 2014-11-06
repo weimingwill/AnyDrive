@@ -23,6 +23,7 @@
     if(! $retval ) {
       die('Could not create table user: ' . mysql_error());
     } else {
+        echo "<br>";
         echo "Table user created successfully";     
     }
     //create table car
@@ -34,12 +35,13 @@
             passengerCap INT NOT NULL CHECK(passengerCap>0),
             brand VARCHAR(64) NOT NULL,
             imagePath VARCHAR(64)
-            )";
+            ) ENGINE=INNODB;";
 
     $retval = mysql_query( $sql, $link );
     if(! $retval ) {
       die('Could not create table car: ' . mysql_error());
     } else {
+        echo "<br>";
         echo "Table car created successfully";     
     }
       
@@ -47,36 +49,44 @@
     //create table copy
     $sql = "CREATE TABLE IF NOT EXISTS copy (
             copyNum INT CHECK(copyNum > 0),
-            carID CHAR(10) REFERENCES car(carID) ON DELETE CASCADE,
+            carID VARCHAR(10) NOT NULL,
             available  BOOLEAN,
             startDateOfService Date, 
-            PRIMARY KEY(carID, copyNum)
-            )";
+            PRIMARY KEY(carID, copyNum),
+            FOREIGN KEY(carID) REFERENCES car(carID) 
+            ON UPDATE CASCADE ON DELETE CASCADE
+            ) ENGINE=INNODB;";
     $retval = mysql_query( $sql, $link );
     if(!$retval ) {
       die('Could not create table copy: ' . mysql_error());
     } else {
+        echo "<br>";
         echo "Table copy created successfully";      
     }
     
 
     //create table booking
     $sql = "CREATE TABLE IF NOT EXISTS booking (
-            userEmail VARCHAR(15) REFERENCES user(userEmail) ON DELETE CASCADE ON UPDATE CASCADE,
-            carID CHAR(10) REFERENCES car(carID) ON DELETE CASCADE ON UPDATE CASCADE,
-            copyNum INT CHECK(copyNum > 0), 
-            bookingTime DATETIME NOT NULL ,
+            userEmail VARCHAR(15) NOT NULL,
+            carID CHAR(10) NOT NULL,
+            copyNum INT NOT NULL CHECK(copyNum > 0), 
+            bookingTime DATETIME NOT NULL,
             collectDate DATE NOT NULL,
             returnDate DATE NOT NULL, 
             cost INT CHECK(price >= 0),
             CHECK(returnDATE >= collectDate),
-            PRIMARY KEY(bookingTime, userEmail, copyNum, carID)
-            )";
+            PRIMARY KEY(bookingTime, userEmail, copyNum, carID),
+            FOREIGN KEY(userEmail) REFERENCES user(email)
+            ON UPDATE CASCADE ON DELETE CASCADE,
+            FOREIGN KEY(carID, copyNum) REFERENCES copy(carID, copyNum) 
+            ON UPDATE CASCADE ON DELETE CASCADE
+            )ENGINE=INNODB;";
 
     $retval = mysql_query( $sql, $link );
     if(! $retval ) {
       die('Could not create table booking: ' . mysql_error());
     } else {
+        echo "<br>";
         echo "Table booking created successfully";     
     }
 

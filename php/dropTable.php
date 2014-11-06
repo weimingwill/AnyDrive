@@ -18,16 +18,7 @@
     //     echo "Table user created successfully";     
     // }
     
-    //drop table car
-    $sql = "DROP TABLE car;";
-    $retval = mysql_query( $sql, $link );   
-
-    if(! $retval ) {
-      die('Could not drop table car: ' . mysql_error());
-    } else {
-        echo "<br>Table car dropped successfully";     
-    }
-      
+   
 
     //drop table copy
     $sql = "DROP TABLE copy;";
@@ -38,7 +29,16 @@
         echo "<br>Table copy dropped successfully";      
     }
     
+     //drop table car
+    $sql = "DROP TABLE car;";
+    $retval = mysql_query( $sql, $link );   
 
+    if(! $retval ) {
+      die('Could not drop table car: ' . mysql_error());
+    } else {
+        echo "<br>Table car dropped successfully";     
+    }
+      
     //drop table booking
     $sql = "DROP TABLE booking;";
 
