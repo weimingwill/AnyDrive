@@ -95,6 +95,7 @@
 
       if(mysqli_num_rows($result) > 0){
         while ($row = mysqli_fetch_assoc($result)){
+           $imagePath = $row["imagePath"];
       ?>
       <div class="panel panel-primary">
         <div class="panel-heading">
@@ -105,7 +106,7 @@
           <table class="table-car-feature">
             <tbody>
               <tr>
-                <td><img class="car-img" src="../images/car1.jpg"></td>
+                <td><img class="car-img" src="<?php echo $imagePath; ?>"></td>
                 <td class="table-td-car-feature">
                   <h2><?php echo $row["brand"]." ".$row["model"] ?></h2>
                   <img class="car-feature-img" src="../images/cartype.png">

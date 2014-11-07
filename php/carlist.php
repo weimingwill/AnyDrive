@@ -135,12 +135,16 @@
             }
             $sql_remain = $sql_remain."type LIKE '%$carType[$i]%')";
         }
-        if(!empty($collectDate)){
+        if(!empty($collectDate and !empty($returnDate))){
           //$sql_remain .= " AND car.carID NOT IN (SELECT copy.carID FROM copy, booking WHERE  AND copy.carID = booking.carID AND copy.copyNum = booking.copyNum AND ($collectDate >= returnDate OR $returnDate <= collectDate))";
           $sql_remain.="AND exists (SELECT * FROM booking WHERE booking.carID = copy.carID AND
-          booking.copyNum = copy.copyNum AND $collectDate <= returnDate AND $returnDate >= collectDate)"
+          booking.copyNum = copy.copyNum AND (
+          ('$collectDate' >= returnDate) OR
+          ('$returnDate' <= collectDate)
+          ) 
+          )";
           //lack the part of selecting copy num
-        }
+        } 
         $sql = $sql.$sql_remain;
         $count = $count.$sql_remain;
       }
@@ -175,9 +179,10 @@
       <?php
       if(mysqli_num_rows($result) > 0){
         while ($row = mysqli_fetch_assoc($result)){
+          $imagePath = $row["imagePath"];
          ?>
          <tr class="table-row">
-          <td><img class="carlist-img" src="../images/car1.jpg"></td>
+          <td><img class="carlist-img" src="<?php echo $imagePath; ?>"></td>
           <td class="table-brand-model"><?php echo $row["brand"]." ".$row["model"] ?></td>
           <td><?php echo $row["startDateOfService"] ?></td>
           <td class="table-price-row">
@@ -232,9 +237,10 @@
       <?php
       if(mysqli_num_rows($result) > 0){
         while ($row = mysqli_fetch_assoc($result)){
+          $imagePath = $row["imagePath"];
          ?>
          <tr class="table-row">
-          <td><img class="carlist-img" src="../images/car1.jpg"></td>
+          <td><img class="carlist-img" src="<?php echo $imagePath; ?>"></td>
           <td class="table-brand-model"><?php echo $row["brand"]." ".$row["model"] ?></td>
           <td><?php echo $row["startDateOfService"] ?></td>
           <td class="table-price-row">
