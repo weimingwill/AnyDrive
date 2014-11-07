@@ -108,21 +108,21 @@
               <tr>
                 <td><img class="car-img" src="<?php echo $imagePath; ?>"></td>
                 <td class="table-td-car-feature">
-                  <h2><?php echo $row["brand"]." ".$row["model"] ?></h2>
-                  <img class="car-feature-img" src="../images/cartype.png">
-                  <span><?php echo $row["type"] ?></span>
-                  <img class="car-feature-img" src="../images/passenger.png">
-                  <span><?php echo $row["passengerCap"] ?></span>
-                  <?php echo "$".$row["price"] ?>
-                  <form action="booking.php" method="get">
+                  <h1 style="margin-bottom: 40px;"><?php echo $row["brand"]." ".$row["model"] ?></h1>
+                  <img style="margin-right: 8px;" class="car-feature-img" src="../images/cartype.png">
+                  <span class="car-type-span" style="font-size: 15px; margin-right:20px"><?php echo $row["type"] ?></span>
+                  <img style="margin-right: -2px;" class="car-feature-img" src="../images/passenger.png">
+                  <span class="passenger-span" style="font-size: 15px;"><?php echo $row["passengerCap"] ?></span>
+                  <p style="margin-top:20px; margin-bottom:20px;"><span  style="font-size: 40px; margin-right:4px;"><?php echo "$".$row["price"] ?></span>per weekday</p>
+                  <form action="booking.php" method="get" class="form-horizontal">
                     <input type="hidden" name="carId" value="<?php echo $row["carID"]?>">
                     <input type="hidden" name="copyNum" value="<?php echo $row["copyNum"]?>">
                     <input type="hidden" name="brand" value="<?php echo $row["brand"]?>">
                     <input type="hidden" name="model" value="<?php echo $row["model"]?>">
                     <input type="hidden" name="price" value="<?php echo $row["price"]?>">
                     <div class="form-group">
-                      <div class="input-group col-sm-12">
-                        <input name="collectDate" type="text" placeholder="Rent Date" class="form-control required" data-date-format="YYYY-MM-DD" id='rentdate' />
+                      <div class="input-group col-sm-8">
+                        <input name="collectDate" type="text" placeholder="Collect date" class="form-control required" data-date-format="YYYY-MM-DD" id='rentdate' />
                         <span class="input-group-addon">
                           <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -130,8 +130,8 @@
                     </div>
 
                     <div class="form-group">
-                      <div class="input-group col-sm-12">
-                        <input name="returnDate" type="text" placeholder="Return Date" class="form-control required" data-date-format="YYYY-MM-DD" id='returndate'/ >
+                      <div class="input-group col-sm-8">
+                        <input name="returnDate" type="text" placeholder="Return date" class="form-control required" data-date-format="YYYY-MM-DD" id='returndate'/ >
                         <span class="input-group-addon">
                           <span class="glyphicon glyphicon-calendar"></span>
                         </span>
