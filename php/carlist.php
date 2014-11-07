@@ -136,7 +136,9 @@
             $sql_remain = $sql_remain."type LIKE '%$carType[$i]%')";
         }
         if(!empty($collectDate)){
-          $sql_remain .= " AND car.carID NOT IN (SELECT car.carID FROM car, copy, booking WHERE car.carID = copy.carID AND car.carID = booking.carID AND copy.copyNum = booking.copyNum AND ($collectDate >= returnDate OR $returnDate <= collectDate))";
+          //$sql_remain .= " AND car.carID NOT IN (SELECT copy.carID FROM copy, booking WHERE  AND copy.carID = booking.carID AND copy.copyNum = booking.copyNum AND ($collectDate >= returnDate OR $returnDate <= collectDate))";
+          $sql_remain.="AND exists (SELECT * FROM booking WHERE booking.carID = copy.carID AND
+          booking.copyNum = copy.copyNum AND $collectDate <= returnDate AND $returnDate >= collectDate)"
           //lack the part of selecting copy num
         }
         $sql = $sql.$sql_remain;
