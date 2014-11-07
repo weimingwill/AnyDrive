@@ -21,7 +21,7 @@
       <form action="carlist.php"  method="post">  
         <div class="form-group">
           <div class="input-group col-sm-12">
-            <input name="event_date" type="text" placeholder="Collect Date" class="form-control required" data-date-format="YYYY-MM-DD" id='datePicker1' />
+            <input name="collectDate" type="text" placeholder="Collect Date" class="form-control required" data-date-format="YYYY-MM-DD" id='datePicker1' />
             <span class="input-group-addon">
               <span class="glyphicon glyphicon-calendar"></span>
             </span>
@@ -30,7 +30,7 @@
 
         <div class="form-group">
           <div class="input-group col-sm-12">
-            <input name="event_date" type="text" placeholder="Return Date" class="form-control required" data-date-format="YYYY-MM-DD" id='datePicker2'/ >
+            <input name="returnDate" type="text" placeholder="Return Date" class="form-control required" data-date-format="YYYY-MM-DD" id='datePicker2'/ >
             <span class="input-group-addon">
               <span class="glyphicon glyphicon-calendar"></span>
             </span>
@@ -108,44 +108,57 @@
         $returnDate = $_POST["returnDate"];
       }      
 
-      echo "compare ".($collectDate > $returnDate);
-      echo "compare ".($collectDate <= $returnDate);
+      $sql = $count = $sql_remain =  "";
 
-      $sql = "";
       if(!empty($price)){
         if($price == "lower to higher"){
           $sql = "SELECT * FROM car, copy WHERE car.carID = copy.carID ORDER BY price ASC";
+          $count = "SELECT COUNT(*) As count FROM car, copy WHERE car.carID = copy.carID ORDER BY price ASC";
         } else if($price == "higher to lower"){
           $sql = "SELECT * FROM car, copy WHERE car.carID = copy.carID ORDER BY price DESC";
+          $count = "SELECT COUNT(*) As count FROM car, copy WHERE car.carID = copy.carID ORDER BY price DESC";
         }
       } else {
         $sql = "SELECT * FROM car, copy WHERE car.carID = copy.carID ";
+        $count = "SELECT *, COUNT(*) AS count FROM car, copy WHERE car.carID = copy.carID ";
+        $sql_remain = "";
         if(!empty($brand)){
-          $sql = $sql."AND brand LIKE '%$brand%' ";
+          $sql_remain = $sql_remain."AND brand LIKE '%$brand%' ";
         }
         if(!empty($passengerCap)){
-          $sql = $sql."AND passengerCap >= $passengerCap ";
+          $sql_remain = $sql_remain."AND passengerCap >= $passengerCap ";
         }
         if(!empty($carType)){
-          $sql = $sql."AND (";
+          $sql_remain = $sql_remain."AND (";
             for ($i=0; $i < sizeof($carType) - 1; $i++) { 
-              $sql = $sql."type LIKE '%$carType[$i]%' OR ";
+              $sql_remain = $sql_remain."type LIKE '%$carType[$i]%' OR ";
             }
-            $sql = $sql."type LIKE '%$carType[$i]%')";
+            $sql_remain = $sql_remain."type LIKE '%$carType[$i]%')";
         }
         if(!empty($collectDate)){
-          $sql .= " AND NOT EXISTS (SELECT * FROM car, copy, booking WHERE car.carID = copy.carID AND car.carID = booking.carID AND ($collectDate <= collectDate AND $returnDate >= returnDate))";
-          echo "<br>".$sql;
+          $sql_remain .= " AND car.carID NOT IN (SELECT car.carID FROM car, copy, booking WHERE car.carID = copy.carID AND car.carID = booking.carID AND copy.copyNum = booking.copyNum AND ($collectDate >= returnDate OR $returnDate <= collectDate))";
+          //lack the part of selecting copy num
         }
-}
+        $sql = $sql.$sql_remain;
+        $count = $count.$sql_remain;
+      }
 
-$result = mysqli_query($con, $sql);
+      $result = mysqli_query($con, $sql);
+      $count_result = mysqli_query($con, $count);
 ?>
 
-<table class="col-md-12 table-carlist">
-  <thead class="table-header">
-    <tr>
-      <th></th>
+<table class="col-md-12" id="table-carlist">
+  <thead>
+    <tr class="table-header">
+      <?php
+    if(mysqli_num_rows($count_result) > 0){
+      while ($row = mysqli_fetch_assoc($count_result)){
+        ?>
+      <th><?php echo $row["count"]; ?> results found</th>
+      <?php
+      }
+    }
+      ?>
       <th>Model</th>
       <th>Price</th>
     </tr> 
@@ -163,6 +176,7 @@ $result = mysqli_query($con, $sql);
           <?php echo $row["carID"] ?>
             <form action="car.php" method="post">
               <input type="hidden" name="carId" value="<?php echo $row["carID"]?>">
+              <input type="hidden" name="copyNum" value="<?php echo $row["copyNum"]?>">
               <button class="btn btn-primary">SELECT</button>
             </form>
         </td>
@@ -179,14 +193,25 @@ $result = mysqli_query($con, $sql);
 } else {
   require('car_mysql.php');
       // $sql = "SELECT * FROM car, copy WHERE car.carID = copy.carID ORDER BY STR_TO_DATE(startDateOfService, '%Y-%m-%d') ASC"; 
-  $sql = "SELECT * FROM car"; 
+  $sql = "SELECT * FROM car, copy WHERE car.carID = copy.carID";
+  $count ="SELECT COUNT(*) AS count FROM car, copy WHERE car.carID = copy.carID";
   $result = mysqli_query($con, $sql);
+  $count_result = mysqli_query($con, $count);
   ?>
-  <table class="col-md-12">
-    <thead class="table-header">
-      <tr>
-        <th></th>
+  <table class="col-md-12" id="table-carlist">
+    <thead>
+      <tr class="table-header">
+      <?php
+    if(mysqli_num_rows($count_result) > 0){
+      while ($row = mysqli_fetch_assoc($count_result)){
+        ?>
+      <th><?php echo $row["count"]; ?> results found</th>
+      <?php
+      }
+    }
+      ?>        
         <th>Model</th>
+        <th>Start date of service</th>
         <th>Price<b class="caret"></b></a>
           <ul class="dropdown-menu">
             <li><a href="#"></a></li>
@@ -202,11 +227,14 @@ $result = mysqli_query($con, $sql);
          ?>
          <tr class="table-row">
           <td><img class="carlist-img" src="../images/car1.jpg"></td>
-          <td><?php echo $row["brand"]." ".$row["model"] ?></td>
-          <td>
+          <td class="table-brand-model"><?php echo $row["brand"]." ".$row["model"] ?></td>
+          <td><?php echo $row["startDateOfService"] ?></td>
+          <td class="table-price-row">
+            <p class="table-price"><?php echo "$".$row["price"] ?></p>
             <form action="car.php" method="post">
               <input type="hidden" name="carId" value="<?php echo $row["carID"]?>">
-              <button class="btn btn-primary">SELECT</button>
+              <input type="hidden" name="copyNum" value="<?php echo $row["copyNum"]?>">
+              <button class="btn btn-primary table-btn">SELECT</button>
             </form>
           </td>
         </tr>

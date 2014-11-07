@@ -68,14 +68,20 @@ html,body{
 }
 
 /*carlist content table*/
-.table-carlist tr{
+#table-carlist tr{
 	border-bottom: 1px solid #eee;
+
+}
+
+#table-carlist{
+	border-radius: 4px;
 }
 
 .table-header{
 	background: #dd4814;
 	color: white;
 	font-size: 15px;
+	height: 50px;
 }
 
 .table-row{
@@ -102,7 +108,21 @@ td .carlist-img{
 	vertical-align: top;
 }
 
+.table-price{
+	font-size: 30px;
+}
 
+.table-brand-model{
+	font-style: bold;
+}
+
+.table-btn{
+	height: 10px;
+}
+
+.table-price-row{
+	text-align: right;
+}
 .car-feature{
 	margin-left: 30%;
 	width: 200px;

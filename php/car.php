@@ -79,62 +79,17 @@
      }
 
     $carId = $copyNum = "";
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-          //connect to database
+
+ if ($_SERVER["REQUEST_METHOD"] == "POST"){
       require('car_mysql.php');
 
       if(!empty($_POST["carId"])){
         $carId = $_POST["carId"];
       }
 
-      $sql = "SELECT * FROM car, copy WHERE car.carID = copy.carID AND car.carID = '$carId' ";
-      $result = mysqli_query($con, $sql);
-?>
-
-<table class="col-md-12 table-carlist">
-  <thead class="table-header">
-    <tr>
-      <th></th>
-      <th>Model</th>
-      <th>Price</th>
-    </tr> 
-  </thead>
-  <tbody>
-    <?php
-    if(mysqli_num_rows($result) > 0){
-      while ($row = mysqli_fetch_assoc($result)){
-       ?>
-       <tr class="table-row">
-        <td><img class="car-img" src="../images/car1.jpg"></td>
-        <td><?php echo $row["brand"]." ".$row["model"] ?></td>
-        <td>
-          <?php echo "$".$row["price"] ?>
-          <form action="car.php" method="get">
-            <input type="hidden" name="carId" value="<?php echo $row["carID"]?>">
-            <input type="hidden" name="copyNum" value="<?php echo $row["copyNum"] ?>">
-            <button class="btn btn-primary">SELECT</button>
-          </form>
-        </td>
-      </tr>
-    </tbody>
-    <?php
-  }
-}
-?>
-</table>
-<?php
-//second post
-} else if ($_SERVER["REQUEST_METHOD"] == "GET"){
-      require('car_mysql.php');
-
-      if(!empty($_GET["carId"])){
-        $carId = $_GET["carId"];
+      if(!empty($_POST["copyNum"])){
+        $copyNum = $_POST["copyNum"];
       }
-
-      if(!empty($_GET["copyNum"])){
-        $copyNum = $_GET["copyNum"];
-      }
-
       $sql = "SELECT * FROM car, copy WHERE car.carID = copy.carID AND car.carID = '$carId' AND copyNum = '$copyNum' ";
       $result = mysqli_query($con, $sql);
 
@@ -209,9 +164,6 @@
               </tr>
             </tbody>
           </table>
-          
-          
-          
         </div>
       </div>
 
