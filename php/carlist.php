@@ -147,57 +147,6 @@
       $count_result = mysqli_query($con, $count);
 ?>
 
-<table class="col-md-12" id="table-carlist">
-  <thead>
-    <tr class="table-header">
-      <?php
-    if(mysqli_num_rows($count_result) > 0){
-      while ($row = mysqli_fetch_assoc($count_result)){
-        ?>
-      <th><?php echo $row["count"]; ?> results found</th>
-      <?php
-      }
-    }
-      ?>
-      <th>Model</th>
-      <th>Price</th>
-    </tr> 
-  </thead>
-  <tbody>
-    <?php
-    if(mysqli_num_rows($result) > 0){
-      while ($row = mysqli_fetch_assoc($result)){
-       ?>
-       <tr class="table-row">
-        <td><img class="carlist-img" src="../images/car1.jpg"></td>
-        <td><?php echo $row["brand"]." ".$row["model"] ?></td>
-        <td>
-          <?php echo "$".$row["price"] ?>
-          <?php echo $row["carID"] ?>
-            <form action="car.php" method="post">
-              <input type="hidden" name="carId" value="<?php echo $row["carID"]?>">
-              <input type="hidden" name="copyNum" value="<?php echo $row["copyNum"]?>">
-              <button class="btn btn-primary">SELECT</button>
-            </form>
-        </td>
-      </tr>
-    </tbody>
-    <?php
-  }
-} else {
-  echo "0 result";
-}
-?>
-</table>
-<?php
-} else {
-  require('car_mysql.php');
-      // $sql = "SELECT * FROM car, copy WHERE car.carID = copy.carID ORDER BY STR_TO_DATE(startDateOfService, '%Y-%m-%d') ASC"; 
-  $sql = "SELECT * FROM car, copy WHERE car.carID = copy.carID";
-  $count ="SELECT COUNT(*) AS count FROM car, copy WHERE car.carID = copy.carID";
-  $result = mysqli_query($con, $sql);
-  $count_result = mysqli_query($con, $count);
-  ?>
   <table class="col-md-12" id="table-carlist">
     <thead>
       <tr class="table-header">
@@ -205,7 +154,7 @@
     if(mysqli_num_rows($count_result) > 0){
       while ($row = mysqli_fetch_assoc($count_result)){
         ?>
-      <th><?php echo $row["count"]; ?> results found</th>
+      <th class="table-count-result"><?php echo $row["count"]; ?> results found</th>
       <?php
       }
     }
@@ -230,7 +179,7 @@
           <td class="table-brand-model"><?php echo $row["brand"]." ".$row["model"] ?></td>
           <td><?php echo $row["startDateOfService"] ?></td>
           <td class="table-price-row">
-            <p class="table-price"><?php echo "$".$row["price"] ?></p>
+            <p class="table-price"><?php echo "$".$row["price"] ?></p> <p>per weekday</p>
             <form action="car.php" method="post">
               <input type="hidden" name="carId" value="<?php echo $row["carID"]?>">
               <input type="hidden" name="copyNum" value="<?php echo $row["copyNum"]?>">
@@ -238,11 +187,70 @@
             </form>
           </td>
         </tr>
-      </tbody>
       <?php  
     }
   }
   ?>
+
+      </tbody>
+
+</table>
+<?php
+} else {
+  require('car_mysql.php');
+      // $sql = "SELECT * FROM car, copy WHERE car.carID = copy.carID ORDER BY STR_TO_DATE(startDateOfService, '%Y-%m-%d') ASC"; 
+  $sql = "SELECT * FROM car, copy WHERE car.carID = copy.carID";
+  $count ="SELECT COUNT(*) AS count FROM car, copy WHERE car.carID = copy.carID";
+  $result = mysqli_query($con, $sql);
+  $count_result = mysqli_query($con, $count);
+  ?>
+  <table class="col-md-12" id="table-carlist">
+    <thead>
+      <tr class="table-header">
+      <?php
+    if(mysqli_num_rows($count_result) > 0){
+      while ($row = mysqli_fetch_assoc($count_result)){
+        ?>
+      <th class="table-count-result"><?php echo $row["count"]; ?> results found</th>
+      <?php
+      }
+    }
+      ?>        
+        <th>Model</th>
+        <th>Start date of service</th>
+        <th>Price<b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="#"></a></li>
+            <li><a href="#">Another action</a></li>
+          </ul>
+        </th>
+      </tr> 
+    </thead>
+    <tbody>
+      <?php
+      if(mysqli_num_rows($result) > 0){
+        while ($row = mysqli_fetch_assoc($result)){
+         ?>
+         <tr class="table-row">
+          <td><img class="carlist-img" src="../images/car1.jpg"></td>
+          <td class="table-brand-model"><?php echo $row["brand"]." ".$row["model"] ?></td>
+          <td><?php echo $row["startDateOfService"] ?></td>
+          <td class="table-price-row">
+            <p class="table-price"><?php echo "$".$row["price"] ?></p> <p>per weekday</p>
+            <form action="car.php" method="post">
+              <input type="hidden" name="carId" value="<?php echo $row["carID"]?>">
+              <input type="hidden" name="copyNum" value="<?php echo $row["copyNum"]?>">
+              <button class="btn btn-primary table-btn">SELECT</button>
+            </form>
+          </td>
+        </tr>
+      <?php  
+    }
+  }
+  ?>
+
+      </tbody>
+
 </table>
 <?php
 }
@@ -275,13 +283,13 @@ $(function () {
     $(this).closest('form').submit();
   });
 
-  $('.caret').click(function(){
-    $('.dropdown-menu').toggle();
-  });
-
-  // $('#carType').change(function (){
-  //   $(this).closest('form').submit();
+  // $('.caret').click(function(){
+  //   $('.dropdown-menu').toggle();
   // });
+
+  // // $('#carType').change(function (){
+  // //   $(this).closest('form').submit();
+  // // });
 
 });
 

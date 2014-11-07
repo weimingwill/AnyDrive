@@ -25,7 +25,6 @@ html,body{
 	border: 1px rgba(63, 133, 193, 0.35);
 	border-style: solid ;
 	border-radius:15px;
-	
 	height: 300px;
 	
 }
@@ -70,12 +69,14 @@ html,body{
 /*carlist content table*/
 #table-carlist tr{
 	border-bottom: 1px solid #eee;
+	padding-left: 20px;
+	padding-right: 20px;
 
 }
 
 #table-carlist{
 	border-radius: 4px;
-}
+	}
 
 .table-header{
 	background: #dd4814;
@@ -113,21 +114,33 @@ td .carlist-img{
 }
 
 .table-brand-model{
-	font-style: bold;
+	font-size: 20px;
 }
 
 .table-btn{
-	height: 10px;
+	height: 35px;
+	width: 100px;
+
 }
 
 .table-price-row{
-	text-align: right;
+	text-align: left;
 }
+
+.table-count-result{
+	padding-left: 20px;
+	font-weight: 200;
+}
+
 .car-feature{
 	margin-left: 30%;
 	width: 200px;
 }
 
+.car-feature-img{
+	width: 25px;
+	height: auto;
+}
 /*booking.php*/
 .booking-label{
 	width: 20px;
