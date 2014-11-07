@@ -103,19 +103,15 @@
         
         <div class="panel-body">
           <table class="table-car-feature">
-<!--             <thead>
-              <tr>
-                <th class="table-car-header"><?php echo $row["brand"]." ".$row["model"] ?></th>
-              </tr>
-            </thead> -->
             <tbody>
               <tr>
                 <td><img class="car-img" src="../images/car1.jpg"></td>
                 <td class="table-td-car-feature">
-                  <h3><?php echo $row["brand"]." ".$row["model"] ?></h3>
-                  <!-- <i class="fa fa-car fa-2x"></i> -->
-                  <?php echo $row["type"] ?>
-                  <?php echo $row["passengerCap"] ?>
+                  <h2><?php echo $row["brand"]." ".$row["model"] ?></h2>
+                  <img class="car-feature-img" src="../images/cartype.png">
+                  <span><?php echo $row["type"] ?></span>
+                  <img class="car-feature-img" src="../images/passenger.png">
+                  <span><?php echo $row["passengerCap"] ?></span>
                   <?php echo "$".$row["price"] ?>
                   <form action="booking.php" method="get">
                     <input type="hidden" name="carId" value="<?php echo $row["carID"]?>">
