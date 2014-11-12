@@ -5,7 +5,7 @@
 <body>
   <?php include 'navigation.php'; ?>
   <!--search form in homepage-->
-  <div class="container">
+  <div class="container setFooter">
 
     <div class="col-md-12 content">
       <?php
@@ -60,9 +60,30 @@
       <h1 class="panel-title">Booking Information</h1>
     </div>
     <div class="panel-body">
-      <h3><span class="booking-label">Vehicle: </span><span><?php echo $brand." ".$model ?></span></h3>
+      <table id="table-booking">
+        <thead class="table-header-booking">
+          <tr>
+            <td>Car</td>
+            <td>From</td>
+            <td>To</td>
+            <td>Payment amount</td>
+          </tr>
+          <tr>
+            <th><h3></h3></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="table-content-booking">
+            <td><?php echo $brand." ".$model ?></td>
+            <td><?php echo $collectDate ?></td>
+            <td><?php echo $returnDate ?></td>
+            <td><?php echo "$".$price ?></td>
+          </tr>
+        </tbody>
+      </table>
+<!--       <h3><span class="booking-label">Vehicle: </span><span><?php echo $brand." ".$model ?></span></h3>
       <h3><span>Collect Date: </span><span><?php echo $collectDate ?></span></h3>
-      <h3><span>Return Date:  </span><span><?php echo $returnDate ?></span></h3>
+      <h3><span>Return Date:  </span><span><?php echo $returnDate ?></span></h3> -->
       <form action="booking.php" method="post">
         <input type="hidden" name="carId" value="<?php echo $carId ?>">
         <input type="hidden" name="copyNum" value="<?php echo $copyNum ?>">
@@ -118,7 +139,7 @@
     // echo "  ";
     // echo date("Y-m-d h:i:sa");
     // echo "<br>";
-    $bookingTime = date("Y-m-d h:i:sa");
+    $bookingTime = date("Y-m-d h:i:s");
 
     $sql = "INSERT INTO booking(userEmail, carID, copyNum ,bookingTime, collectDate, returnDate, cost)
     VALUES ('$userEmail', '$carId', '$copyNum', '$bookingTime', '$collectDate', '$returnDate', '$price')";

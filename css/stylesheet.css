@@ -11,6 +11,9 @@ html,body{
 	position:relative;
 } 
 
+.setFooter{
+	height: 100%;
+}
 
 #thumbnail{
 	border: 1px rgba(63, 133, 193, 0.35);
@@ -131,7 +134,7 @@ td .carlist-img{
 .table-btn{
 	height: 35px;
 	width: 100px;
-
+	margin-bottom: 10px;
 }
 
 .table-price-row{
@@ -170,10 +173,26 @@ td .carlist-img{
 	margin-bottom: 2%;
 }
 
+#table-booking{
+	width: 100%;
+	margin-bottom: 20px;
+}
+
+.table-header-booking{
+	font-size: 20px;
+}
+
+.table-content-booking{
+	font-size: 20px;
+}
+
 /*price slider*/
 .slider.slider-horizontal .slider-track{
 	width: 75%;
 }
+
+
+
 /*added by JJ */
 
 
