@@ -16,6 +16,7 @@
        return $data;
      }
 
+    date_default_timezone_set("Asia/Singapore");
     $carId = $copyNum = $brand = $model = $collectDate = $returnDate = $userEmail = $price = $feedback = "";
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
           //connect to database
@@ -118,7 +119,7 @@
     // echo "  ";
     // echo date("Y-m-d h:i:sa");
     // echo "<br>";
-    $bookingTime = date("Y-m-d h:i:sa");
+    $bookingTime = date("Y-m-d h:i:s");
 
     $sql = "INSERT INTO booking(userEmail, carID, copyNum ,bookingTime, collectDate, returnDate, cost)
     VALUES ('$userEmail', '$carId', '$copyNum', '$bookingTime', '$collectDate', '$returnDate', '$price')";
