@@ -7,6 +7,52 @@
   <!--search form in homepage-->
   <div class="container">
     <div class="col-sm-3 col-md-2 sidebar">
+      <?php
+      function test_input($data) {
+       $data = trim($data);
+       $data = stripslashes($data);
+       $data = htmlspecialchars($data);
+       return $data;
+     }
+
+     $carType = array();
+     $price = $passengerCap = $gearType = $brand = $collectDate = $returnDate = "";
+     $price_empty = $passengerCap_empty = $brand_empty = $carType_empty = $collectDate_empty = $returnDate_empty = true;
+     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+          //connect to database
+      require('car_mysql.php');
+
+      if(!empty($_POST["price"])){
+        $price = test_input($_POST["price"]);
+        $price_empty = false;
+      }
+
+      if(!empty($_POST["passengerCap"])){
+        $passengerCap = test_input($_POST["passengerCap"]);
+        $passengerCap_empty = false;
+      }
+
+      if(!empty($_POST["brand"])){
+        $brand = test_input($_POST["brand"]);
+        $brand_empty = false;
+      }
+
+      if(!empty($_POST["carType"])){
+        $carType = $_POST["carType"];
+        $carType_empty = false;
+      }
+
+      if(!empty($_POST["collectDate"])){
+        $collectDate = $_POST["collectDate"];
+        $collectDate_empty = false;
+      }
+
+      if(!empty($_POST["returnDate"])){
+        $returnDate = $_POST["returnDate"];
+        $returnDate_empty = false;
+      }     
+
+      ?>
       <form action="carlist.php"  method="post" id="searchByPrice">
         <div class="form-group">
           <label for="price" class="col-sm-12 control-label">Price</label>
@@ -21,7 +67,12 @@
       <form action="carlist.php"  method="post">  
         <div class="form-group">
           <div class="input-group col-sm-12">
-            <input name="collectDate" type="text" placeholder="Collect Date" class="form-control required" data-date-format="YYYY-MM-DD" id='datePicker1' />
+            <input name="collectDate" type="text" placeholder="Collect Date" class="form-control required" data-date-format="YYYY-MM-DD" id='datePicker1' 
+            <?php
+              if (!$collectDate_empty) {
+                echo "value = $collectDate";
+              }
+            ?>>
             <span class="input-group-addon">
               <span class="glyphicon glyphicon-calendar"></span>
             </span>
@@ -30,7 +81,12 @@
 
         <div class="form-group">
           <div class="input-group col-sm-12">
-            <input name="returnDate" type="text" placeholder="Return Date" class="form-control required" data-date-format="YYYY-MM-DD" id='datePicker2'/ >
+            <input name="returnDate" type="text" placeholder="Return Date" class="form-control required" data-date-format="YYYY-MM-DD" id='datePicker2'
+            <?php
+              if (!$returnDate_empty) {
+                echo "value = $returnDate";
+              }
+            ?>>
             <span class="input-group-addon">
               <span class="glyphicon glyphicon-calendar"></span>
             </span>
@@ -40,7 +96,12 @@
         <div class="form-group">
           <label for="passengerCap" class="col-sm-12 control-label">Passenger Capacity</label>
           <div class="input-group col-sm-12" id="passengerCap">
-            <input name="passengerCap" type="text" class="form-control">
+            <input name="passengerCap" type="text" class="form-control"
+            <?php
+              if (!$passengerCap_empty) {
+                echo "value = $passengerCap";
+              }
+            ?>>
           </div>
         </div>
 
@@ -55,12 +116,45 @@
           <label for="carType" class="col-sm-12 control-label">Car Type</label>
           <div class="input-group col-sm-12">
             <ul class="car-type">
-              <li class="car-type-list"><input type="checkbox" name="carType[]" value="Sedan"> Sedan </li>
-              <li class="car-type-list"><input type="checkbox" name="carType[]" value="Luxury Sedan"> Luxury Sedan </li>
-              <li class="car-type-list"><input type="checkbox" name="carType[]" value="Sports"> Sports </li>
-              <li class="car-type-list"><input type="checkbox" name="carType[]" value="Hatchback"> Hatchback </li>
-              <li class="car-type-list"><input type="checkbox" name="carType[]" value="MPV"> MPV</li>
-              <li class="car-type-list"><input type="checkbox" name="carType[]" value="SUV"> SUV </li>
+            <?php
+              $sedan_empty = $luxury_sedan_empty = $sports_empty = $hatchback_empty = $mpv_empty = $suv_empty = true;
+              if (!$carType_empty) {
+                for ($i=0; $i < sizeof($carType); $i++) { 
+                  if($carType[$i] == "Sedan"){
+                    $sedan_empty = false;
+                  }
+
+                  if($carType[$i] == "Luxury Sedan"){
+                    $luxury_sedan_empty = false;
+                  }
+
+                  if($carType[$i] == "Sports"){
+                    $sports_empty = false;
+                  }
+
+                  if($carType[$i] == "Hatchback"){
+                    $hatchback_empty = false;
+                  }
+
+                  if($carType[$i] == "MPV"){
+                    $mpv_empty = false;
+                  }
+
+                  if($carType[$i] == "SUV"){
+                    $suv_empty = false;
+                  }       
+                  
+                }
+            ?>
+              <li class="car-type-list"><input type="checkbox" name="carType[]" value="Sedan" <?php if(!$sedan_empty){ echo " checked";}?>> Sedan </li>
+              <li class="car-type-list"><input type="checkbox" name="carType[]" value="Luxury Sedan" <?php if(!$luxury_sedan_empty){ echo " checked";}?>> Luxury Sedan </li>
+              <li class="car-type-list"><input type="checkbox" name="carType[]" value="Sports" <?php if(!$sports_empty){ echo " checked";}?>> Sports </li>
+              <li class="car-type-list"><input type="checkbox" name="carType[]" value="Hatchback" <?php if(!$hatchback_empty){ echo " checked";}?>> Hatchback </li>
+              <li class="car-type-list"><input type="checkbox" name="carType[]" value="MPV" <?php if(!$mpv_empty){ echo " checked";}?>> MPV</li>
+              <li class="car-type-list"><input type="checkbox" name="carType[]" value="SUV" <?php if(!$suv_empty){ echo " checked";}?>> SUV </li>
+            <?php  
+              }
+            ?>   
             </ul>
           </div>
         </div>
@@ -70,43 +164,7 @@
     </div>
 
     <div class="col-md-10 content">
-      <?php
-      function test_input($data) {
-       $data = trim($data);
-       $data = stripslashes($data);
-       $data = htmlspecialchars($data);
-       return $data;
-     }
-
-     $carType = array();
-     $price = $passengerCap = $gearType = $brand = $collectDate = $returnDate = "";
-     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-          //connect to database
-      require('car_mysql.php');
-
-      if(!empty($_POST["price"])){
-        $price = test_input($_POST["price"]);
-      }
-
-      if(!empty($_POST["passengerCap"])){
-        $passengerCap = test_input($_POST["passengerCap"]);
-      }
-
-      if(!empty($_POST["brand"])){
-        $brand = test_input($_POST["brand"]);
-      }
-
-      if(!empty($_POST["carType"])){
-        $carType = $_POST["carType"];
-      }
-
-      if(!empty($_POST["collectDate"])){
-        $collectDate = $_POST["collectDate"];
-      }
-
-      if(!empty($_POST["returnDate"])){
-        $returnDate = $_POST["returnDate"];
-      }      
+      <?php 
 
       $sql = $count = $sql_remain =  "";
 
@@ -135,7 +193,7 @@
             }
             $sql_remain = $sql_remain."type LIKE '%$carType[$i]%')";
         }
-        if(!empty($collectDate and !empty($returnDate))){
+        if(!empty($collectDate) && !empty($returnDate)){
           //$sql_remain .= " AND car.carID NOT IN (SELECT copy.carID FROM copy, booking WHERE  AND copy.carID = booking.carID AND copy.copyNum = booking.copyNum AND ($collectDate >= returnDate OR $returnDate <= collectDate))";
 
           $sql_remain.="AND exists (SELECT * FROM booking WHERE booking.carID = copy.carID AND
@@ -169,6 +227,7 @@
     }
       ?>        
         <th>Model</th>
+        <th>Car Type</th>
         <th>Start date of service</th>
         <th>Price<b class="caret"></b></a>
           <ul class="dropdown-menu">
@@ -187,6 +246,7 @@
          <tr class="table-row">
           <td><img class="carlist-img" src="<?php echo $imagePath; ?>"></td>
           <td class="table-brand-model"><?php echo $row["brand"]." ".$row["model"] ?></td>
+          <td><?php echo $row["carType"] ?></td>
           <td><?php echo $row["startDateOfService"] ?></td>
           <td class="table-price-row">
             <p class="table-price"><?php echo "$".$row["price"] ?></p> <p>per weekday</p>
@@ -227,6 +287,7 @@
     }
       ?>        
         <th>Model</th>
+        <th>Car Type</th>
         <th>Start date of service</th>
         <th>Price<b class="caret"></b></a>
           <ul class="dropdown-menu">
@@ -245,6 +306,7 @@
          <tr class="table-row">
           <td><img class="carlist-img" src="<?php echo $imagePath; ?>"></td>
           <td class="table-brand-model"><?php echo $row["brand"]." ".$row["model"] ?></td>
+          <td><?php echo $row["carType"] ?></td>
           <td><?php echo $row["startDateOfService"] ?></td>
           <td class="table-price-row">
             <p class="table-price"><?php echo "$".$row["price"] ?></p> <p>per weekday</p>

@@ -141,6 +141,14 @@ td .carlist-img{
 	width: 25px;
 	height: auto;
 }
+
+.car-type-span{
+	font-size: 20px;
+}
+
+.passenger-span{
+	font-size: 20px;	
+}
 /*booking.php*/
 .booking-label{
 	width: 20px;
