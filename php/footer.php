@@ -4,7 +4,9 @@
     <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="../bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>    
     <script src="../scripts/bootstrap.min.js"></script>
+    <script src="../seiyria-bootstrap-slider/js/bootstrap-slider.js"></script>
     <script src="../scripts/bootswatch.js"></script>
+
      <footer>
       <div class="row" >
         <div class="col-lg-12">

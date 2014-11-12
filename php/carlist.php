@@ -15,16 +15,21 @@
        return $data;
      }
 
-     $carType = array();
-     $price = $passengerCap = $gearType = $brand = $collectDate = $returnDate = "";
-     $price_empty = $passengerCap_empty = $brand_empty = $carType_empty = $collectDate_empty = $returnDate_empty = true;
+     $carType = $price = array();
+     $price_ord = $passengerCap = $gearType = $brand = $collectDate = $returnDate = "";
+     $price_empty = $price_ord_empty = $passengerCap_empty = $brand_empty = $carType_empty = $collectDate_empty = $returnDate_empty = true;
      if ($_SERVER["REQUEST_METHOD"] == "POST") {
           //connect to database
       require('car_mysql.php');
 
-      if(!empty($_POST["price"])){
-        $price = test_input($_POST["price"]);
+      if(!empty($_POST["price"])){    
+        $price = $_POST["price"];
         $price_empty = false;
+      }
+
+      if(!empty($_POST["price_ord"])){
+        $price_ord = test_input($_POST["price_ord"]);
+        $price_ord_empty = false;
       }
 
       if(!empty($_POST["passengerCap"])){
@@ -55,16 +60,27 @@
       ?>
       <form action="carlist.php"  method="post" id="searchByPrice">
         <div class="form-group">
-          <label for="price" class="col-sm-12 control-label">Price</label>
-          <div class="input-group col-sm-12" id="price">
-            <select class="form-control" name="price">
-              <option id="priceOption">lower to higher</option>
-              <option id="priceOption">higher to lower</option>
+          <label for="price_ord" class="col-sm-12 control-label">Order by price</label>
+          <div class="input-group col-sm-12" id="price_ord">
+            <select class="form-control" name="price_ord">
+              <?php
+                $low_to_high_empty = $high_to_low_empty = true;
+                if(!$price_ord_empty){
+                  if ($price_ord == "lower to higher") {
+                    $low_to_high_empty = false;
+                  }
+
+                  if ($price_ord == "higher to lower") {
+                    $high_to_low_empty = false;
+                  }
+                }
+              ?>
+              <option id="priceOption" value="lower to higher" <?php if(!$low_to_high_empty){ echo " selected";}?> >lower to higher</option>
+              <option id="priceOption" value="higher to lower" <?php if(!$high_to_low_empty){ echo " selected";}?> >higher to lower</option>
             </select>
           </div>
         </div>
-      </form>     
-      <form action="carlist.php"  method="post">  
+
         <div class="form-group">
           <div class="input-group col-sm-12">
             <input name="collectDate" type="text" placeholder="Collect Date" class="form-control required" data-date-format="YYYY-MM-DD" id='datePicker1' 
@@ -93,6 +109,58 @@
           </div>
         </div>
 
+<!--         <div class="form-group">
+          <label for="brand" class="col-sm-12 control-label">Price</label>
+          <div class="input-group col-sm-12" id="brand">
+            $50 <input id="ex2" type="text" class="span2" value="10" data-slider-min="50" data-slider-max="500" data-slider-step="10" data-slider-value="[150,450]"/>$500
+            <input name="brand" type="text" class="form-control slider">
+          </div>
+        </div> -->
+        <div class="form-group">
+          <label for="price" class="col-sm-12 control-label">Price</label>
+          <div class="input-group col-sm-12">
+            <ul class="price">
+            <?php
+              $first_price_empty = $second_price_empty = $third_price_empty = $fourth_price_empty = $fifth_price_empty = $sixth_price_empty = true;
+              if (!$price_empty) {
+                for ($i=0; $i < sizeof($price); $i++) { 
+                  if($price[$i] == "1"){
+                    $first_price_empty = false;
+                  }
+
+                  if($price[$i] == "2"){
+                    $second_price_empty = false;
+                  }
+
+                  if($price[$i] == "3"){
+                    $third_price_empty = false;
+                  }
+
+                  if($price[$i] == "4"){
+                    $fourth_price_empty = false;
+                  }
+
+                  if($price[$i] == "5"){
+                    $fifth_price_empty = false;
+                  }
+
+                  if($price[$i] == "6"){
+                    $sixth_price_empty = false;
+                  }       
+                }
+              }
+            ?>
+              <li class="price-list"><input type="checkbox" name="price[]" value="1" <?php if(!$first_price_empty){ echo " checked";}?>> $50 - $100 </li>
+              <li class="price-list"><input type="checkbox" name="price[]" value="2" <?php if(!$second_price_empty){ echo " checked";}?>> $100 - $150 </li>
+              <li class="price-list"><input type="checkbox" name="price[]" value="3" <?php if(!$third_price_empty){ echo " checked";}?>> $150 - $200 </li>
+              <li class="price-list"><input type="checkbox" name="price[]" value="4" <?php if(!$fourth_price_empty){ echo " checked";}?>> $200 - $250 </li>
+              <li class="price-list"><input type="checkbox" name="price[]" value="5" <?php if(!$fifth_price_empty){ echo " checked";}?>> $250 - $300</li>
+              <li class="price-list"><input type="checkbox" name="price[]" value="6" <?php if(!$sixth_price_empty){ echo " checked";}?>> Above $300 </li>
+ 
+            </ul>
+          </div>
+        </div>
+
         <div class="form-group">
           <label for="passengerCap" class="col-sm-12 control-label">Passenger Capacity</label>
           <div class="input-group col-sm-12" id="passengerCap">
@@ -108,7 +176,12 @@
         <div class="form-group">
           <label for="brand" class="col-sm-12 control-label">brand</label>
           <div class="input-group col-sm-12" id="brand">
-            <input name="brand" type="text" class="form-control">
+            <input name="brand" type="text" class="form-control"
+            <?php
+              if (!$brand_empty) {
+                echo "value = $brand";
+              }
+            ?>>            
           </div>
         </div>
 
@@ -143,8 +216,8 @@
                   if($carType[$i] == "SUV"){
                     $suv_empty = false;
                   }       
-                  
-                }
+                }   
+              }
             ?>
               <li class="car-type-list"><input type="checkbox" name="carType[]" value="Sedan" <?php if(!$sedan_empty){ echo " checked";}?>> Sedan </li>
               <li class="car-type-list"><input type="checkbox" name="carType[]" value="Luxury Sedan" <?php if(!$luxury_sedan_empty){ echo " checked";}?>> Luxury Sedan </li>
@@ -152,9 +225,6 @@
               <li class="car-type-list"><input type="checkbox" name="carType[]" value="Hatchback" <?php if(!$hatchback_empty){ echo " checked";}?>> Hatchback </li>
               <li class="car-type-list"><input type="checkbox" name="carType[]" value="MPV" <?php if(!$mpv_empty){ echo " checked";}?>> MPV</li>
               <li class="car-type-list"><input type="checkbox" name="carType[]" value="SUV" <?php if(!$suv_empty){ echo " checked";}?>> SUV </li>
-            <?php  
-              }
-            ?>   
             </ul>
           </div>
         </div>
@@ -168,15 +238,15 @@
 
       $sql = $count = $sql_remain =  "";
 
-      if(!empty($price)){
-        if($price == "lower to higher"){
-          $sql = "SELECT * FROM car, copy WHERE car.carID = copy.carID ORDER BY price ASC";
-          $count = "SELECT COUNT(*) As count FROM car, copy WHERE car.carID = copy.carID ORDER BY price ASC";
-        } else if($price == "higher to lower"){
-          $sql = "SELECT * FROM car, copy WHERE car.carID = copy.carID ORDER BY price DESC";
-          $count = "SELECT COUNT(*) As count FROM car, copy WHERE car.carID = copy.carID ORDER BY price DESC";
-        }
-      } else {
+      // if(!empty($price_ord)){
+      //   if($price_ord == "lower to higher"){
+      //     $sql = "SELECT * FROM car, copy WHERE car.carID = copy.carID ORDER BY price ASC";
+      //     $count = "SELECT COUNT(*) As count FROM car, copy WHERE car.carID = copy.carID ORDER BY price ASC";
+      //   } else if($price_ord == "higher to lower"){
+      //     $sql = "SELECT * FROM car, copy WHERE car.carID = copy.carID ORDER BY price DESC";
+      //     $count = "SELECT COUNT(*) As count FROM car, copy WHERE car.carID = copy.carID ORDER BY price DESC";
+      //   }
+      // } else {
         $sql = "SELECT * FROM car, copy WHERE car.carID = copy.carID ";
         $count = "SELECT *, COUNT(*) AS count FROM car, copy WHERE car.carID = copy.carID ";
         $sql_remain = "";
@@ -195,20 +265,24 @@
         }
         if(!empty($collectDate) && !empty($returnDate)){
           //$sql_remain .= " AND car.carID NOT IN (SELECT copy.carID FROM copy, booking WHERE  AND copy.carID = booking.carID AND copy.copyNum = booking.copyNum AND ($collectDate >= returnDate OR $returnDate <= collectDate))";
-
           $sql_remain.="AND exists (SELECT * FROM booking WHERE booking.carID = copy.carID AND
           booking.copyNum = copy.copyNum AND (
           ('$collectDate' >= returnDate) OR
           ('$returnDate' <= collectDate)
           ) 
           )";
+        }
 
-         
-          //lack the part of selecting copy num
-        } 
+        if(!empty($price_ord)){
+          if($price_ord == "lower to higher"){
+            $sql_remain = $sql_remain." ORDER BY price ASC";
+          } else if ($price_ord == "higher to lower") {
+            $sql_remain = $sql_remain." ORDER BY price DESC";
+          }
+        }
         $sql = $sql.$sql_remain;
         $count = $count.$sql_remain;
-      }
+      // }
 
       $result = mysqli_query($con, $sql);
       $count_result = mysqli_query($con, $count);
@@ -246,7 +320,7 @@
          <tr class="table-row">
           <td><img class="carlist-img" src="<?php echo $imagePath; ?>"></td>
           <td class="table-brand-model"><?php echo $row["brand"]." ".$row["model"] ?></td>
-          <td><?php echo $row["carType"] ?></td>
+          <td><?php echo $row["type"] ?></td>
           <td><?php echo $row["startDateOfService"] ?></td>
           <td class="table-price-row">
             <p class="table-price"><?php echo "$".$row["price"] ?></p> <p>per weekday</p>
@@ -352,9 +426,9 @@ $(function () {
    $('#datePicker1').data("DateTimePicker").setMaxDate(e.date);
  });
 
-  $('select').change(function (){
-    $(this).closest('form').submit();
-  });
+  // $('select').change(function (){
+  //   $(this).closest('form').submit();
+  // });
 
   // $('.caret').click(function(){
   //   $('.dropdown-menu').toggle();
@@ -364,7 +438,20 @@ $(function () {
   // //   $(this).closest('form').submit();
   // // });
 
-});
+  // Instantiate a slider
+  var mySlider = $("input.slider").slider();
+
+  // Call a method on the slider
+  var value = mySlider.slider('getValue');
+
+  // For non-getter methods, you can chain together commands
+      mySlider
+          .slider('setValue', 5)
+          .slider('setValue', 7);
+
+  $("#ex2").slider({});
+
+  });
 
 
 

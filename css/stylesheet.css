@@ -58,6 +58,17 @@ html,body{
 	margin-top: 2px;
 }
 
+.price{
+	list-style-type: none;
+	margin-left: 0;
+	padding-left: 0;
+}
+
+.price-list{
+	font-size: 14px;
+	margin-top: 2px;	
+}
+
 .sidebar, .content{
 	margin-top: 8%;
 }
@@ -157,6 +168,11 @@ td .carlist-img{
 
 .booking-feedback{
 	margin-bottom: 2%;
+}
+
+/*price slider*/
+.slider.slider-horizontal .slider-track{
+	width: 75%;
 }
 /*added by JJ */
 
