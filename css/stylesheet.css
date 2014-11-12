@@ -85,6 +85,17 @@ html,body{
 	margin-top: 2px;
 }
 
+.price{
+	list-style-type: none;
+	margin-left: 0;
+	padding-left: 0;
+}
+
+.price-list{
+	font-size: 14px;
+	margin-top: 2px;	
+}
+
 .sidebar, .content{
 	margin-top: 8%;
 }
@@ -168,6 +179,14 @@ td .carlist-img{
 	width: 25px;
 	height: auto;
 }
+
+.car-type-span{
+	font-size: 20px;
+}
+
+.passenger-span{
+	font-size: 20px;	
+}
 /*booking.php*/
 .booking-label{
 	width: 20px;
@@ -176,6 +195,11 @@ td .carlist-img{
 
 .booking-feedback{
 	margin-bottom: 2%;
+}
+
+/*price slider*/
+.slider.slider-horizontal .slider-track{
+	width: 75%;
 }
 /*added by JJ */
 

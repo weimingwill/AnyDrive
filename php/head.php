@@ -6,8 +6,8 @@
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">  
-  
-  
+  <link rel="stylesheet" href="../seiyria-bootstrap-slider/css/bootstrap-slider.css">
+    
   <link rel="stylesheet" href="../css/bootstrap.min.css" media="screen">
   <link rel="stylesheet" type="text/css" href="../css/stylesheet.css">
 
