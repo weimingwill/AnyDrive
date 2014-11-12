@@ -5,8 +5,6 @@ html,body{
 }
 .emptyBlock{
 	display: block;
-
-
 }
 .centerAlign{
 	text-align: center;
@@ -21,11 +19,10 @@ html,body{
 	height: 95%;
 	position:relative;
 } 
-<<<<<<< HEAD
-
 .setFooter{
 	height: 100%;
-=======
+}
+
 .thumbnail{
 	border: 1px rgba(63, 133, 193, 0.35);
 	border-style: solid ;
@@ -34,7 +31,6 @@ html,body{
 	height: 30px;
 	width: 30px;
 	display: inline;
->>>>>>> ff73ba760551fdddda42c5e162d192bca07be528
 }
 
 #thumbnail{
