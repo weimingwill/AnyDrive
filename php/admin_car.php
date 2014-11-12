@@ -95,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 } else if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   if($_POST[$isUpdate_str] == 'true'){
-    
+
     $isUpdate = true;
   }
   $isInsert = TRUE;
@@ -178,23 +178,24 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if($imageFileType != "jpg" && $imageFileType != "JPG" && $imageFileType != "PNG" && $imageFileType != "png" 
       && $imageFileType != "JPEG" && $imageFileType != "jpeg") {
       $image_Err = "Sorry, only JPG, JPEG & PNG   files are allowed.";
-      $uploadOk = 0;
-    }
-// Check if $uploadOk is set to 0 by an error
-    if ($uploadOk == 0 ) {
-      if(!$isUpdate) {
-        $isInsert = false;
-        $imagePath_data = "../images/car/default.jpeg"; 
-      } else {
-        $carQuery = "SELECT imagePath FROM car WHERE carID = '$carID_data'";
-        $carResult = mysqli_query($con, $carQuery);
-        $row = mysqli_fetch_assoc($carResult);
-        $imagePath_data = $row[$imagePath_str];
-      }
-      
-// if everything is ok, try to upload file
-    } 
+    $uploadOk = 0;
   }
+// Check if $uploadOk is set to 0 by an error
+  if ($uploadOk == 0 ) {
+    if(!$isUpdate) {
+      $isInsert = false;
+      $imagePath_data = "../images/car/default.jpeg"; 
+    } else {
+
+      $carQuery = "SELECT imagePath FROM car WHERE carID = $carID_data";
+      $carResult = mysqli_query($con, $carQuery);
+      $row = mysqli_fetch_assoc($carResult);
+      $imagePath_data = $row[$imagePath_str];
+    }
+
+// if everything is ok, try to upload file
+  } 
+}
 }
 
 if($isInsert){
@@ -222,15 +223,18 @@ if($isInsert){
   } else {
 
     $updateCar = "UPDATE car SET brand='$brand_data', model='$model_data', price='$price_data', imagePath='$imagePath_data', " .
-    "passengerCap='$passengerCap_data', type='$type_data'  WHERE carID='$carID_data' ";
-    if (move_uploaded_file($_FILES[$image_str]["tmp_name"], $target_file)) {
+    "passengerCap=$passengerCap_data, type='$type_data'  WHERE 'carID=$carID_data' ";
+    if($uploadOk){
+      if (move_uploaded_file($_FILES[$image_str]["tmp_name"], $target_file)) {
         $image_Err =  "The file ". basename( $_FILES[$image_str]["name"]). " has been uploaded.";
-        if ( $con->query($updateCar) === TRUE) {
-          $feedback = "New record updated successfully";
-        } else {  
-          $feedback = "Error: " . $updateCar . "<br>" . $con->error;
-        }
-    }  
+
+      }
+    }
+    if ( $con->query($updateCar) === TRUE) {
+      $feedback = "New record updated successfully";
+    } else {  
+      $feedback = "Error: " . $updateCar . "<br>" . $con->error;
+    } 
   }
 
 
@@ -393,7 +397,7 @@ $carListResult = mysqli_query($con, $query);
       <div class="panel  panel-default panel-primary">
         <!-- Default panel contents -->
         <div class="panel-heading"><h2>Current Car List</h2>
-        <a href="admin_car.php"><button class='btn btn-success'>Add a new Car</button></a>
+          <a href="admin_car.php"><button class='btn btn-success'>Add a new Car</button></a>
         </div>
         <div class="panel-body">
         </div>
