@@ -3,16 +3,38 @@ html,body{
 	height: 95%;
 	
 }
+.emptyBlock{
+	display: block;
 
+
+}
+.centerAlign{
+	text-align: center;
+}
+.JLabel{
+	
+	font-size: 2em;
+}
 .mainBody{
 	min-height: 100%;
 	padding-top: 5%;	
 	height: 95%;
 	position:relative;
 } 
+<<<<<<< HEAD
 
 .setFooter{
 	height: 100%;
+=======
+.thumbnail{
+	border: 1px rgba(63, 133, 193, 0.35);
+	border-style: solid ;
+	border-radius:15px;
+	margin-top: 10px;
+	height: 30px;
+	width: 30px;
+	display: inline;
+>>>>>>> ff73ba760551fdddda42c5e162d192bca07be528
 }
 
 #thumbnail{
@@ -22,6 +44,14 @@ html,body{
 	margin-top: 10px;
 	height: 30px;
 	width: 30px;
+}
+
+.image{
+	border: 1px rgba(63, 133, 193, 0.35);
+	border-style: solid ;
+	border-radius:15px;
+	height: 300px;
+	
 }
 
 #image{
