@@ -137,17 +137,15 @@
         }
         if(!empty($collectDate and !empty($returnDate))){
           //$sql_remain .= " AND car.carID NOT IN (SELECT copy.carID FROM copy, booking WHERE  AND copy.carID = booking.carID AND copy.copyNum = booking.copyNum AND ($collectDate >= returnDate OR $returnDate <= collectDate))";
-<<<<<<< HEAD
+
           $sql_remain.="AND exists (SELECT * FROM booking WHERE booking.carID = copy.carID AND
           booking.copyNum = copy.copyNum AND (
           ('$collectDate' >= returnDate) OR
           ('$returnDate' <= collectDate)
           ) 
           )";
-=======
-          $sql_remain.="AND EXISTS (SELECT * FROM booking WHERE booking.carID = copy.carID AND
-          booking.copyNum = copy.copyNum AND $collectDate >= returnDate AND $returnDate <= collectDate)";
->>>>>>> f18590e3be8621e289b337f688b9796542b57c06
+
+         
           //lack the part of selecting copy num
         } 
         $sql = $sql.$sql_remain;

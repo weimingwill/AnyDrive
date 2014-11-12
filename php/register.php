@@ -162,6 +162,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 }
 
+
+
 $insertUser = "INSERT INTO user (email, name, password, phoneNum, age, gender, imagePath)
 VALUES ('$email_data', '$name_data','$password_data', '$phoneNum_data', '$age_data', '$gender_data', '$imagePath_data')";
 if($isInsert){
@@ -193,7 +195,10 @@ function test_input($data) {
  return $data;
 }
 
+
 ?>
+<br>
+
 <div class="container">
  <div class="page-header" id="banner">
   <h1>Registration<small>&nbsp<?php echo $feedback;?></small></h1>

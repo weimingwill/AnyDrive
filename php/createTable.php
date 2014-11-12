@@ -90,7 +90,27 @@
         echo "Table booking created successfully";     
     }
 
-   
+    $sql = "CREATE TABLE IF NOT EXISTS comment (
+            userEmail VARCHAR(50) NOT NULL,
+            carID CHAR(10) NOT NULL,
+            copyNum INT NOT NULL CHECK(copyNum > 0), 
+            commentTime DATETIME NOT NULL,
+            comment TEXT NOT NULL,
+            rating INT NOT NULL CHECK(rating<=5 AND rating >=1),
+            PRIMARY KEY(commentTime, userEmail, copyNum, carID),
+            FOREIGN KEY(userEmail) REFERENCES user(email)
+            ON UPDATE CASCADE ON DELETE CASCADE,
+            FOREIGN KEY(carID, copyNum) REFERENCES copy(carID, copyNum) 
+            ON UPDATE CASCADE ON DELETE CASCADE
+            )ENGINE=INNODB;";
+
+    $retval = mysql_query( $sql, $link );
+    if(! $retval ) {
+      die('Could not create table booking: ' . mysql_error());
+    } else {
+        echo "<br>";
+        echo "Table comment created successfully";     
+    }
     
     
     mysql_close($link);
