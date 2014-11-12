@@ -2,7 +2,7 @@
 <!-- saved from url=(0029)http://bootswatch.com/united/ -->
 <html lang="en">
   <?php include 'head.php'; ?>
-  <body>
+  <body class="home-body">
     <?php include 'navigation.php'; ?>
     <!--search form in homepage-->
     <div class="container setFooter">
@@ -31,11 +31,17 @@
          
       ?>
 
-          <form action="carlist.php"  method="post">
+          <form action="carlist.php"  method="post" class="home-form">
                 <div class="form-group">
-                  <label for="datePicker1" class="col-sm-3 control-label">Check in Date</label>
-                  <div class="input-group col-sm-5">
-                    <input name="collectDate" type="text" placeholder="Select Date" class="form-control required" data-date-format="YYYY-MM-DD" id='datePicker1'/>
+                  <label for="button" class="col-sm-3 control-label"></label>
+                  <div class="input-group col-sm-3">
+                    <button type="submit" value="submit" class="btn btn-primary home-button">Search</button>
+                  </div>
+                </div>
+                <div class="form-group">
+                 <label for="datePicker1" class="col-sm-3 control-label"></label>
+                  <div class="input-group col-sm-3">
+                    <input name="collectDate" type="text" placeholder="Collect date" class="form-control required" data-date-format="YYYY-MM-DD" id='datePicker1'/>
                     <span class="input-group-addon">
                       <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -43,16 +49,16 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="datePicker2" class="col-sm-3 control-label">Check out Date</label>
-                  <div class="input-group col-sm-5">
-                    <input name="returnDate" type="text" placeholder="Select Date" class="form-control required" data-date-format="YYYY-MM-DD" id='datePicker2'/>
+                  <label for="datePicker2" class="col-sm-3 control-label"></label>
+                  <div class="input-group col-sm-3">
+                    <input name="returnDate" type="text" placeholder="Return date" class="form-control required" data-date-format="YYYY-MM-DD" id='datePicker2'/>
                     <span class="input-group-addon">
                       <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                   </div>
                 </div>
 
-            <button type="submit" value="submit" class="btn btn-primary">Submit</button>
+            
           </div>
         </form>
      </div>

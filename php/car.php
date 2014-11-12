@@ -121,12 +121,12 @@
               <tr>
                 <td><img class="car-img" src="<?php echo $imagePath; ?>"></td>
                 <td class="table-td-car-feature">
-                  <h1 style="margin-bottom: 40px;"><?php echo $row["brand"]." ".$row["model"] ?></h1>
-                  <img style="margin-right: 8px;" class="car-feature-img" src="../images/cartype.png">
-                  <span class="car-type-span" style="font-size: 15px; margin-right:20px"><?php echo $row["type"] ?></span>
+                  <h1 style="margin-bottom: 40px;font-size: 40px;"><?php echo $row["brand"]." ".$row["model"] ?></h1>
+                  <img style="margin-right: 8px; " class="car-feature-img" src="../images/cartype.png">
+                  <span class="car-type-span" style="font-size: 15px; margin-right:20px; color: gray;"><?php echo $row["type"] ?></span>
                   <img style="margin-right: -2px;" class="car-feature-img" src="../images/passenger.png">
-                  <span class="passenger-span" style="font-size: 15px;"><?php echo $row["passengerCap"] ?></span>
-                  <p style="margin-top:20px; margin-bottom:20px;"><span  style="font-size: 40px; margin-right:4px;"><?php echo "$".$row["price"] ?></span>per weekday</p>
+                  <span class="passenger-span" style="font-size: 15px; color: gray;"><?php echo $row["passengerCap"] ?></span>
+                  <p style="margin-top:20px; margin-bottom:20px; margin-top: -60px; margin-rigt: 10px; float: right;"><span  style="font-size: 70px; margin-right:4px;"><?php echo "$".$row["price"] ?></span>per weekday</p>
                   <form action="booking.php" method="get" class="form-horizontal">
                     <input type="hidden" name="carId" value="<?php echo $row["carID"]?>">
                     <input type="hidden" name="copyNum" value="<?php echo $row["copyNum"]?>">
@@ -134,7 +134,7 @@
                     <input type="hidden" name="model" value="<?php echo $row["model"]?>">
                     <input type="hidden" name="price" value="<?php echo $row["price"]?>">
                     <div class="form-group">
-                      <div class="input-group col-sm-8">
+                      <div class="input-group col-sm-7">
                         <input name="collectDate" type="text" placeholder="Collect date" class="form-control required" data-date-format="YYYY-MM-DD" id='rentdate' />
                         <span class="input-group-addon">
                           <span class="glyphicon glyphicon-calendar"></span>
@@ -143,33 +143,16 @@
                     </div>
 
                     <div class="form-group">
-                      <div class="input-group col-sm-8">
+                      <div class="input-group col-sm-7">
                         <input name="returnDate" type="text" placeholder="Return date" class="form-control required" data-date-format="YYYY-MM-DD" id='returndate'/ >
                         <span class="input-group-addon">
                           <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                       </div>
                     </div>                    
-                    <button class="btn btn-primary">Book</button>
+                    <button class="btn btn-primary booking-btn">Book</button>
+                    <button class="btn btn-primary detail-btn">Detail</button>
                   </form>
-<!--                   <div class="panel panel-warning car-feature">
-                    <div class="panel-heading">
-                      <h2 class="panel-title"><?php echo $row["brand"]." ".$row["model"] ?></h2>
-                    </div>
-                    <div class="panel-body">
-                      <table>
-                        <tbody>
-                          <tr>
-                            <td><?php echo $row["type"] ?></td>
-                            <td><?php echo $row["passengerCap"] ?></td>
-                          </tr>
-                          <tr>
-                            <td><?php echo $row["price"] ?></td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div> -->
                 </td>
               </tr>
             </tbody>
