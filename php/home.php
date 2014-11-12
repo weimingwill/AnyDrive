@@ -5,7 +5,7 @@
   <body>
     <?php include 'navigation.php'; ?>
     <!--search form in homepage-->
-    <div class="container">
+    <div class="container setFooter">
      <div class="page page-container">
       <?php 
         $email = "";

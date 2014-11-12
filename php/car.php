@@ -6,22 +6,21 @@
   <?php include 'navigation.php'; ?>
   <!--search form in homepage-->
   <div class="container">
-    <div class="col-sm-3 col-md-2 sidebar">
+  <div class="col-sm-3 col-md-2 sidebar">
       <form action="carlist.php"  method="post" id="searchByPrice">
         <div class="form-group">
-          <label for="price" class="col-sm-12 control-label">Price</label>
-          <div class="input-group col-sm-12" id="price">
-            <select class="form-control" name="price">
-              <option id="priceOption">lower to higher</option>
-              <option id="priceOption">higher to lower</option>
+          <label for="price_ord" class="col-sm-12 control-label">Order by price</label>
+          <div class="input-group col-sm-12" id="price_ord">
+            <select class="form-control" name="price_ord">
+              <option id="priceOption" value="lower to higher" >lower to higher</option>
+              <option id="priceOption" value="higher to lower" >higher to lower</option>
             </select>
           </div>
         </div>
-      </form>     
-      <form action="carlist.php"  method="post">  
+
         <div class="form-group">
           <div class="input-group col-sm-12">
-            <input name="event_date" type="text" placeholder="Collect Date" class="form-control required" data-date-format="YYYY-MM-DD" id='datePicker1' />
+            <input name="collectDate" type="text" placeholder="Collect Date" class="form-control required" data-date-format="YYYY-MM-DD" id='datePicker1' >
             <span class="input-group-addon">
               <span class="glyphicon glyphicon-calendar"></span>
             </span>
@@ -30,10 +29,24 @@
 
         <div class="form-group">
           <div class="input-group col-sm-12">
-            <input name="event_date" type="text" placeholder="Return Date" class="form-control required" data-date-format="YYYY-MM-DD" id='datePicker2'/ >
+            <input name="returnDate" type="text" placeholder="Return Date" class="form-control required" data-date-format="YYYY-MM-DD" id='datePicker2'>
             <span class="input-group-addon">
               <span class="glyphicon glyphicon-calendar"></span>
             </span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="price" class="col-sm-12 control-label">Price</label>
+          <div class="input-group col-sm-12">
+            <ul class="price">
+              <li class="price-list"><input type="checkbox" name="price[]" value="1" > $50 - $100 </li>
+              <li class="price-list"><input type="checkbox" name="price[]" value="2" > $100 - $150 </li>
+              <li class="price-list"><input type="checkbox" name="price[]" value="3" > $150 - $200 </li>
+              <li class="price-list"><input type="checkbox" name="price[]" value="4" > $200 - $250 </li>
+              <li class="price-list"><input type="checkbox" name="price[]" value="5" > $250 - $300</li>
+              <li class="price-list"><input type="checkbox" name="price[]" value="6" > Above $300 </li>
+ 
+            </ul>
           </div>
         </div>
 
@@ -47,7 +60,7 @@
         <div class="form-group">
           <label for="brand" class="col-sm-12 control-label">brand</label>
           <div class="input-group col-sm-12" id="brand">
-            <input name="brand" type="text" class="form-control">
+            <input name="brand" type="text" class="form-control">            
           </div>
         </div>
 
@@ -55,19 +68,19 @@
           <label for="carType" class="col-sm-12 control-label">Car Type</label>
           <div class="input-group col-sm-12">
             <ul class="car-type">
-              <li class="car-type-list"><input type="checkbox" name="carType[]" value="Sedan"> Sedan </li>
-              <li class="car-type-list"><input type="checkbox" name="carType[]" value="Luxury Sedan"> Luxury Sedan </li>
-              <li class="car-type-list"><input type="checkbox" name="carType[]" value="Sports"> Sports </li>
-              <li class="car-type-list"><input type="checkbox" name="carType[]" value="Hatchback"> Hatchback </li>
-              <li class="car-type-list"><input type="checkbox" name="carType[]" value="MPV"> MPV</li>
-              <li class="car-type-list"><input type="checkbox" name="carType[]" value="SUV"> SUV </li>
+              <li class="car-type-list"><input type="checkbox" name="carType[]" value="Sedan" > Sedan </li>
+              <li class="car-type-list"><input type="checkbox" name="carType[]" value="Luxury Sedan" > Luxury Sedan </li>
+              <li class="car-type-list"><input type="checkbox" name="carType[]" value="Sports" > Sports </li>
+              <li class="car-type-list"><input type="checkbox" name="carType[]" value="Hatchback" > Hatchback </li>
+              <li class="car-type-list"><input type="checkbox" name="carType[]" value="MPV" > MPV</li>
+              <li class="car-type-list"><input type="checkbox" name="carType[]" value="SUV" > SUV </li>
             </ul>
           </div>
         </div>
 
         <button type="submit" value="submit" class="col-md-12 btn btn-primary">Search</button>
-      </form>               
-    </div>
+      </form>       
+  </div>
 
     <div class="col-md-10 content">
       <?php
