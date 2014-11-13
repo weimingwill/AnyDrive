@@ -151,7 +151,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $rating_Err = "plz give a rating between 1 and 5";
     $isInsert = False;
   } else {
-    $rating_data = test_input($_POST[$carID_str]);
+    $rating_data = test_input($_POST[$rating_str]);
   }
 
     // comment can be empty
@@ -362,7 +362,7 @@ if($isInsert){
   <script type="text/javascript">
   $(document).ready(function(){
 
-    $("#rating").slider({min: 1}, {value:5}, {max: 5}, {slide: function( event, ui) {
+    $("#rating").slider({min: 1}, {value:3}, {max: 5}, {slide: function( event, ui) {
       var value = ui.value;
       $('#ratingInput').val(value);
       $('#ratingReader').text(value);

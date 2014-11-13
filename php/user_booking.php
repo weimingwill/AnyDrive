@@ -330,11 +330,12 @@ $bookingListResult = mysqli_query($con, $query);
 
                 echo "<td><a href='?action=edit&carID=". $row[$carID_str] . "&copyNum=". $row[$copyNum_str].
                 "&userEmail=" . $row[$userEmail_str] . "&bookingTime=" . $row[$bookingTime_str] .
-                "'><button class='btn btn-primary btn-sm col-xs-offset-1 col-sm-4'>edit</button></a>";
+                "'><button class='btn btn-primary btn-sm col-xs-offset-1 col-sm-3'>edit</button></a>";
                 echo "<a href='?action=delete&carID=". $row[$carID_str] . "&copyNum=". $row[$copyNum_str].
                 "&userEmail=" . $row[$userEmail_str] . "&bookingTime=" . $row[$bookingTime_str] .
-                "'><button class='btn btn-primary btn-sm col-xs-offset-1 col-sm-4'>delete</button></a></td>";
-
+                "'><button class='btn btn-primary btn-sm col-xs-offset-1 col-sm-3'>delete</button></a>";
+                echo "<a href='homepage_copy?carID=". $row[$carID_str] . "&copyNum=". $row[$copyNum_str].
+                "'><button class='btn btn-primary btn-sm col-xs-offset-1 col-sm-3'>detail</button></a></td>";
                 echo "</tr>";
 
               }

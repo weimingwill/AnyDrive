@@ -16,6 +16,7 @@
        return $data;
      }
 
+    date_default_timezone_set("Asia/Singapore");
     $carId = $copyNum = $brand = $model = $collectDate = $returnDate = $userEmail = $price = $feedback = "";
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
           //connect to database
