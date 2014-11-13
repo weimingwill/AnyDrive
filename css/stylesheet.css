@@ -144,8 +144,8 @@ td .carlist-img{
 }
 
 .table-td-car-feature{
-	padding-left: 5%;
-	width: 300px;
+	padding-left: 8%;
+	width: 600px;
 	vertical-align: top;
 }
 
@@ -197,6 +197,8 @@ td .carlist-img{
 
 .booking-feedback{
 	margin-bottom: 2%;
+	font-size: 40px;
+	text-align: center;
 }
 
 #table-booking{
@@ -212,12 +214,38 @@ td .carlist-img{
 	font-size: 20px;
 }
 
-/*price slider*/
-.slider.slider-horizontal .slider-track{
-	width: 75%;
+.booking-btn{
+	width: 120px;
+	font-size: 17px;
+	margin-left: -15px;
 }
 
+.detail-btn{
+	width: 120px;
+	font-size: 17px;
+	margin-left: 14px;
+}
 
+.booking-btns{
+	text-align: center;
+}
+
+.home-body{
+	background: url("../images/background.jpg");
+	background-size: 100%;
+}
+
+.home-form{
+	margin-top: 390px;
+}
+
+.home-button{
+	margin-bottom: 40px;
+	background: transparent;
+	border: 0px;
+	font-size: 18px;
+	margin-left: 75px;
+}
 
 /*added by JJ */
 

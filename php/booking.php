@@ -68,6 +68,7 @@
             <td>From</td>
             <td>To</td>
             <td>Payment amount</td>
+            <td></td>
           </tr>
           <tr>
             <th><h3></h3></th>
@@ -79,20 +80,23 @@
             <td><?php echo $collectDate ?></td>
             <td><?php echo $returnDate ?></td>
             <td><?php echo "$".$price ?></td>
+            <td>
+              <form action="booking.php" method="post" style="margin-right: -40px;">
+                <input type="hidden" name="carId" value="<?php echo $carId ?>">
+                <input type="hidden" name="copyNum" value="<?php echo $copyNum ?>">
+                <input type="hidden" name="price" value="<?php echo $price ?>">
+                <input type="hidden" name="collectDate" value="<?php echo $collectDate ?>">
+                <input type="hidden" name="returnDate" value="<?php echo $returnDate ?>">
+                <button class="btn btn-primary" style="width: 90px;">Book</button>
+              </form>
+            </td>
           </tr>
         </tbody>
       </table>
 <!--       <h3><span class="booking-label">Vehicle: </span><span><?php echo $brand." ".$model ?></span></h3>
       <h3><span>Collect Date: </span><span><?php echo $collectDate ?></span></h3>
       <h3><span>Return Date:  </span><span><?php echo $returnDate ?></span></h3> -->
-      <form action="booking.php" method="post">
-        <input type="hidden" name="carId" value="<?php echo $carId ?>">
-        <input type="hidden" name="copyNum" value="<?php echo $copyNum ?>">
-        <input type="hidden" name="price" value="<?php echo $price ?>">
-        <input type="hidden" name="collectDate" value="<?php echo $collectDate ?>">
-        <input type="hidden" name="returnDate" value="<?php echo $returnDate ?>">
-        <button class="btn btn-primary">Book</button>
-      </form>
+
     </div>
   </div>
 <?php
@@ -156,8 +160,10 @@
     if(!empty($feedback)){
   ?>
   <div class="booking-feedback"><h1><?php echo $feedback ?></h1></div>
+  <div class="booking-btns">
   <a href="carlist.php" class="btn btn-primary">Book another car</a>
-  <a href="user_booking.php" class="btn btn-primary">Manage booking</a>
+  <a href="user_booking.php" class="btn btn-primary" style="margin-left: 20px;">Manage booking</a>
+</div>
   <?php } ?>
 </div>
 
