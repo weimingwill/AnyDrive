@@ -34,10 +34,10 @@ function GR_number($length=10){
 	return $randomNum;
 }
 
-$user_NUM = 500;
+$user_NUM = 300;
 $car_NUM = 100;
-$copyPerCar_Num = 5;
-$bookingPerCopy_Num=10;
+$copyPerCar_Num = 3;
+$bookingPerCopy_Num=5;
 $commentPerCopy_Num=8;
 
 

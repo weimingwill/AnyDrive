@@ -150,9 +150,10 @@
                         </span>
                       </div>
                     </div>                    
-                    <button class="btn btn-primary booking-btn">Book</button>
-                    <button class="btn btn-primary detail-btn">Detail</button>
+                    <button type='submit' class="btn btn-primary booking-btn">Book</button>
+                    <a href='homepage_copy?carID=<?php echo $row['carID'].'&copyNum='. $row['copyNum'] ?> '><button type='button' class="btn btn-primary detail-btn">Detail</button></a>
                   </form>
+                  
                 </td>
               </tr>
             </tbody>

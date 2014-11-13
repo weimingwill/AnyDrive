@@ -217,7 +217,7 @@ if($isInsert){
           ($collectDate_data <= collectDate && $returnDate_data >= returnDate))";
     $isTimeClash = true;
     $resultTime = mysqli_query($con, $checkTime);
-    echo "resultTime ".$resultTime;
+    
     if(!empty($resultTime)){
       $isTimeClash = false;
     }
