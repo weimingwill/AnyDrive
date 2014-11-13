@@ -8,6 +8,7 @@ require('cookie.php');
 <html lang="en">
 
 <?php include 'head.php'; ?>
+<br><br>
 <?php
 // set deafult varible name
 
@@ -210,25 +211,43 @@ if($isInsert){
     $insertBooking = "INSERT INTO booking (carID, copyNum, bookingTime, userEmail, collectDate, returnDate, cost)
     VALUES ('$carID_data','$copyNum_data', '$bookingTime_data', '$userEmail_data', '$collectDate_data', '$returnDate_data', '$cost_data')";
 
+    $checkTime = "SELECT * FROM car, copy, booking WHERE booking.carID = car.carID AND booking.copyNum = copy.copyNum 
+    AND (($collectDate_data =< returnDate && $collectDate_data >= collectDate) OR 
+          ($returnDate_data >= collectDate && $returnDate_data <= returnDate) OR
+          ($collectDate_data <= collectDate && $returnDate_data >= returnDate))";
+    $isTimeClash = true;
+    $resultTime = mysqli_query($con, $checkTime);
+    echo "resultTime ".$resultTime;
+    if(!empty($resultTime)){
+      $isTimeClash = false;
+    }
+    
     if (mysqli_num_rows($result) > 0) {
       $feedback = "This booking has already existed";
     } else {
-      if ( $con->query($insertBooking) === TRUE) {
-        $feedback = "New record created successfully";
-        $carID_data = $copyNum_data = $bookingTime_data = $userEmail_data ='';
-      } else {  
-        $feedback = "Error: " . $insertBooking . "<br>" . $con->error;
+      if(!$isTimeClash){
+        if ( $con->query($insertBooking) === TRUE) {
+          $feedback = "New record created successfully";
+          $carID_data = $copyNum_data = $bookingTime_data = $userEmail_data ='';
+        } else {  
+          $feedback = "Error: " . $insertBooking . "<br>" . $con->error;
+        }
+      } else {
+        $feedback = "The car has been booked in the time period, please select another time";
       }
     } 
   } else {
 
-   
       $updateBooking = "UPDATE booking SET collectDate='$collectDate_data', returnDate='$returnDate_data', cost = '$cost_data'".
       "WHERE carID = '$carID_data' AND copyNum = '$copyNum_data' AND userEmail = '$userEmail_data' AND bookingTime='$bookingTime_data'";
-      if ( $con->query($updateBooking) === TRUE) {
-        $feedback = "New record updated successfully";
-      } else {  
-        $feedback = "Error: " . $updateBooking . "<br>" . $con->error;
+      if(!$isTimeClash){
+        if ( $con->query($updateBooking) === TRUE) {
+          $feedback = "New record updated successfully";
+        } else {  
+          $feedback = "Error: " . $updateBooking . "<br>" . $con->error;
+        } 
+      } else {
+        $feedback = "The car has been booked in the time period, please select another time";
       }
     
     

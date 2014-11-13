@@ -92,10 +92,6 @@
           </tr>
         </tbody>
       </table>
-<!--       <h3><span class="booking-label">Vehicle: </span><span><?php echo $brand." ".$model ?></span></h3>
-      <h3><span>Collect Date: </span><span><?php echo $collectDate ?></span></h3>
-      <h3><span>Return Date:  </span><span><?php echo $returnDate ?></span></h3> -->
-
     </div>
   </div>
 <?php
@@ -132,17 +128,6 @@
       $price = $_POST["price"];
     }
 
-
-    // echo "carId: ".$carId;
-    // echo "  ";
-    // echo "copyNum: ".$copyNum;
-    // echo "  ";
-    // echo "collectDate: ".$collectDate;
-    // echo "  ";
-    // echo "returnDate: ".$returnDate;
-    // echo "  ";
-    // echo date("Y-m-d h:i:sa");
-    // echo "<br>";
     $bookingTime = date("Y-m-d h:i:s");
 
     $sql = "INSERT INTO booking(userEmail, carID, copyNum ,bookingTime, collectDate, returnDate, cost)
