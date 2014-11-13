@@ -34,15 +34,15 @@ function GR_number($length=10){
 	return $randomNum;
 }
 
-$user_NUM = 100;
-$car_NUM = 30;
+$user_NUM = 500;
+$car_NUM = 100;
 $copyPerCar_Num = 5;
 $bookingPerCopy_Num=10;
 $commentPerCopy_Num=8;
 
 
 function GR_name($length=10) {
-	return 'user_' + GR_string($length);
+	return 'user_' . GR_string($length);
 }
 function GR_password($length=10) {
 	return GR_string($length);
@@ -63,7 +63,7 @@ function GR_gender() {
 	}
 } 
 function GR_imagePath() {
-	return 'default.jpeg';
+	return 'default.png';
 }
 
 

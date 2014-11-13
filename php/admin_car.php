@@ -39,12 +39,12 @@ $isUpdate_str = 'isUpdate';
 $carID_str = "carID";
 
 $type_str = "type";
-$type_set = array('Sedan', 'Luxury Sedan', 'Sports', 'Hatchback', 'SUV');
+$type_set = array('Sedan', 'Luxury Sedan', 'Sports', 'Hatchback', 'SUV', 'Supercar', 'Microcar', 'Grand tourer');
 
 $model_str = "model"; 
 
 $brand_str = "brand";
-$brand_set = array('Volvo', 'BMW', 'Toyota');
+$brand_set = array('Volvo', 'BMW', 'Toyota', 'Alfa Romeo', 'Aston Martin', 'Bugatti', 'Chevrolet',  'Dodge', 'Ferrari', 'Lamborghini');
 
 $price_str = "price";
 $passengerCap_str = "passengerCap";
@@ -52,7 +52,7 @@ $image_str ='image';
 $imagePath_str = 'imagePath';
 
 $carID_data = $type_data = $model_data = $price_data = $passengerCap_data = $brand_data = $image_data ='';
-$imagePath_data = "../images/car/default.jpeg";
+$imagePath_data = "../images/car/default.png";
 $carID_Err = $type_Err = $model_Err = $price_Err = $passengerCap_Err = $brand_Err = $image_Err ='';
 
 
@@ -184,7 +184,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
   if ($uploadOk == 0 ) {
     if(!$isUpdate) {
       $isInsert = false;
-      $imagePath_data = "../images/car/default.jpeg"; 
+      $imagePath_data = "../images/car/default.png"; 
     } else {
 
       $carQuery = "SELECT imagePath FROM car WHERE carID = $carID_data";
@@ -394,8 +394,8 @@ $carListResult = mysqli_query($con, $query);
 
     <div class="tab-pane fade in active" id="Open">
       <!-- Open Gig -->  
-      <div class="panel  panel-default panel-primary">
-        <!-- Default panel contents -->
+      <div class="panel  panel-default png">
+        <!-- Default png->
         <div class="panel-heading"><h2>Current Car List</h2>
           <a href="admin_car.php"><button class='btn btn-success'>Add a new Car</button></a>
         </div>
