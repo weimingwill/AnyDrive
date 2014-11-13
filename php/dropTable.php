@@ -17,7 +17,15 @@
     // } else {
     //     echo "Table user created successfully";     
     // }
-    
+     //drop table comment
+    $sql = "DROP TABLE comment;";
+
+    $retval = mysql_query( $sql, $link );
+    if(! $retval ) {
+      die('Could not drop table comment: ' . mysql_error());
+    } else {
+        echo "<br>Table comment dropped successfully";     
+    }
    
     //drop table booking
     $sql = "DROP TABLE booking;";
