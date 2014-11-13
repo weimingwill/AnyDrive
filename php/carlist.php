@@ -15,8 +15,8 @@
        return $data;
      }
 
-     $carType = $price = array();
-     $price_ord = $passengerCap = $gearType = $brand = $collectDate = $returnDate = "";
+     $carType = array();
+     $price = $price_ord = $passengerCap = $brand = $collectDate = $returnDate = "";
      $price_empty = $price_ord_empty = $passengerCap_empty = $brand_empty = $carType_empty = $collectDate_empty = $returnDate_empty = true;
      if ($_SERVER["REQUEST_METHOD"] == "POST") {
           //connect to database
@@ -89,7 +89,7 @@
               if (!$collectDate_empty) {
                 echo "value = $collectDate";
               }
-            ?>>
+            ?> required>
             <span class="input-group-addon">
               <span class="glyphicon glyphicon-calendar"></span>
             </span>
@@ -103,20 +103,13 @@
               if (!$returnDate_empty) {
                 echo "value = $returnDate";
               }
-            ?>>
+            ?> required>
             <span class="input-group-addon">
               <span class="glyphicon glyphicon-calendar"></span>
             </span>
           </div>
         </div>
 
-<!--         <div class="form-group">
-          <label for="brand" class="col-sm-12 control-label">Price</label>
-          <div class="input-group col-sm-12" id="brand">
-            $50 <input id="ex2" type="text" class="span2" value="10" data-slider-min="50" data-slider-max="500" data-slider-step="10" data-slider-value="[150,450]"/>$500
-            <input name="brand" type="text" class="form-control slider">
-          </div>
-        </div> -->
         <div class="form-group">
           <label for="price" class="col-sm-12 control-label">Price</label>
           <div class="input-group col-sm-12">
@@ -124,39 +117,39 @@
             <?php
               $first_price_empty = $second_price_empty = $third_price_empty = $fourth_price_empty = $fifth_price_empty = $sixth_price_empty = true;
               if (!$price_empty) {
-                for ($i=0; $i < sizeof($price); $i++) { 
-                  if($price[$i] == "1"){
+                
+                  if($price == "1"){
                     $first_price_empty = false;
                   }
 
-                  if($price[$i] == "2"){
+                  if($price == "2"){
                     $second_price_empty = false;
                   }
 
-                  if($price[$i] == "3"){
+                  if($price == "3"){
                     $third_price_empty = false;
                   }
 
-                  if($price[$i] == "4"){
+                  if($price == "4"){
                     $fourth_price_empty = false;
                   }
 
-                  if($price[$i] == "5"){
+                  if($price == "5"){
                     $fifth_price_empty = false;
                   }
 
-                  if($price[$i] == "6"){
+                  if($price == "6"){
                     $sixth_price_empty = false;
                   }       
-                }
+                
               }
             ?>
-              <li class="price-list"><input type="checkbox" name="price[]" value="1" <?php if(!$first_price_empty){ echo " checked";}?>> $50 - $100 </li>
-              <li class="price-list"><input type="checkbox" name="price[]" value="2" <?php if(!$second_price_empty){ echo " checked";}?>> $100 - $150 </li>
-              <li class="price-list"><input type="checkbox" name="price[]" value="3" <?php if(!$third_price_empty){ echo " checked";}?>> $150 - $200 </li>
-              <li class="price-list"><input type="checkbox" name="price[]" value="4" <?php if(!$fourth_price_empty){ echo " checked";}?>> $200 - $250 </li>
-              <li class="price-list"><input type="checkbox" name="price[]" value="5" <?php if(!$fifth_price_empty){ echo " checked";}?>> $250 - $300</li>
-              <li class="price-list"><input type="checkbox" name="price[]" value="6" <?php if(!$sixth_price_empty){ echo " checked";}?>> Above $300 </li>
+              <li class="price-list"><input type="radio" name="price" value="1" <?php if(!$first_price_empty){ echo " checked";}?>> $50 - $100 </li>
+              <li class="price-list"><input type="radio" name="price" value="2" <?php if(!$second_price_empty){ echo " checked";}?>> $100 - $150 </li>
+              <li class="price-list"><input type="radio" name="price" value="3" <?php if(!$third_price_empty){ echo " checked";}?>> $150 - $200 </li>
+              <li class="price-list"><input type="radio" name="price" value="4" <?php if(!$fourth_price_empty){ echo " checked";}?>> $200 - $250 </li>
+              <li class="price-list"><input type="radio" name="price" value="5" <?php if(!$fifth_price_empty){ echo " checked";}?>> $250 - $300</li>
+              <li class="price-list"><input type="radio" name="price" value="6" <?php if(!$sixth_price_empty){ echo " checked";}?>> Above $300 </li>
  
             </ul>
           </div>
@@ -191,7 +184,7 @@
           <div class="input-group col-sm-12">
             <ul class="car-type">
             <?php
-              $sedan_empty = $luxury_sedan_empty = $sports_empty = $hatchback_empty = $mpv_empty = $suv_empty = true;
+              $sedan_empty = $luxury_sedan_empty = $sports_empty = $hatchback_empty = $supercar_empty = $suv_empty = $microcar_empty = $grandTourer_empty = true;
               if (!$carType_empty) {
                 for ($i=0; $i < sizeof($carType); $i++) { 
                   if($carType[$i] == "Sedan"){
@@ -210,12 +203,20 @@
                     $hatchback_empty = false;
                   }
 
-                  if($carType[$i] == "MPV"){
-                    $mpv_empty = false;
+                  if($carType[$i] == "Supercar"){
+                    $supercar_empty = false;
                   }
 
                   if($carType[$i] == "SUV"){
                     $suv_empty = false;
+                  }       
+
+                  if($carType[$i] == "Microcar"){
+                    $microcar_empty = false;
+                  }      
+
+                  if($carType[$i] == "Grand tourer"){
+                    $grandTourer_empty = false;
                   }       
                 }   
               }
@@ -224,8 +225,10 @@
               <li class="car-type-list"><input type="checkbox" name="carType[]" value="Luxury Sedan" <?php if(!$luxury_sedan_empty){ echo " checked";}?>> Luxury Sedan </li>
               <li class="car-type-list"><input type="checkbox" name="carType[]" value="Sports" <?php if(!$sports_empty){ echo " checked";}?>> Sports </li>
               <li class="car-type-list"><input type="checkbox" name="carType[]" value="Hatchback" <?php if(!$hatchback_empty){ echo " checked";}?>> Hatchback </li>
-              <li class="car-type-list"><input type="checkbox" name="carType[]" value="MPV" <?php if(!$mpv_empty){ echo " checked";}?>> MPV</li>
+              <li class="car-type-list"><input type="checkbox" name="carType[]" value="Supercar" <?php if(!$supercar_empty){ echo " checked";}?>> Supercar</li>
               <li class="car-type-list"><input type="checkbox" name="carType[]" value="SUV" <?php if(!$suv_empty){ echo " checked";}?>> SUV </li>
+              <li class="car-type-list"><input type="checkbox" name="carType[]" value="Microcar" <?php if(!$microcar_empty){ echo " checked";}?>> Microcar </li>
+              <li class="car-type-list"><input type="checkbox" name="carType[]" value="Grand tourer" <?php if(!$grandTourer_empty){ echo " checked";}?>> Grand tourer </li>
             </ul>
           </div>
         </div>
@@ -239,15 +242,6 @@
 
       $sql = $count = $sql_remain =  "";
 
-      // if(!empty($price_ord)){
-      //   if($price_ord == "lower to higher"){
-      //     $sql = "SELECT * FROM car, copy WHERE car.carID = copy.carID ORDER BY price ASC";
-      //     $count = "SELECT COUNT(*) As count FROM car, copy WHERE car.carID = copy.carID ORDER BY price ASC";
-      //   } else if($price_ord == "higher to lower"){
-      //     $sql = "SELECT * FROM car, copy WHERE car.carID = copy.carID ORDER BY price DESC";
-      //     $count = "SELECT COUNT(*) As count FROM car, copy WHERE car.carID = copy.carID ORDER BY price DESC";
-      //   }
-      // } else {
         $sql = "SELECT * FROM car, copy WHERE car.carID = copy.carID ";
         $count = "SELECT *, COUNT(*) AS count FROM car, copy WHERE car.carID = copy.carID ";
         $sql_remain = "";
@@ -258,26 +252,26 @@
           $sql_remain = $sql_remain."AND passengerCap >= $passengerCap ";
         }
         if(!empty($price)){
-            for ($i=0; $i < sizeof($price); $i++) {
-              if($price[$i] == "1"){
+            
+              if($price == "1"){
                 $sql_remain = $sql_remain."AND price >= 50 AND price <= 100 ";
               }
-              if($price[$i] == "2"){
+              if($price == "2"){
                 $sql_remain = $sql_remain."AND price > 100 AND price <= 150 ";
               }
-              if($price[$i] == "3"){
+              if($price == "3"){
                 $sql_remain = $sql_remain."AND price > 150 AND price <= 200 ";
               }
-              if($price[$i] == "4"){
+              if($price == "4"){
                 $sql_remain = $sql_remain."AND price > 200 AND price <= 250 ";
               }
-              if($price[$i] == "5"){
+              if($price == "5"){
                 $sql_remain = $sql_remain."AND price > 250 AND price <= 300 ";
               }
-              if($price[$i] == "6"){
+              if($price == "6"){
                 $sql_remain = $sql_remain."AND price > 300 ";
               }                                                                
-            }
+            
         }
         if(!empty($carType)){
           $sql_remain = $sql_remain."AND (";
@@ -305,7 +299,7 @@
         }
         $sql = $sql.$sql_remain;
         $count = $count.$sql_remain;
-      // }
+
 
       $result = mysqli_query($con, $sql);
       $count_result = mysqli_query($con, $count);
@@ -380,7 +374,7 @@
 
         <div class="form-group">
           <div class="input-group col-sm-12">
-            <input name="collectDate" type="text" placeholder="Collect Date" class="form-control required" data-date-format="YYYY-MM-DD" id='datePicker1' >
+            <input name="collectDate" type="text" placeholder="Collect Date" class="form-control required" data-date-format="YYYY-MM-DD" id='datePicker1' required>
             <span class="input-group-addon">
               <span class="glyphicon glyphicon-calendar"></span>
             </span>
@@ -389,7 +383,7 @@
 
         <div class="form-group">
           <div class="input-group col-sm-12">
-            <input name="returnDate" type="text" placeholder="Return Date" class="form-control required" data-date-format="YYYY-MM-DD" id='datePicker2'>
+            <input name="returnDate" type="text" placeholder="Return Date" class="form-control required" data-date-format="YYYY-MM-DD" id='datePicker2' required>
             <span class="input-group-addon">
               <span class="glyphicon glyphicon-calendar"></span>
             </span>
@@ -399,12 +393,12 @@
           <label for="price" class="col-sm-12 control-label">Price</label>
           <div class="input-group col-sm-12">
             <ul class="price">
-              <li class="price-list"><input type="checkbox" name="price[]" value="1" > $50 - $100 </li>
-              <li class="price-list"><input type="checkbox" name="price[]" value="2" > $100 - $150 </li>
-              <li class="price-list"><input type="checkbox" name="price[]" value="3" > $150 - $200 </li>
-              <li class="price-list"><input type="checkbox" name="price[]" value="4" > $200 - $250 </li>
-              <li class="price-list"><input type="checkbox" name="price[]" value="5" > $250 - $300</li>
-              <li class="price-list"><input type="checkbox" name="price[]" value="6" > Above $300 </li>
+              <li class="price-list"><input type="radio" name="price" value="1" > $50 - $100 </li>
+              <li class="price-list"><input type="radio" name="price" value="2" > $100 - $150 </li>
+              <li class="price-list"><input type="radio" name="price" value="3" > $150 - $200 </li>
+              <li class="price-list"><input type="radio" name="price" value="4" > $200 - $250 </li>
+              <li class="price-list"><input type="radio" name="price" value="5" > $250 - $300</li>
+              <li class="price-list"><input type="radio" name="price" value="6" > Above $300 </li>
  
             </ul>
           </div>
@@ -420,7 +414,7 @@
         <div class="form-group">
           <label for="brand" class="col-sm-12 control-label">brand</label>
           <div class="input-group col-sm-12" id="brand">
-            <input name="brand" type="text" class="form-control">            
+            <input name="brand" type="text" class="form-control">        
           </div>
         </div>
 
@@ -432,8 +426,10 @@
               <li class="car-type-list"><input type="checkbox" name="carType[]" value="Luxury Sedan" > Luxury Sedan </li>
               <li class="car-type-list"><input type="checkbox" name="carType[]" value="Sports" > Sports </li>
               <li class="car-type-list"><input type="checkbox" name="carType[]" value="Hatchback" > Hatchback </li>
-              <li class="car-type-list"><input type="checkbox" name="carType[]" value="MPV" > MPV</li>
+              <li class="car-type-list"><input type="checkbox" name="carType[]" value="Supercar" > Supercar</li>
               <li class="car-type-list"><input type="checkbox" name="carType[]" value="SUV" > SUV </li>
+              <li class="car-type-list"><input type="checkbox" name="carType[]" value="Microcar" > Microcar </li>
+              <li class="car-type-list"><input type="checkbox" name="carType[]" value="Grand tourer" > Grand tourer </li>
             </ul>
           </div>
         </div>
