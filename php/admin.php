@@ -1,7 +1,6 @@
 <?php 
   require('cookie.php');
-
- ?>
+?>
         
 <!DOCTYPE html>
 <!-- saved from url=(0029)http://bootswatch.com/united/ -->

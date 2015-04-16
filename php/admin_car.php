@@ -223,10 +223,8 @@ if($isInsert){
   } else {
 
     $image_Err = '';
-    echo $passengerCap_data;
-    echo "<br>";
-    echo $carID_data;
-    $updateCar = "UPDATE car SET brand='$brand_data', model='$model_data', price='$price_data', passengerCap='$passengerCap_data', type='$type_data'  WHERE 'carID=$carID_data' ";
+    
+    $updateCar = "UPDATE car SET brand='$brand_data', model='$model_data', price='$price_data', passengerCap='$passengerCap_data', type='$type_data'  WHERE carID='$carID_data' ";
     if($uploadOk){
       if (move_uploaded_file($_FILES[$image_str]["tmp_name"], $target_file)) {
         $image_Err =  "The file ". basename( $_FILES[$image_str]["name"]). " has been uploaded.";

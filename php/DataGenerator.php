@@ -37,7 +37,7 @@ function GR_number($length=10){
 $user_NUM = 300;
 $car_NUM = 100;
 $copyPerCar_Num = 3;
-$bookingPerCopy_Num=5;
+$bookingPerCopy_Num=2;
 $commentPerCopy_Num=8;
 
 
